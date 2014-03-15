@@ -52,10 +52,18 @@ You don't really have to install pip but you should, it's significantly better t
 Also setting up a python virtualenv is the way to go.. if you don't do that than you'll have to add 'sudo' in front of these commands
 
 * easy_install pip
-* pip install -U pymongo
 * pip install -U zerorpc
+    
+      Note: If you get a bunch of clang errors about unknown arguments:
+      $ pip uninstall zerorpc
+      $ export CFLAGS=-Qunused-arguments
+      $ export CPPFLAGS=-Qunused-arguments
+      $ pip install zerorpc
+
+* pip install -U pymongo
 * pip install -U watchdog
 * pip install -U pefile
+* pip install -U cython
 * pip install -U ssdeep
 * pip install -U filemagic
 * pip install -U nose
@@ -107,6 +115,9 @@ Unit testing and sub-pipeline tests
 $ cd workbench/server/workers
 $ ./runtests
 </pre>
+**Note:** If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16:
+
+      
 Full pipeline tests (clients exercise a larger set of components)
 <pre>
 $ cd workbench/clients
