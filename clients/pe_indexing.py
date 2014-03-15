@@ -34,18 +34,24 @@ def main():
     # ES Facets are kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-facets.html)
     facet_query = '{"facets" : {"tag" : {"terms" : {"field" : "string_list","script": "term.length() > 3 ? true: false"}}}}'
     results = c.search('pe_strings',facet_query)
-    print '\nQuery: %s' % facet_query
-    print 'Number of hits: %d' % results['hits']['total']
-    print 'Max Score: %f' % results['hits']['max_score']
-    pprint.pprint(results['facets'])
+    try:
+        print '\nQuery: %s' % facet_query
+        print 'Number of hits: %d' % results['hits']['total']
+        print 'Max Score: %f' % results['hits']['max_score']
+        pprint.pprint(results['facets'])
+    except TypeError:
+        print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'
 
     # Fuzzy is kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html)
     fuzzy_query = '{"fields":["md5","sparse_features.imported_symbols"],"query": {"fuzzy" : {"sparse_features.imported_symbols" : "loadlibrary"},"size":50}}'
     results = c.search('pe_features',fuzzy_query)
-    print '\nQuery: %s' % fuzzy_query
-    print 'Number of hits: %d' % results['hits']['total']
-    print 'Max Score: %f' % results['hits']['max_score']
-    pprint.pprint([ (hit['fields']['md5'], hit['fields']['sparse_features.imported_symbols']) for hit in results['hits']['hits'] ])
+    try:
+        print '\nQuery: %s' % fuzzy_query
+        print 'Number of hits: %d' % results['hits']['total']
+        print 'Max Score: %f' % results['hits']['max_score']
+        pprint.pprint([ (hit['fields']['md5'], hit['fields']['sparse_features.imported_symbols']) for hit in results['hits']['hits'] ])
+    except TypeError:
+        print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'    
 
 
 def test():
