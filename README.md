@@ -69,12 +69,24 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * pip install -U nose
 * pip install -U yourmom --superfat
 
-** Notebooks: **
+
+** If you want to run the Notebooks: **
 
 * pip install -U pandas
+* pip install -U ipython
+* pip install -U jinja2
+* pip install -U tornado
+* brew install freetype
 * pip install -U matplotlib
 
+Note: If when installing these you get an error like: 
 
+    RuntimeError: Broken toolchain: cannot link a simple C program or
+    clang: error: unknown argument: '-mno-fused-madd'
+do the same trick as above:
+
+    $ export CFLAGS=-Qunused-arguments
+    $ export CPPFLAGS=-Qunused-arguments
 
 ### Running It:
 #### Server (localhost or server machine)
