@@ -79,8 +79,8 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * brew install freetype
 * pip install -U matplotlib
 * brew install gfortran
-* pip install scipy
-* pip install scikit-learn
+* pip install -U scipy (can take a long time :)
+* pip install -U scikit-learn
 
 Note: If when installing these you get an error like: 
 
