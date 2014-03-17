@@ -78,6 +78,9 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * pip install -U tornado
 * brew install freetype
 * pip install -U matplotlib
+* brew install gfortran
+* pip install scipy
+* pip install scikit-learn
 
 Note: If when installing these you get an error like: 
 
@@ -174,7 +177,7 @@ If you'd like to play with the alpha graph database functionality you can instal
 ### Thanks
 - My dog Noodles
 
-  ![](https://raw2.github.com/ClickSecurity/workbench/master/images/noodles.jpg =250x)
+  ![](https://raw2.github.com/brifordwylie/workbench/master/images/noodles.jpg =250x)
 
 
 ### Deprecated
