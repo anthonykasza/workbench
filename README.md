@@ -131,8 +131,13 @@ Unit testing and sub-pipeline tests
 $ cd workbench/server/workers
 $ ./runtests
 </pre>
-**Note:** If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16:
+**Note:** If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16. Using brew on Mac:
 
+    $ cd /usr/local
+    $ brew versions libmagic # Copy the line for version 5.16, then paste (for me it looked like the following line)
+    $ git checkout bfb6589 Library/Formula/libmagic.rb
+    $ brew uninstall libmagic
+    $ brew install libmagic
       
 Full pipeline tests (clients exercise a larger set of components)
 <pre>
