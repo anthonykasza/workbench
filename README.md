@@ -54,12 +54,13 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * easy_install pip
 * pip install -U zerorpc
     
-      Note: If you get a bunch of clang errors about unknown arguments:
-      $ pip uninstall zerorpc
-      $ export CFLAGS=-Qunused-arguments
-      $ export CPPFLAGS=-Qunused-arguments
-      $ pip install zerorpc
-
+    Note: If you get a bunch of clang errors about unknown arguments:
+    ```
+    $ pip uninstall zerorpc
+    $ export CFLAGS=-Qunused-arguments
+    $ export CPPFLAGS=-Qunused-arguments
+    $ pip install zerorpc
+    ```
 * pip install -U pymongo
 * pip install -U watchdog
 * pip install -U pefile
