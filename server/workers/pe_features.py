@@ -14,7 +14,7 @@ class PEFileWorker():
     '''
 
     def __init__(self):
-        ''' Init method, calls the worker_base super class __init__ at the end. '''
+        ''' Init method '''
 
         # Dense feature list: this only functions to ensure that all of these
         #               features get extracted with a sanity check at the end.
