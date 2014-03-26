@@ -181,6 +181,10 @@ If you'd like to play with the alpha graph database functionality you can instal
 
 
 ### Thanks
+- Mike Sconzo for general awesomeness.
+- David Dorsey for lots of great discussions and insights.
+- Eric Chavez for helping with installation challenges and docs.
+- Click Security: seriously best company I've ever worked for (super hugs to all).
 - My dog Noodles
 
   ![](https://raw2.github.com/brifordwylie/workbench/master/images/noodles.jpg =250x)
