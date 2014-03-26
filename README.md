@@ -71,7 +71,7 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * pip install -U yourmom --superfat
 
 
-** If you want to run the Notebooks: **
+##### If you want to run the Notebooks:
 
 * pip install -U pandas
 * pip install -U ipython
