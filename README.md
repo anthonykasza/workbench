@@ -3,7 +3,7 @@ workbench
 Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and pipelining.
 
 <pre>
-git clone https://github.com/brifordwylie/workbench.git
+git clone https://github.com/supercowpowers/workbench.git
 </pre>
 
 ### Project Description
