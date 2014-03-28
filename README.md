@@ -3,7 +3,7 @@ workbench
 Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and pipelining.
 
 <pre>
-git clone https://github.com/SuperCowPowers/workbench.git
+git clone https://github.com/brifordwylie/workbench.git
 </pre>
 
 ### Project Description
@@ -187,7 +187,7 @@ If you'd like to play with the alpha graph database functionality you can instal
 - Click Security: seriously best company I've ever worked for (super hugs to all).
 - My dog Noodles
 
-  ![](https://raw2.github.com/brifordwylie/workbench/master/images/noodles.jpg =250x)
+  ![](https://raw.github.com/supercowpowers/workbench/master/images/noodles.jpg =250x)
 
 
 ### Deprecated
