@@ -187,7 +187,7 @@ If you'd like to play with the alpha graph database functionality you can instal
 - Click Security: seriously best company I've ever worked for (super hugs to all).
 - My dog Noodles
 
-  ![](https://raw.github.com/supercowpowers/workbench/master/images/noodles.jpg =250x)
+  ![](https://raw.github.com/supercowpowers/workbench/master/images/noodles_sm.jpg)
 
 
 ### Deprecated
