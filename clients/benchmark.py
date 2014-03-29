@@ -17,7 +17,6 @@ def main():
         for filename in file_list:
             with open(filename,'rb') as f:
                 md5 = c.store_sample(filename, f.read(), 'pe')
-                f.close()
                 results = c.work_request('view', md5)
                 print 'Filename: %s results: %s' % (filename, results)
         total_files += num_files
