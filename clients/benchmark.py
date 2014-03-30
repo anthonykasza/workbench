@@ -10,6 +10,7 @@ def main():
 
     # Benchmark test on PEFile test_files
     file_list = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
+    file_list += [os.path.join('../test_files/pe/good', child) for child in os.listdir('../test_files/pe/good')]
     num_files = len(file_list)
     total_files = 0
     start = datetime.datetime.now()
