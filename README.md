@@ -165,6 +165,16 @@ Robomongo is a shell-centric cross-platform MongoDB management tool. Simply, it 
 - create a new connection to localhost (default settings fine). Name it as you wish.
 
 ### Advanced/Optional: 
+#### Neo4j Install
+If you'd like to play with the alpha graph database functionality you can install Neo4j and look at the clients with _graph in the name.
+
+- brew install neo4j (or port or aptget or aptitude..)
+- Note: Follow instructions posted at the end of install to start Neo4j at login. (Recommended)
+- You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. For other platforms you'll have to google (fixme: put better info here)
+- pip install -U py2neo
+- open http://localhost:7474/browser/
+- Run one of the Neo4j indexing clients and behold the awesome
+
 #### ElasticSearch Install
 If you'd like to play with the alpha indexing functionality you can install elasticsearch and look at the clients with _indexer in the name.
 
@@ -172,25 +182,17 @@ If you'd like to play with the alpha indexing functionality you can install elas
 - Note: Follow instructions posted at the end of install to start elasticsearch at login. (Recommended)
 - pip install -U elasticsearch
 
-#### Neo4j Install
-If you'd like to play with the alpha graph database functionality you can install Neo4j and look at the clients with _graph in the name.
-
-- brew install neo4j (or port or aptget or aptitude..)
-- Note: Follow instructions posted at the end of install to start Neo4j at login. (Recommended)
-- pip install -U py2neo
-
-
 ### Thanks
 - Mike Sconzo for general awesomeness.
 - David Dorsey for lots of great discussions and insights.
 - Eric Chavez for helping with installation challenges and docs.
-- Click Security: seriously best company I've ever worked for (super hugs to all).
-- My dog Noodles
+- Click Security: seriously best company I've ever worked for (super hugs to all specially Kit).
+- My dog Noodles (and no she's not dead.. just sleeping)
 
   ![](https://raw.github.com/supercowpowers/workbench/master/images/noodles_sm.jpg)
 
-
-### Deprecated
+<br><br><br>
+### Deprecated Stuff
 #### Scapy Install
 - brew tap Homebrew/python
 - brew install scapy
