@@ -93,7 +93,7 @@ class WorkBench():
             raise Exception('Cannot stream file %s with type_tag:%s' % (md5_or_filename, type_tag))
 
     # Index methods
-    def els_index_sample(self, md5, index_name):
+    def index_sample(self, md5, index_name):
         ''' Index a stored sample with the Indexer '''
         generator = self.stream_sample(md5, None)
         for row in generator:
@@ -136,10 +136,11 @@ class WorkBench():
         work_results = self.data_store.clean_for_serialization(work_results)
         return work_results
 
-    def batch_work_request(self, worker_class, md5_list=None, subkey=None):
+    def batch_work_request(self, worker_class, type_tag=None, md5_list=None, subkey=None):
         ''' Make a batch work request for an existing set of stored samples.
-            The md5_list arg can be set to a list of md5s or left as None and
-            all of the samples will receive this work request. '''
+            A subset of sample can be specified either with type_tag (e.g. type_tag='pe')
+            or the md5_list arg can be set to a list of md5s if neither of these are
+            set then all of the samples will receive this work request. '''
         if not md5_list:
             md5_list = self.data_store.all_sample_md5s()
         if subkey:

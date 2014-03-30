@@ -122,8 +122,11 @@ class DataStore():
     def get_work_results(self, collection, md5):
         return self.db[collection].find_one({'md5':md5})
 
-    def all_sample_md5s(self):
-        cursor = self.db[self.sample_collection].find({},{'md5':1, '_id':0})
+    def all_sample_md5s(self, type_tag=None):
+        if type_tag:
+            cursor = self.db[self.sample_collection].find({'type_tag':type_tag},{'md5':1, '_id':0})
+        else:
+            cursor = self.db[self.sample_collection].find({},{'md5':1, '_id':0})
         return [ match.values()[0] for match in cursor]
 
     def periodic_ops(self):
