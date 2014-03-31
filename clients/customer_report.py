@@ -7,7 +7,7 @@ def main():
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
 
-    results = c.batch_work_request('view_customer')
+    results = c.batch_work_request('view_customer', {})
     pprint.pprint(results)
 
 def test():
