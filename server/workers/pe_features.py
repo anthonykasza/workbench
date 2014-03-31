@@ -144,11 +144,11 @@ class PEFileWorker():
 
         extracted_dense['std_section_names']      = std_section_names
         extracted_dense['debug_size']             = pe.OPTIONAL_HEADER.DATA_DIRECTORY[6].Size
-        extracted_dense['major_version']	      = pe.OPTIONAL_HEADER.MajorImageVersion
+        extracted_dense['major_version']	    = pe.OPTIONAL_HEADER.MajorImageVersion
         extracted_dense['minor_version']          = pe.OPTIONAL_HEADER.MinorImageVersion
-        extracted_dense['iat_rva']			      = pe.OPTIONAL_HEADER.DATA_DIRECTORY[1].VirtualAddress
-        extracted_dense['export_size']		      = pe.OPTIONAL_HEADER.DATA_DIRECTORY[0].Size
-        extracted_dense['check_sum']	          = pe.OPTIONAL_HEADER.CheckSum
+        extracted_dense['iat_rva']	            = pe.OPTIONAL_HEADER.DATA_DIRECTORY[1].VirtualAddress
+        extracted_dense['export_size']            = pe.OPTIONAL_HEADER.DATA_DIRECTORY[0].Size
+        extracted_dense['check_sum']	            = pe.OPTIONAL_HEADER.CheckSum
         try:
             extracted_dense['generated_check_sum'] = pe.generate_checksum()
         except ValueError:
@@ -156,11 +156,11 @@ class PEFileWorker():
             extracted_dense['generated_check_sum'] = 0
         if (len(pe.sections) > 0):
             extracted_dense['virtual_address']     = pe.sections[0].VirtualAddress
-            extracted_dense['virtual_size']	       = pe.sections[0].Misc_VirtualSize
+            extracted_dense['virtual_size']	     = pe.sections[0].Misc_VirtualSize
         extracted_dense['number_of_sections']      = pe.FILE_HEADER.NumberOfSections
         extracted_dense['compile_date']            = pe.FILE_HEADER.TimeDateStamp
         extracted_dense['number_of_rva_and_sizes'] = pe.OPTIONAL_HEADER.NumberOfRvaAndSizes
-        extracted_dense['total_size_pe']	       = len(pe.__data__)
+        extracted_dense['total_size_pe']	     = len(pe.__data__)
 
 
         # Number of import and exports
@@ -288,7 +288,7 @@ class PEFileWorker():
         # Issue a warning if the feature isn't found
         for feature in self._sparse_feature_list:
             if (extracted_sparse[feature] == feature_not_found_flag):
-                extracted_sparse[feature] = feature_default_value
+                extracted_sparse[feature] = [] # For sparse data probably best default
                 if (self._verbose):
                     self.log('info: Feature: %s not found! Setting to %d' % (feature, feature_default_value))
                     self._warnings.append('Feature: %s not found! Setting to %d' % (feature, feature_default_value))
