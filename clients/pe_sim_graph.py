@@ -14,7 +14,7 @@ def add_it(c, file_list, labels):
                 md5s.append(md5)
     return md5s
 
-def jaccars_sims(md5_list, feature_list):
+def jaccard_sims(md5_list, feature_list):
 
     sim_info_list = []
     for index1, features1 in enumerate(feature_list):
@@ -69,7 +69,7 @@ def main():
     feature_list = [r['imported_symbols'] for r in results]
 
     # Compute the Jaccard Index between imported systems and store as relationships
-    sims = jaccars_sims(md5_list, feature_list)
+    sims = jaccard_sims(md5_list, feature_list)
     for sim_info in sims:
         c.add_rel(sim_info['source'], sim_info['target'], 'imports')
 
@@ -81,7 +81,7 @@ def main():
     feature_list = [r['pe_warning_strings'] for r in results]
 
     # Compute the Jaccard Index between imported systems and store as relationships
-    sims = jaccars_sims(md5_list, feature_list)
+    sims = jaccard_sims(md5_list, feature_list)
     for sim_info in sims:
         c.add_rel(sim_info['source'], sim_info['target'], 'warnings')
 
@@ -93,7 +93,7 @@ def main():
     feature_list = [r['match_list'] for r in results]
 
     # Compute the Jaccard Index between imported systems and store as relationships
-    sims = jaccars_sims(md5_list, feature_list)
+    sims = jaccard_sims(md5_list, feature_list)
     for sim_info in sims:
         c.add_rel(sim_info['source'], sim_info['target'], 'peid')
 
@@ -105,7 +105,7 @@ def main():
     feature_list = [r['string_list'] for r in results]
 
     # Compute the Jaccard Index between imported systems and store as relationships
-    sims = jaccars_sims(md5_list, feature_list)
+    sims = jaccard_sims(md5_list, feature_list)
     for sim_info in sims:
         c.add_rel(sim_info['source'], sim_info['target'], 'strings')
 
