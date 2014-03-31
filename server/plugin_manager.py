@@ -6,6 +6,7 @@
 '''
 
 import os, sys, time
+from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -24,7 +25,7 @@ class PluginManager(FileSystemEventHandler):
         # First go through the existing python files in the plugin directory
         plugin_path = os.path.realpath(plugin_dir)
         sys.path.append(plugin_dir)
-        for f in os.listdir(plugin_path):
+        for f in [os.path.join(plugin_dir, child) for child in os.listdir(plugin_dir)]:
             self.add_plugin(f)
 
         # Now setup dynamic monitoring of the plugins directory
@@ -46,7 +47,8 @@ class PluginManager(FileSystemEventHandler):
             plugin_name = os.path.basename(plugin_path)
             plugin = self.plugin_validator.validate(plugin_name)
             if plugin:
-                self.plugin_callback(plugin)
+                mod_time = datetime.utcfromtimestamp(os.path.getmtime(f))
+                self.plugin_callback(plugin, mod_time)
 
 
 # Just create the class and run it for a test
