@@ -176,10 +176,10 @@ class WorkBench():
         ''' Sets the datastore URL. Note: Don't use this unless you know what you're doing. '''
         self.data_store = data_store.DataStore(uri)
 
-    def _new_plugin(self, plugin):
+    def _new_plugin(self, plugin, mod_time):
         ''' The method handles the mechanics around new plugins. '''
         print '< %s: loaded >' % (plugin['name'])
-        plugin['time_stamp'] = datetime.datetime.utcnow()
+        plugin['time_stamp'] = mod_time # datetime.datetime.utcnow()
         self.plugin_meta[plugin['name']] = plugin
 
     def _store_work_results(self, results, collection, md5):
