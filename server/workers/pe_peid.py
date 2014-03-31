@@ -24,7 +24,7 @@ class PEIDWorker():
         try:
             pefile_handle = pefile.PE(data=raw_bytes,fast_load=False)
         except Exception, error:
-            return {'error':  str(error), 'match_list': 'error'}
+            return {'error':  str(error), 'match_list': []}
 
         # Now get information from PEID module
         peid_match = self.peid_features(pefile_handle)
@@ -34,7 +34,7 @@ class PEIDWorker():
         ''' Get features from PEid signature database'''
         signatures = peutils.SignatureDatabase(data = self.peid_sigs)
         peid_match = signatures.match(pefile_handle)
-        return peid_match
+        return peid_match if peid_match else []
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
