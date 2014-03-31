@@ -112,9 +112,18 @@ class WorkBench():
         ''' Search an index'''
         return self.indexer.search(index_name, query)
 
+    # Graph methods
+    def add_node(self, md5, name, labels):
+        ''' Add the node with name and labels '''
+        self.neo_db.add_node(md5, name, labels)
+
+    def add_rel(self, source_md5, target_md5, rel):
+        ''' Add a relationship: source, target must already exist (see add_node)
+            'rel' is the name of the relationship 'contains' or whatever. '''
+        self.neo_db.add_rel(source_md5, target_md5, rel)
 
     # Make a work request for an existing stored sample
-    def work_request(self, worker_class, md5, subkey=None):
+    def work_request(self, worker_class, md5, subkeys=None):
         ''' Make a work request for an existing stored sample '''
 
         # Check valid
@@ -126,25 +135,32 @@ class WorkBench():
         #       code gets spawned off and new requests can be handled without issue.
         work_results = self._recursive_work_resolver(worker_class, md5)
 
-        # Subkey?
-        if subkey:
-            work_results = work_results[worker_class]
-            for key in subkey.split('.'):
-                work_results = work_results[key]
+        # Subkeys? (Fixme this is super klutzy)
+        if subkeys:
+            sub_results = {}
+            for subkey in subkeys:
+                tmp = work_results[worker_class]
+                for key in subkey.split('.'):
+                    tmp = tmp[key]
+                sub_results[key] = tmp
+            work_results = sub_results
 
         # Clean it and ship it
         work_results = self.data_store.clean_for_serialization(work_results)
         return work_results
 
-    def batch_work_request(self, worker_class, type_tag=None, md5_list=None, subkey=None):
+    def batch_work_request(self, worker_class, kwargs):
         ''' Make a batch work request for an existing set of stored samples.
             A subset of sample can be specified either with type_tag (e.g. type_tag='pe')
             or the md5_list arg can be set to a list of md5s if neither of these are
             set then all of the samples will receive this work request. '''
+        type_tag = kwargs.get('type_tag',None)
+        md5_list = kwargs.get('md5_list',None)
+        subkeys = kwargs.get('subkeys',None)
         if not md5_list:
-            md5_list = self.data_store.all_sample_md5s()
-        if subkey:
-            return [self.work_request(worker_class, md5, subkey) for md5 in md5_list]
+            md5_list = self.data_store.all_sample_md5s(type_tag)
+        if subkeys:
+            return [self.work_request(worker_class, md5, subkeys) for md5 in md5_list]
         else:
             return [self.work_request(worker_class, md5)[worker_class] for md5 in md5_list]
 
