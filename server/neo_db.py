@@ -15,19 +15,19 @@ class NeoDB():
             print 'Neo4j connection failed! Is your Neo4j server running?'
             exit(1)
 
-    def add_node(self, name, labels):
+    def add_node(self, md5, name, labels):
         ''' Add the node with name and labels '''
-        n1 = self.graph_db.get_or_create_indexed_node('Node', 'name', name)
-        n1.add_labels(labels)
+        node = self.graph_db.get_or_create_indexed_node('Node', 'md5', md5, {'md5':md5, 'name':name})
+        node.add_labels(*labels)
 
-    def add_rel(self, source, target, rel):
+    def add_rel(self, source_md5, target_md5, rel):
         ''' Add a relationship: source, target must already exist (see add_node)
             'rel' is the name of the relationship 'contains' or whatever. '''
 
         # Add the relationship
-        n1_ref = self.graph_db.get_indexed_node('Node', 'name', source)
-        n2_ref = self.graph_db.get_indexed_node('Node', 'name', target)
-        path = neo4j.Path(n1_ref, rel['rel'], n2_ref)
+        n1_ref = self.graph_db.get_indexed_node('Node', 'md5', source_md5)
+        n2_ref = self.graph_db.get_indexed_node('Node', 'md5', target_md5)
+        path = neo4j.Path(n1_ref, rel, n2_ref)
         path.get_or_create(self.graph_db)
 
 class NeoDBStub():
