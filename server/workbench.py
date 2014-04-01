@@ -152,28 +152,31 @@ class WorkBench():
         work_results = self.data_store.clean_for_serialization(work_results)
         return work_results
 
+    @zerorpc.stream
     def batch_work_request(self, worker_class, kwargs):
         ''' Make a batch work request for an existing set of stored samples.
             A subset of sample can be specified either with type_tag (e.g. type_tag='pe')
             or the md5_list arg can be set to a list of md5s if neither of these are
-            set then all of the samples will receive this work request. '''
+            set then all of the samples will receive this work request. 
+            Note: This method returns a generator. '''
         type_tag = kwargs.get('type_tag',None)
         md5_list = kwargs.get('md5_list',None)
         subkeys = kwargs.get('subkeys',None)
+
+        # If no md5_list specified put all samples (of type type_tag if not None)
         if not md5_list:
-            md5_list = self.data_store.all_sample_md5s(type_tag)
-        if subkeys:
-            # Fixme: Klutzy
-            batch_output = []
-            for md5 in md5_list:
-                try:
-                    batch_output.append(self.work_request(worker_class, md5, subkeys))
-                except TypeError:
-                    continue
-            return batch_output
-            #return [self.work_request(worker_class, md5, subkeys) for md5 in md5_list]
-        else:
-            return [self.work_request(worker_class, md5)[worker_class] for md5 in md5_list]
+            md5_list = self.data_store.all_sample_md5s(type_tag) 
+
+        # Loop through all the md5s and return a generator with yield
+        for md5 in md5_list:
+            try:
+                if subkeys:
+                    yield self.work_request(worker_class, md5, subkeys)
+                else:
+                    yield self.work_request(worker_class, md5)[worker_class]
+            except TypeError:
+                continue
+
 
     def worker_info(self):
         ''' List the current worker plugins. '''
