@@ -1,6 +1,7 @@
+<div style="text-align:center; margin: 0px 0px -80px 20px"><img src="http://raw.github.com/supercowpowers/workbench/master/images/workbench.jpg" width="350px"></div>
 workbench
 =========
-Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and pipelining.
+A light-weight and flexible approach to task management, execution and pipelining.
 
 <pre>
 git clone https://github.com/supercowpowers/workbench.git
