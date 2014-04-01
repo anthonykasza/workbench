@@ -17,18 +17,20 @@ def md5_for_file(path, block_size=256*128):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--file', type=str, default='../test_files/logs/system.log', help='File to inport into the workbench server')
+    parser.add_argument('-f', '--loadfile', type=str, default='../test_files/logs/system.log', help='File to import into the workbench server')
     args = parser.parse_args()
 
+    # Connect to local workbench
     c = zerorpc.Client(heartbeat=None, timeout=300)
     c.connect("tcp://127.0.0.1:4242")
 
-    # Upload the file into workbench
-    with open(args.file,'rb') as file:
+    # Upload the files into workbench
+    my_file = args.loadfile
+    with open(my_file,'rb') as f:
 
         # Check to see if workbench already has the file
-        filename = os.path.basename(args.file)
-        raw_bytes =  file.read()
+        filename = os.path.basename(my_file)
+        raw_bytes = f.read()
         md5 = c.store_sample(filename, raw_bytes, 'log')
         results = c.work_request('view', md5)
         print 'Filename: %s' % filename
