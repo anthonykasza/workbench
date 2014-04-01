@@ -14,15 +14,19 @@ def add_it(c, file_list, labels):
                 md5s.append(md5)
     return md5s
 
-def jaccard_sims(md5_list, feature_list):
+def jaccard_sims(feature_list):
 
     sim_info_list = []
-    for index1, features1 in enumerate(feature_list):
-        for index2, features2 in enumerate(feature_list):
-            if index2 <= index1: continue
-            sim = jaccard_sim(features1, features2)
+    for feature_info in feature_list:
+        md5_source = feature_info['md5']
+        features_source = feature_info['features']
+        for feature_info in feature_list:
+            md5_target = feature_info['md5']
+            features_target = feature_info['features']
+            if md5_source == md5_target: continue
+            sim = jaccard_sim(features_source, features_target)
             if sim > .5:
-                sim_info_list.append({'source':md5_list[index1], 'target':md5_list[index2], 'sim':sim})
+                sim_info_list.append({'source':md5_source, 'target':md5_target, 'sim':sim})
 
     return sim_info_list
 
@@ -42,7 +46,7 @@ def main():
     parser.add_argument('-p', '--port', type=int, default=4242, help='port used by workbench server')
     args = parser.parse_args()
     port = str(args.port)
-    c = zerorpc.Client(timeout=600)
+    c = zerorpc.Client()
     c.connect('tcp://127.0.0.1:'+port)
 
 
@@ -55,6 +59,37 @@ def main():
     good_md5s = add_it(c, good_files, ['pe','good'])
 
 
+    # Compute pe_features on all files of type pe, just pull back the sparse features
+    imports = c.batch_work_request('pe_features', {'type_tag': 'pe', 'subkeys':['md5','sparse_features.imported_symbols']})
+
+    # Compute pe_features on all files of type pe, just pull back the sparse features
+    warnings = c.batch_work_request('pe_features', {'type_tag': 'pe', 'subkeys':['md5','sparse_features.pe_warning_strings']})
+    
+    # Compute strings on all files of type pe, just pull back the string_list
+    strings = c.batch_work_request('strings', {'type_tag': 'pe', 'subkeys':['md5','string_list']})    
+
+    # Organize the data a bit
+    imports = [{'md5':r['md5'],'features':r['imported_symbols']} for r in imports]
+    warnings = [{'md5':r['md5'],'features':r['pe_warning_strings']} for r in warnings]
+    strings = [{'md5':r['md5'],'features':r['string_list']} for r in strings]
+
+    # Compute the Jaccard Index between imported systems and store as relationships
+    sims = jaccard_sims(imports)
+    for sim_info in sims:
+        c.add_rel(sim_info['source'], sim_info['target'], 'imports')
+
+    # Compute the Jaccard Index between warnings and store as relationships
+    sims = jaccard_sims(warnings)
+    for sim_info in sims:
+        c.add_rel(sim_info['source'], sim_info['target'], 'warnings')
+
+    # Compute the Jaccard Index between strings and store as relationships
+    sims = jaccard_sims(strings)
+    for sim_info in sims:
+        c.add_rel(sim_info['source'], sim_info['target'], 'strings')
+
+
+
     # Compute pe_deep_sim on all files of type pe
     results = c.batch_work_request('pe_deep_sim', {'type_tag': 'pe'})
 
@@ -62,43 +97,6 @@ def main():
     for result in results:
         for sim_info in result['sim_list']:
             c.add_rel(result['md5'], sim_info['md5'], 'ssdeep')
-
-    # Compute pe_features on all files of type pe, just pull back the sparse features
-    results = c.batch_work_request('pe_features', {'type_tag': 'pe', 'subkeys':['md5','sparse_features.imported_symbols']})
-
-    # Split out the md5 list and feature list
-    md5_list = [r['md5'] for r in results]
-    feature_list = [r['imported_symbols'] for r in results]
-
-    # Compute the Jaccard Index between imported systems and store as relationships
-    sims = jaccard_sims(md5_list, feature_list)
-    for sim_info in sims:
-        c.add_rel(sim_info['source'], sim_info['target'], 'imports')
-
-    # Compute pe_features on all files of type pe, just pull back the sparse features
-    results = c.batch_work_request('pe_features', {'type_tag': 'pe', 'subkeys':['md5','sparse_features.pe_warning_strings']})
-
-    # Split out the md5 list and feature list
-    md5_list = [r['md5'] for r in results]
-    feature_list = [r['pe_warning_strings'] for r in results]
-
-    # Compute the Jaccard Index between warnings and store as relationships
-    sims = jaccard_sims(md5_list, feature_list)
-    for sim_info in sims:
-        c.add_rel(sim_info['source'], sim_info['target'], 'warnings')
-
-
-    # Compute strings on all files of type pe, just pull back the string_list
-    results = c.batch_work_request('strings', {'type_tag': 'pe', 'subkeys':['md5','string_list']})
-
-    # Split out the md5 list and feature list
-    md5_list = [r['md5'] for r in results]
-    feature_list = [r['string_list'] for r in results]
-
-    # Compute the Jaccard Index between strings and store as relationships
-    sims = jaccard_sims(md5_list, feature_list)
-    for sim_info in sims:
-        c.add_rel(sim_info['source'], sim_info['target'], 'strings')
 
     
     ''' PEiD takes a long time so commenting out for now '''
