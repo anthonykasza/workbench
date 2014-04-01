@@ -1,5 +1,7 @@
 echo
-echo '<<< Note: Most of these tests require a local server running >>>'
+echo '<<< Most of these tests require a local server running >>>'
+echo
+echo '<<< This set of tests will probably take several minutes to run >>>'
 echo
 echo '<<< Note: These tests may help (yes help) you hit the maxfile limit >>>'
 echo '<<<       Finding out now that you have a maxfile issue is good :)  >>>'
