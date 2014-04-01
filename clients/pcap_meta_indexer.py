@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
     port = str(args.port)
     server = str(args.server)
-    c = zerorpc.Client(timeout=300)
+    c = zerorpc.Client()
     c.connect(server+':'+port)
 
     # Test out PCAP test_files

@@ -10,7 +10,7 @@ def plugin_info():
 
 class PEDeepSim():
     def __init__(self):
-        self.c = zerorpc.Client(timeout=300)
+        self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")
 
     def execute(self, input_data):

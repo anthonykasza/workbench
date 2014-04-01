@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     # Connect to local workbench
-    c = zerorpc.Client(heartbeat=None, timeout=300)
+    c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
     
     # Grab all the filenames from the data directory
