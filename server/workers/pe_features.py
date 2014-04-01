@@ -56,7 +56,7 @@ class PEFileWorker():
         # Have the PE File module process the file
         pefile_handle, error_str = self.open_using_pefile('unknown', raw_bytes)
         if not pefile_handle:
-            return {'error': error_str}
+            return {'error': error_str, 'dense_features': [], 'sparse_features': [] }
 
         # Now extract the various features using pefile
         dense_features, sparse_features = self.extract_features_using_pefile(pefile_handle)
