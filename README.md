@@ -1,4 +1,4 @@
-<div style="text-align:center; margin: 0px 0px -80px 20px"><img src="http://raw.github.com/supercowpowers/workbench/master/images/workbench.jpg" width="350px"></div>
+<p align="center"><img src="http://raw.github.com/supercowpowers/workbench/master/images/workbench.jpg"></p>
 workbench
 =========
 A light-weight and flexible approach to task management, execution and pipelining.
