@@ -137,13 +137,16 @@ class WorkBench():
 
         # Subkeys? (Fixme this is super klutzy)
         if subkeys:
-            sub_results = {}
-            for subkey in subkeys:
-                tmp = work_results[worker_class]
-                for key in subkey.split('.'):
-                    tmp = tmp[key]
-                sub_results[key] = tmp
-            work_results = sub_results
+            try:
+                sub_results = {}
+                for subkey in subkeys:
+                    tmp = work_results[worker_class]
+                    for key in subkey.split('.'):
+                        tmp = tmp[key]
+                    sub_results[key] = tmp
+                work_results = sub_results
+            except TypeError:
+                raise TypeError('Could not get one or more subkeys for: %s' % (work_results))
 
         # Clean it and ship it
         work_results = self.data_store.clean_for_serialization(work_results)
@@ -160,7 +163,15 @@ class WorkBench():
         if not md5_list:
             md5_list = self.data_store.all_sample_md5s(type_tag)
         if subkeys:
-            return [self.work_request(worker_class, md5, subkeys) for md5 in md5_list]
+            # Fixme: Klutzy
+            batch_output = []
+            for md5 in md5_list:
+                try:
+                    batch_output.append(self.work_request(worker_class, md5, subkeys))
+                except TypeError:
+                    continue
+            return batch_output
+            #return [self.work_request(worker_class, md5, subkeys) for md5 in md5_list]
         else:
             return [self.work_request(worker_class, md5)[worker_class] for md5 in md5_list]
 
