@@ -151,7 +151,7 @@ $ ./runtests
 </pre>
 
 ### Notes:
-Workers should adhere to the following naming convensions (not enforced)
+Workers should adhere to the following naming conventions (not enforced)
 
 - If you work on a specific type of sample than start the name with that
   - Examples: pcap_bro.py, pe_features.py, log_meta.py
