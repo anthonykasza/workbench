@@ -1,0 +1,36 @@
+node {
+  diameter: 50px;
+  color: #aaaaaa;
+  border-color: #888888;
+  border-width: 1.5px;
+  text-color-internal: #000000;
+  caption: '{name}';
+  font-size: 12px;
+}
+
+relationship {
+  color: #888888;
+  shaft-width: 2.5px;
+  font-size: 12px;
+  padding: 5px;
+  text-color-external: #000000;
+  text-color-internal: #FFFFFF;
+}
+
+node.bad {
+  color: #AA8888;
+  border-color: #666666;
+  text-color-internal: #000000;
+}
+
+node.pe {
+  color: #88AA88;
+  border-color: #666666;
+  text-color-internal: #000000;
+}
+
+node.good {
+  color: #88AA88;
+  border-color: #666666;
+  text-color-internal: #000000;
+}
