@@ -66,12 +66,17 @@ def main():
     warnings = c.batch_work_request('pe_features', {'type_tag': 'pe', 'subkeys':['md5','sparse_features.pe_warning_strings']})
     
     # Compute strings on all files of type pe, just pull back the string_list
-    strings = c.batch_work_request('strings', {'type_tag': 'pe', 'subkeys':['md5','string_list']})    
+    strings = c.batch_work_request('strings', {'type_tag': 'pe', 'subkeys':['md5','string_list']})
+    
+    # Compute pe_peid on all files of type pe, just pull back the match_list
+    peids = c.batch_work_request('pe_peid', {'type_tag': 'pe', 'subkeys':['md5','match_list']})    
 
     # Organize the data a bit
     imports = [{'md5':r['md5'],'features':r['imported_symbols']} for r in imports]
     warnings = [{'md5':r['md5'],'features':r['pe_warning_strings']} for r in warnings]
     strings = [{'md5':r['md5'],'features':r['string_list']} for r in strings]
+    peids = [{'md5':r['md5'],'features':r['match_list']} for r in peids]
+    
 
     # Compute the Jaccard Index between imported systems and store as relationships
     sims = jaccard_sims(imports)
@@ -88,6 +93,10 @@ def main():
     for sim_info in sims:
         c.add_rel(sim_info['source'], sim_info['target'], 'strings')
 
+    # Compute the Jaccard Index between peids and store as relationships
+    sims = jaccard_sims(peids)
+    for sim_info in sims:
+        c.add_rel(sim_info['source'], sim_info['target'], 'peids')
 
 
     # Compute pe_deep_sim on all files of type pe
@@ -98,23 +107,7 @@ def main():
         for sim_info in result['sim_list']:
             c.add_rel(result['md5'], sim_info['md5'], 'ssdeep')
 
-    
-    ''' PEiD takes a long time so commenting out for now '''
 
-    '''
-    # Compute pe_peid on all files of type pe, just pull back the match_list
-    results = c.batch_work_request('pe_peid', {'type_tag': 'pe', 'subkeys':['md5','match_list']})
-
-    # Split out the md5 list and feature list
-    md5_list = [r['md5'] for r in results]
-    feature_list = [r['match_list'] for r in results]
-
-    # Compute the Jaccard Index between peid sigs and store as relationships
-    sims = jaccard_sims(md5_list, feature_list)
-    for sim_info in sims:
-        c.add_rel(sim_info['source'], sim_info['target'], 'peid')
-
-    '''
 
 def test():
     ''' pe_peid test '''
