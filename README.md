@@ -9,6 +9,7 @@ git clone https://github.com/supercowpowers/workbench.git
 
 ### Why should I give a rat's pitootie about workbench?
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Workbench_Demo.ipynb">Functionality Notebook</a></li>**
+* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/PE_SimGraph.ipynb">Using Neo4j for PE File Sim Graph</a></li>**
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Generator_Pipelines.ipynb">Generator Pipelines Notebook</a></li>**
 
 ### Project Description
