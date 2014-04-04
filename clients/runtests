@@ -1,12 +1,17 @@
 echo
 echo '<<< Most of these tests require a local server running >>>'
 echo
-echo '<<< This set of tests will probably take several minutes to run >>>'
+echo 'Note: This set of tests will probably take  ~5 minutes to run'
 echo
-echo '<<< Note: These tests may help (yes help) you hit the maxfile limit >>>'
-echo '<<<       Finding out now that you have a maxfile issue is good :)  >>>'
-echo '<<<       We recommend setting softlimit on maxfiles to like 100k.  >>>'
-echo '<<<       See this URL for infomation on how to increase maxfiles.  >>>'
-echo '<<<   http://docs.basho.com/riak/latest/ops/tuning/open-files-limit >>>'
+echo 'Note: These tests may help (yes help) you hit the maxfile limit '
+echo '      Finding out now that you have a maxfile issue is good :)  '
+echo
+echo '  If you see the output from your server window explode in  '
+echo '  some interesting way, look for some messages about files..'
+echo '  Too many open files... or Could not open file... etc      '
+echo
+echo '  We recommend setting softlimit on maxfiles to like 100k.  '
+echo '  See this URL for infomation on how to increase maxfiles.  '
+echo '  http://docs.basho.com/riak/latest/ops/tuning/open-files-limit '
 export NOSE_ALL_MODULES=1
 nosetests 
