@@ -37,3 +37,6 @@ nosetests.xml
 
 # iPython temp files
 .ipynb_checkpoints
+
+# Mac DS files
+.DS_Store
