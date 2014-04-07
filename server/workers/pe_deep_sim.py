@@ -30,6 +30,11 @@ class PEDeepSim():
         output_list = [sim for sim in sim_list if sim['sim'] > 0]
         return {'md5': my_md5, 'sim_list':output_list}
 
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
+
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_deep_sim.py: Unit test '''

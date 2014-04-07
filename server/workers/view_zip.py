@@ -26,6 +26,11 @@ class ViewZipFile():
         view['payload_meta'] = [self.c.work_request('meta', md5) for md5 in input_data['unzip']['payload_md5s']]
         return view
 
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
+
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' view_zip.py: Unit test'''

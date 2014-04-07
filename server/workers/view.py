@@ -18,17 +18,23 @@ class View():
         md5 = input_data['meta']['md5']
         mime_type = input_data['meta']['mime_type']
         if mime_type == 'application/x-dosexec':
-            return self.c.work_request('view_pefile', md5)
+            result = self.c.work_request('view_pefile', md5)
         elif mime_type == 'application/pdf':
-            return self.c.work_request('view_pdf', md5)
+            result = self.c.work_request('view_pdf', md5)
         elif mime_type == 'application/zip':
-            return self.c.work_request('view_zip', md5)
+            result = self.c.work_request('view_zip', md5)
         elif mime_type == 'application/vnd.tcpdump.pcap':
-            return self.c.work_request('view_pcap_meta', md5)
+            result = self.c.work_request('view_pcap_meta', md5)
         else:
             # In the case of an unsupported MIME type just return the meta data
-            return input_data
+            result = input_data
 
+        return result
+
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():

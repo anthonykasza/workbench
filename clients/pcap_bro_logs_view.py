@@ -19,6 +19,8 @@ def main():
     # Note: you can get a super nice 'generator' python list of dict by using
     #       'stream_sample' instead of 'get_sample'.
     file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
+    #data_dir = '/Users/briford/data/pcaps/threatglass'
+    #file_list = [os.path.join(data_dir, child) for child in os.listdir(data_dir)]
     for filename in file_list:
 
         # Skip OS generated files

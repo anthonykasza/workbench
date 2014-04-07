@@ -26,8 +26,12 @@ class ViewPcapBro():
                 stream = self.c.stream_sample(md5, 20)
                 for row in itertools.islice(stream, 0, 1):
                     view[name].append(row)
-
         return view
+
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():

@@ -21,6 +21,11 @@ class Unzip():
             payload_md5s.append(self.c.store_sample(name,zipfile_output.read(name), 'unknown'))
         return {'payload_md5s': payload_md5s}
 
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
+
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' unzip.py: Unit test'''

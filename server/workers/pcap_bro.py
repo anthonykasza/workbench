@@ -78,8 +78,14 @@ class PcapBro():
             yield temp_dir
         finally:
             shutil.rmtree(temp_dir)
-            # Change back to original directory
-            os.chdir(self.orig_dir)
+
+    def __del__(self):
+        ''' Class Cleanup '''
+        # Close zeroRPC client
+        self.c.close()
+
+        # Change back to original directory
+        os.chdir(self.orig_dir)
 
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
