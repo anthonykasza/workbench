@@ -8,7 +8,7 @@ def main():
     c.connect("tcp://127.0.0.1:4242")
 
     results = c.batch_work_request('view_customer', {})
-    pprint.pprint(results)
+    pprint.pprint(list(results))
 
 def test():
     ''' customer_report test '''
