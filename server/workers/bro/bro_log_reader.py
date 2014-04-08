@@ -7,6 +7,7 @@ import csv
 import datetime
 import optparse
 import itertools
+import time
 
 
 class BroLogReader():
@@ -32,14 +33,17 @@ class BroLogReader():
         # First parse the header of the bro log
         field_names, field_types = self._parse_bro_header(logfile)
 
-        # Note: The parse_bro_header method has advanced us to the first
-        #       real data row, so we can use the normal csv reader.
-        reader = csv.DictReader(logfile, fieldnames=field_names,
-                                delimiter=self.delimiter, restval='BRO_STOP')
-        for _row in itertools.islice(reader, 0, max_rows):
-            values = self._cast_dict(_row)
-            if (values):
-                yield values
+        # Fixme: SO stupid to write a csv reader, but csv.DictReader on Bro
+        #        files was doing something weird with generator output that
+        #        affected zeroRPC and gave could not route _zpc_more error.
+        while 1:
+            _line = next(logfile)
+            if _line.startswith('#close'):
+                time.sleep(.1) # Give time for zeroRPC to finish messages
+                break
+            else:
+                yield self._cast_dict(dict(zip(field_names, _line.split(self.delimiter))))
+
 
     def _parse_bro_header(self, logfile):
         ''' This method tries to parse the Bro log header section.
@@ -123,12 +127,6 @@ if __name__ == '__main__':
     print OPTIONS, ARGUMENTS
 
     # Create a BRO log file reader and pull from the logfile
-    BRO_LOG = BroLogReader()
-    RECORDS = BRO_LOG.read_log(OPTIONS.logfile, max_rows=10)
-    for row in RECORDS:
-        print row
-
-    # Same thing, now with a file object instead of filename
     BRO_LOG = BroLogReader()
     RECORDS = BRO_LOG.read_log(open(OPTIONS.logfile, 'rb'), max_rows=10)
     for row in RECORDS:
