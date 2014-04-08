@@ -33,16 +33,17 @@ class BroLogReader():
         # First parse the header of the bro log
         field_names, field_types = self._parse_bro_header(logfile)
 
-        # Fixme: SO stupid to write a csv reader, but csv.DictReader on Bro
-        #        files was doing something weird with generator output that
-        #        affected zeroRPC and gave could not route _zpc_more error.
+        # Note: SO stupid to write a csv reader, but csv.DictReader on Bro
+        #       files was doing something weird with generator output that
+        #       affected zeroRPC and gave 'could not route _zpc_more' error.
+        #       So wrote my own, put a sleep at the end, seems to fix it.
         while 1:
             _line = next(logfile)
-            if _line.startswith('#close'):
+            if not _line.startswith('#close'):
+                yield self._cast_dict(dict(zip(field_names, _line.split(self.delimiter))))
+            else:
                 time.sleep(.1) # Give time for zeroRPC to finish messages
                 break
-            else:
-                yield self._cast_dict(dict(zip(field_names, _line.split(self.delimiter))))
 
 
     def _parse_bro_header(self, logfile):
