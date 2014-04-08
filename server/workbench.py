@@ -56,7 +56,7 @@ class WorkBench():
         sample = self.data_store.get_sample(md5_or_filename)
         return {'sample': sample} if sample else None
 
-    def have_sample(self, md5_or_filename):
+    def has_sample(self, md5_or_filename):
         ''' Do we have this sample in the DataStore. '''
         return self.data_store.have_sample(md5_or_filename)
 
@@ -145,8 +145,8 @@ class WorkBench():
                         tmp = tmp[key]
                     sub_results[key] = tmp
                 work_results = sub_results
-            except TypeError:
-                raise TypeError('Could not get one or more subkeys for: %s' % (work_results))
+            except KeyError:
+                raise KeyError('Could not get one or more subkeys for: %s' % (work_results))
 
         # Clean it and ship it
         work_results = self.data_store.clean_for_serialization(work_results)
@@ -174,7 +174,7 @@ class WorkBench():
                     yield self.work_request(worker_class, md5, subkeys)
                 else:
                     yield self.work_request(worker_class, md5)[worker_class]
-            except TypeError:
+            except KeyError:
                 continue
 
 
