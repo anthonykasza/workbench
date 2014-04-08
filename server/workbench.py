@@ -128,7 +128,7 @@ class WorkBench():
 
         # Check valid
         if worker_class not in self.plugin_meta.keys():
-            raise Exception('Invalid work request for class %s (not found)' % (worker_class))
+            raise RuntimeError('Invalid work request for class %s (not found)' % (worker_class))
 
         # Get results (even if we have to wait for them)
         # Note: Yes, we're going to wait. Gevent concurrent execution will mean this
@@ -177,6 +177,23 @@ class WorkBench():
             except KeyError:
                 continue
 
+    def store_sample_set(self, md5_list):
+        ''' Store a sample set (which is just a list of md5s).
+            Note: All md5s must already be in the data store. '''
+        for md5 in md5_list:
+            if not self.has_sample(md5):
+                raise RuntimeError('All samples in the sample set must be in the datastore: %s (not found)' % (md5))
+        set_md5 = hashlib.md5(str(md5_list)).hexdigest()
+        self._store_work_results({'md5_list':md5_list}, 'sample_sets', set_md5)
+        return set_md5
+
+    def get_sample_set(self, md5):
+        return self._get_work_results('sample_sets', md5)
+
+    @zerorpc.stream
+    def stream_sample_set(self, md5):
+        for md5 in self._get_work_results('sample_sets', md5)['md5_list']:
+            yield md5
 
     def worker_info(self):
         ''' List the current worker plugins. '''
@@ -207,9 +224,11 @@ class WorkBench():
     # we can resursively backtrack and all the needed work gets done.
     def _recursive_work_resolver(self, worker_class, md5):
 
-        # Looking for the sample?
+        # Looking for the sample or sample_set?
         if (worker_class == 'sample'):
             return self.get_sample(md5)
+        if (worker_class == 'sample_sets'):
+            return self.get_sample_set(md5)
 
         # Do I actually have this plugin? (might have failed, etc)
         if (worker_class not in self.plugin_meta):
