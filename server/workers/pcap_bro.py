@@ -12,15 +12,14 @@ def plugin_info():
     return {'name':'pcap_bro', 'class':'PcapBro', 'dependencies': ['sample'],
             'description': 'This worker runs Bro scripts on a pcap file. Output keys: [log_name:md5...]'}
 
-class PcapBro():
+class PcapBro(object):
 
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")
         self.orig_dir = os.getcwd()
 
-    def execute(self, input_data):
-
+    def get_bro_scripts(self):
         # Just run all the scripts in the bro directory
         if os.path.exists('bro'):
             os.chdir('bro')
@@ -31,19 +30,35 @@ class PcapBro():
 
         # Construct absolute paths to bro scripts
         script_paths = [os.path.abspath(bro_script) for bro_script in glob.glob('*.bro')]
+        return script_paths
 
+    def pcap_inputs(self, input_data):
         # Setup handles to the input data
         raw_bytes = input_data['sample']['raw_bytes']
         filename = os.path.basename(input_data['sample']['filename'])
-        with self.make_temp_directory() as temp_dir:
+        with open(filename,'wb') as bro_file:
+            bro_file.write(raw_bytes)
+        return [filename]
 
+    def execute(self, input_data):
+
+        # Get all bro scripts (workers/bro/*.bro)
+        script_paths = self.get_bro_scripts()
+
+        # Create a temporary directory
+        with self.make_temp_directory() as temp_dir:
             os.chdir(temp_dir)
-            with open(filename,'wb') as bro_file:
-                bro_file.write(raw_bytes)
+
+            # Get the pcap inputs (filenames)
+            filenames = self.pcap_inputs(input_data)
+            command_line = ['bro']
+            for filename in filenames:
+                command_line += ['-C', '-r', filename]
             if script_paths:
-                self.subprocess_manager(['bro', '-C', '-r', filename, ' '.join(script_paths)])
-            else:
-                self.subprocess_manager(['bro', '-C', '-r', filename])
+                command_line += [' '.join(script_paths)]
+
+            # Execute command line as a subprocess
+            self.subprocess_manager(command_line)
 
             # Scrape up all the output log files
             my_output = {}
