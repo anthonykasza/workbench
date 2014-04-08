@@ -1,0 +1,13 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	ssl
+#open	2014-04-07-20-32-29
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	cipher	server_name	session_id	subject	issuer_subject	not_valid_before	not_valid_after	last_alert	client_subject	client_issuer_subject
+#types	time	string	addr	port	addr	port	string	string	string	string	string	string	time	time	string	string	string
+1337107723.878411	CK7dII3R85lZCUzRBg	192.168.30.10	1107	63.215.202.6	443	SSLv3	TLS_RSA_WITH_RC4_128_MD5	-	-	CN=secure.fastclick.net,OU=Corp,O=ValueClick,L=Westlake Village,ST=California,C=US	CN=VeriSign Class 3 Secure Server CA - G3,OU=Terms of use at https://www.verisign.com/rpa (c)10,OU=VeriSign Trust Network,O=VeriSign\, Inc.,C=US	1301551200.000000	1370930399.000000	-	-	-
+1337107724.727963	CoVgI5860Cl5zzGNj	192.168.30.10	1111	74.125.134.157	443	SSLv3	TLS_RSA_WITH_RC4_128_SHA	-	-	CN=*.g.doubleclick.net,O=Google Inc,L=Mountain View,ST=California,C=US	CN=Google Internet Authority,O=Google Inc,C=US	1335978408.000000	1367515008.000000	-	-	-
+1337107724.823464	CyXa02kZmpSdnnoZ	192.168.30.10	1114	74.125.134.154	443	SSLv3	TLS_RSA_WITH_RC4_128_SHA	-	-	CN=*.g.doubleclick.net,O=Google Inc,L=Mountain View,ST=California,C=US	CN=Google Internet Authority,O=Google Inc,C=US	1335978408.000000	1367515008.000000	-	-	-
+1337107736.860233	CsWBmq3J2DAg0wnop7	192.168.30.10	1207	74.125.134.105	443	SSLv3	TLS_RSA_WITH_RC4_128_SHA	-	-	CN=www.google.com,O=Google Inc,L=Mountain View,ST=California,C=US	CN=Thawte SGC CA,O=Thawte Consulting (Pty) Ltd.,C=ZA	1319608800.000000	1380607199.000000	-	-	-
+#close	2014-04-07-20-32-30
