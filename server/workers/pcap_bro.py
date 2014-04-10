@@ -70,9 +70,11 @@ class PcapBro(object):
                     raw_bytes = bro_file.read()
                     my_output[output_name] = self.c.store_sample(output_name, raw_bytes, 'bro')
 
+            # Scrape any extracted files
+            my_output['extracted_files'] = []
             for output_file in glob.glob('extract_files/*'):
 
-                # Store the output into workbench, put the name:md5 in my output
+                # Store the output into workbench, put md5s in the 'extracted_files' field
                 output_name = os.path.basename(output_file)
                 with open(output_file, 'rb') as extracted_file:
                     if output_name.endswith('exe'):
@@ -80,7 +82,7 @@ class PcapBro(object):
                     else:
                         type_tag = output_name[-3:]
                     raw_bytes = extracted_file.read()
-                    my_output[output_name] = self.c.store_sample(output_name, raw_bytes, type_tag)
+                    my_output['extracted_files'].append(self.c.store_sample(output_name, raw_bytes, type_tag))
 
             # Return my output
             return my_output

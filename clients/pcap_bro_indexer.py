@@ -27,7 +27,7 @@ def main():
 
             # Index the view_pcap_meta output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
-            c.index_worker_output('view_pcap_bro', md5, 'pcap_bro')
+            c.index_worker_output('view_pcap', md5, 'pcap_bro')
             print '\n\n<<< PCAP Bro log Data: %s Indexed>>>' % (filename)
 
 def test():

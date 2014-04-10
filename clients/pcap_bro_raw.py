@@ -32,11 +32,10 @@ def main():
             # Results is just a dictionary of Bro log file names and their MD5s in workbench
             for log_name, md5 in results['pcap_bro'].iteritems():
 
-                # Every workbench entry contains an md5 field (obviously not interested in that)
-                if log_name == 'md5': continue
-
-                bro_log = c.get_sample(md5)['sample']['raw_bytes']
-                print '\n\n<<< Bro log: %s >>>\n %s' % (log_name, bro_log)
+                # Just want the logs
+                if log_name.endswith('_log'):
+                    bro_log = c.get_sample(md5)['sample']['raw_bytes']
+                    print '\n\n<<< Bro log: %s >>>\n %s' % (log_name, bro_log)
 def test():
     ''' pcap_bro_raw test '''
     main()

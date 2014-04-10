@@ -27,7 +27,7 @@ def main():
         # Process the pcap file
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'pcap')
-            results = c.work_request('view_pcap_bro', md5)
+            results = c.work_request('view_pcap', md5)
             print '\n<<< %s >>>' % filename
             pprint.pprint(results)
 
