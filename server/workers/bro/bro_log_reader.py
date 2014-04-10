@@ -38,7 +38,7 @@ class BroLogReader():
         #       affected zeroRPC and gave 'could not route _zpc_more' error.
         #       So wrote my own, put a sleep at the end, seems to fix it.
         while 1:
-            _line = next(logfile)
+            _line = next(logfile).strip()
             if not _line.startswith('#close'):
                 yield self._cast_dict(dict(zip(field_names, _line.split(self.delimiter))))
             else:
