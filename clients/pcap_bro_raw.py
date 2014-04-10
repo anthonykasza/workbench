@@ -38,7 +38,7 @@ def main():
                 bro_log = c.get_sample(md5)['sample']['raw_bytes']
                 print '\n\n<<< Bro log: %s >>>\n %s' % (log_name, bro_log)
 def test():
-    ''' pcap_bro_logs_raw test '''
+    ''' pcap_bro_raw test '''
     main()
 
 if __name__ == '__main__':

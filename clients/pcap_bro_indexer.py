@@ -31,7 +31,7 @@ def main():
             print '\n\n<<< PCAP Bro log Data: %s Indexed>>>' % (filename)
 
 def test():
-    ''' pcap_bro_logs_indexer test '''
+    ''' pcap_bro_indexer test '''
     main()
 
 if __name__ == '__main__':

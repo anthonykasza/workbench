@@ -34,7 +34,7 @@ def main():
             pprint.pprint(results)
 
 def test():
-    ''' pcap_bro_logs_view test '''
+    ''' pcap_bro_view test '''
     main()
 
 if __name__ == '__main__':
