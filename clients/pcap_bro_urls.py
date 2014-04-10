@@ -15,7 +15,7 @@ def main():
     c = zerorpc.Client(timeout=300)
     c.connect(server+':'+port)
 
-    # Loop through all the pcaps and collect a set of urls(hosts) from the bro_log_http files
+    # Loop through all the pcaps and collect a set of urls(hosts) from the http_log files
     urls = set()
     file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
     for filename in file_list:
@@ -24,20 +24,18 @@ def main():
         if '.DS_Store' in filename: continue
 
         with open(filename,'rb') as file:
-            md5 = c.store_sample(filename, file.read(), 'pcap')
-            results = c.work_request('pcap_bro', md5)
+            pcap_md5 = c.store_sample(filename, file.read(), 'pcap')
+            results = c.work_request('pcap_bro', pcap_md5)
 
-            # Results is just a dictionary of Bro log file names and their MD5s in workbench
-            for log_name, md5 in results['pcap_bro'].iteritems():
+            # Just grab the http log
+            if 'http_log' in results['pcap_bro']:
+                log_md5 = results['pcap_bro']['http_log']
+                http_data = c.stream_sample(log_md5, None)  # None Means all data
+                urls = set( row['host'] for row in http_data)
+                print '<<< %s >>>' % filename
+                pprint.pprint(list(urls))
+                print
 
-                # Just grab the http log
-                if log_name == 'bro_log_http':
-                    bro_log_data = c.stream_sample(md5, None)  # None Means all data
-                    for row in bro_log_data:
-                        urls.add(row['host'])
-
-    print '<<< Unique URLs(Hosts) seen in PCAPS'
-    print urls
 
 def test():
     ''' pcap_urls test '''
