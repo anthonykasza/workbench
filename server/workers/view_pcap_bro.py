@@ -21,7 +21,7 @@ class ViewPcapBro():
 
         # Okay this view is going to also take a peek at the bro output logs
         for name, md5 in input_data['pcap_bro'].iteritems():
-            if 'bro_log' in name:
+            if '_log' in name:
                 view[name] = []
                 stream = self.c.stream_sample(md5, 20)
                 for row in itertools.islice(stream, 0, 1):
