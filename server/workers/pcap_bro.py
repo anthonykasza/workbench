@@ -55,7 +55,7 @@ class PcapBro(object):
             for filename in filenames:
                 command_line += ['-C', '-r', filename]
             if script_paths:
-                command_line += [' '.join(script_paths)]
+                command_line += script_paths
 
             # Execute command line as a subprocess
             self.subprocess_manager(command_line)
@@ -65,10 +65,22 @@ class PcapBro(object):
             for output_log in glob.glob('*.log'):
 
                 # Store the output into workbench, put the name:md5 in my output
-                output_name = 'bro_log_' + os.path.splitext(output_log)[0]
+                output_name = os.path.splitext(output_log)[0] + '_log'
                 with open(output_log, 'rb') as bro_file:
                     raw_bytes = bro_file.read()
                     my_output[output_name] = self.c.store_sample(output_name, raw_bytes, 'bro')
+
+            for output_file in glob.glob('extract_files/*'):
+
+                # Store the output into workbench, put the name:md5 in my output
+                output_name = os.path.basename(output_file)
+                with open(output_file, 'rb') as extracted_file:
+                    if output_name.endswith('exe'):
+                        type_tag = 'pe'
+                    else:
+                        type_tag = output_name[-3:]
+                    raw_bytes = extracted_file.read()
+                    my_output[output_name] = self.c.store_sample(output_name, raw_bytes, type_tag)
 
             # Return my output
             return my_output
