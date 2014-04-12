@@ -33,7 +33,8 @@ class ViewPcapDetails():
         '''
 
         # Grab additional info about the extracted files
-        view['extracted_files'] = [self.c.work_request('meta_deep', md5) for md5 in extracted_files]
+        view['extracted_files'] = [self.c.work_request('meta_deep', md5, 
+            ['md5','sha256','entropy','ssdeep','file_size','file_type']) for md5 in extracted_files]
 
 
         '''
