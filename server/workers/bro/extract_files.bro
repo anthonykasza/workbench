@@ -1,22 +1,26 @@
-##! Extract exe, pdf, and cab files.
+##! Extract exe, pdf, jar and cab files.
 
 global ext_map: table[string] of string = {
     ["application/x-dosexec"] = "exe",
     ["application/pdf"] = "pdf",
     ["application/zip"] = "zip",
+    ["application/jar"] = "jar",
     ["application/vnd.ms-cab-compressed"] = "cab",
     ["text/plain"] = "txt",
+    ["image/gif"] = "gif",
     ["image/jpeg"] = "jpg",
     ["image/png"] = "png",
     ["text/html"] = "html",
-} &default ="";
+    ["application/vnd.ms-fontobject"] = "ms_font",
+    ["application/x-shockwave-flash"] = "swf"
+} &default ="unknown";
 
 event file_new(f: fa_file)
     {
-    if (f?$mime_type && (f$mime_type == "application/x-dosexec" || f$mime_type == "application/pdf" || 
-        f$mime_type == "application/vnd.ms-cab-compressed" || f$mime_type == "application/zip"))
+    local ext = ext_map[f$mime_type];
+    print f$mime_type, ext;
+    if (ext != "txt" && ext != "html" && ext != "ms_font" && ext != "jpg" && ext != "gif" && ext != "png")
         {
-        local ext = ext_map[f$mime_type];
         local fname = fmt("%s-%s.%s", f$source, f$id, ext);
         Files::add_analyzer(f, Files::ANALYZER_EXTRACT, [$extract_filename=fname]);
         }
