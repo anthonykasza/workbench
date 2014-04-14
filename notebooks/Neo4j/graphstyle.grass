@@ -17,20 +17,41 @@ relationship {
   text-color-internal: #FFFFFF;
 }
 
-node.bad {
-  color: #AA8888;
-  border-color: #666666;
+node.http {
+  color: #DFE1E3;
+  border-color: #D4D6D7;
   text-color-internal: #000000;
 }
 
-node.pe {
-  color: #88AA88;
-  border-color: #666666;
+node.origin {
+  color: #F25A29;
+  border-color: #DC4717;
   text-color-internal: #000000;
 }
 
-node.good {
-  color: #88AA88;
-  border-color: #666666;
+node.response {
+  color: #AD62CE;
+  border-color: #9453B1;
   text-color-internal: #000000;
 }
+
+node.conn_id {
+  color: #30B6AF;
+  border-color: #46A39E;
+  text-color-internal: #000000;
+}
+
+node.host {
+  color: #FF6C7C;
+  border-color: #EB5D6C;
+  text-color-internal: #000000;
+  font-size: 16px;
+  diameter: 80px;
+}
+
+node.uri {
+  color: #FCC940;
+  border-color: #F3BA25;
+  text-color-internal: #000000;
+}
+
