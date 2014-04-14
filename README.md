@@ -74,6 +74,7 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * pip install -U cython
 * pip install -U ssdeep
 * pip install -U filemagic
+* pip install -U pyswf
 * pip install -U nose
 * pip install -U yourmom --superfat
 
