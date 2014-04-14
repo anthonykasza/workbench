@@ -25,6 +25,8 @@ class View():
             result = self.c.work_request('view_zip', md5)
         elif mime_type == 'application/vnd.tcpdump.pcap':
             result = self.c.work_request('view_pcap_meta', md5)
+        elif mime_type == 'application/x-shockwave-flash':
+            result = self.c.work_request('swf_meta', md5)
         else:
             # In the case of an unsupported MIME type just return the meta data
             result = input_data
