@@ -117,6 +117,10 @@ class WorkBench():
         ''' Add the node with name and labels '''
         self.neo_db.add_node(md5, name, labels)
 
+    def has_node(self, md5):
+        ''' Does the DB have this node '''
+        return self.neo_db.has_node(md5)
+
     def add_rel(self, source_md5, target_md5, rel):
         ''' Add a relationship: source, target must already exist (see add_node)
             'rel' is the name of the relationship 'contains' or whatever. '''

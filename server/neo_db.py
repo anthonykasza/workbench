@@ -20,6 +20,10 @@ class NeoDB():
         node = self.graph_db.get_or_create_indexed_node('Node', 'md5', md5, {'md5':md5, 'name':name})
         node.add_labels(*labels)
 
+    def has_node(self, md5):
+        ''' Add the node with name and labels '''
+        return True if self.graph_db.get_indexed_node('Node', 'md5', md5) else False
+
     def add_rel(self, source_md5, target_md5, rel):
         ''' Add a relationship: source, target must already exist (see add_node)
             'rel' is the name of the relationship 'contains' or whatever. '''
@@ -36,10 +40,13 @@ class NeoDBStub():
         print 'NeoDB Stub connected: %s' % (str(uri))
         print 'Install Neo4j and python bindings for Neo4j. See README.md'
 
-    def add_node(self, name, labels):
+    def add_node(self, md5, name, labels):
         print 'NeoDB Stub getting called...'
 
-    def add_rel(self, source, target, rel):
+    def has_node(self, md5):
+        print 'NeoDB Stub getting called...'
+
+    def add_rel(self, source_md5, target_md5, rel):
         print 'NeoDB Stub getting called...'
 
 try:
