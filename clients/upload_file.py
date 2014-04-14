@@ -36,6 +36,14 @@ def main():
         print 'Filename: %s' % filename
         pprint.pprint(results)
 
+    # You can also download a sample (commented out)
+    '''
+    sample = c.get_sample(md5)
+    raw_bytes = sample['sample']['raw_bytes']
+    with open('mysample.log','wb') as f:
+        f.write(raw_bytes)
+    '''
+
 def test():
     ''' file_upload test '''
     main()
