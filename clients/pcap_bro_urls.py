@@ -38,7 +38,7 @@ def main():
 
 
 def test():
-    ''' pcap_urls test '''
+    ''' pcap_bro_urls test '''
     main()
 
 if __name__ == '__main__':
