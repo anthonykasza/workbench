@@ -18,7 +18,6 @@ global ext_map: table[string] of string = {
 event file_new(f: fa_file)
     {
     local ext = ext_map[f$mime_type];
-    print f$mime_type, ext;
     if (ext != "txt" && ext != "html" && ext != "ms_font" && ext != "jpg" && ext != "gif" && ext != "png")
         {
         local fname = fmt("%s-%s.%s", f$source, f$id, ext);
