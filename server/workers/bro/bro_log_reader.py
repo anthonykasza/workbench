@@ -86,9 +86,12 @@ class BroLogReader():
             just treating everything like a string from the csv file
         '''
         for key, value in data_dict.iteritems():
-            if (value == 'BRO_STOP'):
-                return None
             data_dict[key] = self._cast_value(value)
+
+        # Fixme: resp_body_data can be very large so removing it for now
+        if 'resp_body_data' in data_dict:
+            del data_dict['resp_body_data']
+
         return data_dict
 
     def _cast_value(self, value):
