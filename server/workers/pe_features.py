@@ -268,6 +268,12 @@ class PEFileWorker():
         extracted_dense['sec_va_execsize'] = vaexecsize
         extracted_dense['sec_raw_execsize'] = rawexecsize
 
+        # Imphash (implemented in pefile 1.2.10-139 or later)
+        try:
+            extracted_sparse['imp_hash'] = pe.get_imphash()
+        except AttributeError:
+            extracted_sparse['imp_hash'] = 'Not found: Install pefile 1.2.10-139 or later'
+
         # Register if there were any pe warnings
         warnings = pe.get_warnings()
         if (warnings):
@@ -275,7 +281,6 @@ class PEFileWorker():
             extracted_sparse['pe_warning_strings'] = warnings
         else:
             extracted_dense['pe_warnings'] = 0
-
 
         # Issue a warning if the feature isn't found
         for feature in self._dense_feature_list:
