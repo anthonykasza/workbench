@@ -53,6 +53,10 @@ Most of the dependencies are for the server.
 #### LibMagic
 - brew install libmagic (or port or aptget or aptitude..)
 
+#### Yara
+- brew install yara (or port or aptget or aptitude..)
+
+
 ##### Python Dependencies:
 You don't really have to install pip but you should, it's significantly better than easy_install.
 
@@ -75,6 +79,7 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * pip install -U ssdeep
 * pip install -U filemagic
 * pip install -U pyswf
+* pip install -U yara
 * pip install -U nose
 * pip install -U yourmom --superfat
 
