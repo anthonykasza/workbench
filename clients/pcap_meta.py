@@ -15,8 +15,8 @@ def main():
     c = zerorpc.Client()
     c.connect(server+':'+port)
 
-    # Test out PCAP test_files
-    file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
+    # Test out PCAP data
+    file_list = [os.path.join('../data/pcap', child) for child in os.listdir('../data/pcap')]
     for filename in file_list:
 
         # Skip OS generated files

@@ -51,8 +51,8 @@ def main():
 
 
     # Test out PEFile -> pe_deep_sim -> pe_jaccard_sim -> graph
-    bad_files = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
-    good_files = [os.path.join('../test_files/pe/good', child) for child in os.listdir('../test_files/pe/good')]
+    bad_files = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
+    good_files = [os.path.join('../data/pe/good', child) for child in os.listdir('../data/pe/good')]
     
     # First throw them into workbench and add them as nodes into the graph
     bad_md5s = add_it(c, bad_files, ['pe','bad'])

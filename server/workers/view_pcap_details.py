@@ -24,7 +24,6 @@ class ViewPcapDetails():
         bro_logs = input_data['view_pcap']['bro_logs']
         
         # Dump a couple of fields
-        del view['encoding']
         del view['extracted_files']        
 
         # Gather additional info from the Bro logs
@@ -61,7 +60,7 @@ def test():
     c = zerorpc.Client(timeout=300)
     c.connect("tcp://127.0.0.1:4242")
 
-    md5 = c.store_sample('http.pcap', open('../../test_files/pcap/winmediaplayer.pcap', 'rb').read(), 'pcap')
+    md5 = c.store_sample('http.pcap', open('../../data/pcap/winmediaplayer.pcap', 'rb').read(), 'pcap')
     output = c.work_request('view_pcap_details', md5)
     print 'ViewPcapDetails: '
     import pprint

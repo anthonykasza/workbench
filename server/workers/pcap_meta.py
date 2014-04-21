@@ -22,7 +22,7 @@ class PcapMeta():
 def test():
     ''' pcap_meta.py: Unit test'''
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../test_files/pcap/http.pcap', 'rb').read(),
+    sample = {'sample':{'raw_bytes':open('../../data/pcap/http.pcap', 'rb').read(),
               'filename': 'http.pcap', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
 
     # Send it through meta

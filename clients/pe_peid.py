@@ -14,8 +14,8 @@ def main():
     c.connect('tcp://127.0.0.1:'+port)
 
     # Test out PEFile -> peid
-    file_list = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
-    file_list += [os.path.join('../test_files/pe/good', child) for child in os.listdir('../test_files/pe/good')]
+    file_list = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
+    file_list += [os.path.join('../data/pe/good', child) for child in os.listdir('../data/pe/good')]
     for filename in file_list:
 
         # Skip OS generated files

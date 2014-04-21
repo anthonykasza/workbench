@@ -17,7 +17,7 @@ def main():
 
     # Loop through all the pcaps and collect a set of urls(hosts) from the http_log files
     urls = set()
-    file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
+    file_list = [os.path.join('../data/pcap', child) for child in os.listdir('../data/pcap')]
     for filename in file_list:
 
         # Skip OS generated files

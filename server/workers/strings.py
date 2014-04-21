@@ -19,7 +19,7 @@ class Strings():
 def test():
     ''' strings.py: Unit test'''
     worker = Strings()
-    print worker.execute({'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', "rb").read()}})
+    print worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', "rb").read()}})
 
 if __name__ == "__main__":
     test()

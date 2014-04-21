@@ -20,7 +20,7 @@ class Disass():
 def test():
     ''' pe_disass.py: Unit test'''
     worker = Disass()
-    output = worker.execute({'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
+    output = worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
     print 'Disass: %s ' % str(output['decode'][:50]) # Truncate for now
 
 if __name__ == "__main__":

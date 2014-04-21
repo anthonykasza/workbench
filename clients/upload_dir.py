@@ -17,7 +17,7 @@ def md5_for_file(path, block_size=256*128):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--data-dir', type=str, default='../test_files/logs', help='Directory of files to import into the workbench server')
+    parser.add_argument('-d', '--data-dir', type=str, default='../data/logs', help='Directory of files to import into the workbench server')
     parser.add_argument('-t', '--tag', type=str, default='log', help='Type_tag of the files being imported')
     args = parser.parse_args()
 

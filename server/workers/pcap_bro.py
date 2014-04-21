@@ -121,7 +121,7 @@ class PcapBro(object):
 def test():
     ''' pcap_bro.py: Unit test'''
     worker = PcapBro()
-    print worker.execute({'sample':{'raw_bytes':open('../../test_files/pcap/http.pcap', 'rb').read(),
+    print worker.execute({'sample':{'raw_bytes':open('../../data/pcap/http.pcap', 'rb').read(),
                 'filename':'http.pcap', 'import_time':datetime.datetime.now()}})
 
 if __name__ == "__main__":

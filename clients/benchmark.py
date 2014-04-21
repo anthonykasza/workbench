@@ -8,9 +8,9 @@ def main():
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
 
-    # Benchmark test on PEFile test_files
-    file_list = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
-    file_list += [os.path.join('../test_files/pe/good', child) for child in os.listdir('../test_files/pe/good')]
+    # Benchmark test on PEFile data
+    file_list = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
+    file_list += [os.path.join('../data/pe/good', child) for child in os.listdir('../data/pe/good')]
     num_files = len(file_list)
     total_files = 0
     start = datetime.datetime.now()

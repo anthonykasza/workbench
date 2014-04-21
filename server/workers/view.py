@@ -46,15 +46,15 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('bad_067b39', open('../../test_files/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
+    md5 = c.store_sample('bad_067b39', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
     output = c.work_request('view', md5)
     print '\nView: '
     pprint.pprint(output)
-    md5 = c.store_sample('bad_033d91', open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    md5 = c.store_sample('bad_033d91', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
     output = c.work_request('view', md5)
     print '\nView: '
     pprint.pprint(output)
-    md5 = c.store_sample('good.zip', open('../../test_files/zip/good.zip', 'rb').read(), 'zip')
+    md5 = c.store_sample('good.zip', open('../../data/zip/good.zip', 'rb').read(), 'zip')
     output = c.work_request('view', md5)
     print '\nView: '
     pprint.pprint(output)

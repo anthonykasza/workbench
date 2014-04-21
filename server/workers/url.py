@@ -22,7 +22,7 @@ def test():
     ''' url.py: Unit test'''
     import strings
     input_worker = strings.Strings()
-    _raw_output = input_worker.execute({'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', "rb").read()}})
+    _raw_output = input_worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', "rb").read()}})
     wrapped_output = {'strings':_raw_output}
     worker = URLS()
     print worker.execute(wrapped_output)

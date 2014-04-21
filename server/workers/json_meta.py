@@ -32,7 +32,7 @@ def test():
     ''' json_meta.py: Unit test'''
 
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../test_files/json/generated.json', 'rb').read(),
+    sample = {'sample':{'raw_bytes':open('../../data/json/generated.json', 'rb').read(),
               'filename': 'generated.json', 'type_tag': 'json','import_time':datetime.datetime.now()}}
 
     # Send it through meta

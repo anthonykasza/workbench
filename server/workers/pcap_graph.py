@@ -121,7 +121,7 @@ def test():
     c = zerorpc.Client(timeout=300)
     c.connect("tcp://127.0.0.1:4242")
 
-    md5 = c.store_sample('kitchen_boss.pcap', open('../../test_files/pcap/kitchen_boss.pcap', 'rb').read(), 'pcap')
+    md5 = c.store_sample('kitchen_boss.pcap', open('../../data/pcap/kitchen_boss.pcap', 'rb').read(), 'pcap')
     output = c.work_request('pcap_graph', md5)
     print 'PcapGraph: '
     import pprint

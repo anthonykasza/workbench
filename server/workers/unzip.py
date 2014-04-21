@@ -30,9 +30,9 @@ class Unzip():
 def test():
     ''' unzip.py: Unit test'''
     worker = Unzip()
-    output = worker.execute({'sample':{'raw_bytes':open('../../test_files/zip/bad.zip', 'rb').read()}})
+    output = worker.execute({'sample':{'raw_bytes':open('../../data/zip/bad.zip', 'rb').read()}})
     print 'Payloads extracted: %s ' % str(output['payload_md5s'])
-    output = worker.execute({'sample':{'raw_bytes':open('../../test_files/zip/good.zip', 'rb').read()}})
+    output = worker.execute({'sample':{'raw_bytes':open('../../data/zip/good.zip', 'rb').read()}})
     print 'Payloads extracted: %s ' % str(output['payload_md5s'])
 
 if __name__ == "__main__":

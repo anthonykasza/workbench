@@ -49,12 +49,12 @@ def test():
     worker = YaraSigs()
 
     import pprint
-    file_list = [os.path.join('../../test_files/pe/bad', child) for child in os.listdir('../../test_files/pe/bad')]
+    file_list = [os.path.join('../../data/pe/bad', child) for child in os.listdir('../../data/pe/bad')]
     for test_file in file_list:
-	file_name = os.path.basename(test_file)
-	print '\n%s' % file_name
-	pprint.pprint(worker.execute({'sample':{'raw_bytes':open(test_file, 'rb').read(), 
-	    'filename': file_name, 'type_tag': 'pe','import_time':datetime.datetime.now()}}))
+        file_name = os.path.basename(test_file)
+        print '\n%s' % file_name
+        pprint.pprint(worker.execute({'sample':{'raw_bytes':open(test_file, 'rb').read(), 
+                                                'filename': file_name, 'type_tag': 'pe','import_time':datetime.datetime.now()}}))
 
 if __name__ == "__main__":
     test()

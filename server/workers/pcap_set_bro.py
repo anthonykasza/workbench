@@ -32,7 +32,7 @@ def test():
     c.connect("tcp://127.0.0.1:4242")
 
     # Open a bunch of pcaps
-    data_dir = '../../test_files/pcap'
+    data_dir = '../../data/pcap'
     file_list = [os.path.join(data_dir, child) for child in os.listdir(data_dir)]
     pcap_md5s = []
     for filename in file_list:

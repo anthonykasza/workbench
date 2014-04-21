@@ -17,7 +17,7 @@ def md5_for_file(path, block_size=256*128):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--loadfile', type=str, default='../test_files/logs/system.log', help='File to import into the workbench server')
+    parser.add_argument('-f', '--loadfile', type=str, default='../data/logs/system.log', help='File to import into the workbench server')
     args = parser.parse_args()
 
     # Connect to local workbench

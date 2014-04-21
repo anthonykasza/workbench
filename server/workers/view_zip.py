@@ -38,7 +38,7 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('bad.zip', open('../../test_files/zip/bad.zip', 'rb').read(), 'zip')
+    md5 = c.store_sample('bad.zip', open('../../data/zip/bad.zip', 'rb').read(), 'zip')
     output = c.work_request('view_zip', md5)
     print 'ViewZipFile: '
     import pprint

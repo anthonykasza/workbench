@@ -59,7 +59,7 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('unknown.swf', open('../../test_files/swf/unknown.swf', 'rb').read(), 'pe')
+    md5 = c.store_sample('unknown.swf', open('../../data/swf/unknown.swf', 'rb').read(), 'pe')
     output = c.work_request('swf_meta', md5)
     print 'SWFMeta: '
     import pprint

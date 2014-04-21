@@ -25,7 +25,7 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('bad_067b392', open('../../test_files/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
+    md5 = c.store_sample('bad_067b392', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
     output = c.work_request('view_pdf', md5)
     print 'ViewPDFFile: '
     import pprint

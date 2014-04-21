@@ -33,7 +33,7 @@ def test():
     ''' meta_deep.py: Unit test'''
 
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(),
+    sample = {'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(),
               'filename': 'bad_033d91', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
 
     # Send it through meta

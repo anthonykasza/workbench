@@ -17,7 +17,7 @@ def main():
     c.connect(server+':'+port)
 
     # Test out some log files
-    file_list = [os.path.join('../test_files/logs', child) for child in os.listdir('../test_files/logs')]
+    file_list = [os.path.join('../data/logs', child) for child in os.listdir('../data/logs')]
     for filename in file_list:
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'log')

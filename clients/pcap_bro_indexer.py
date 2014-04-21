@@ -16,7 +16,7 @@ def main():
     c.connect(server+':'+port)
 
     # Test out getting the raw Bro logs from a PCAP file and sending results to an ELS indexer
-    file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
+    file_list = [os.path.join('../data/pcap', child) for child in os.listdir('../data/pcap')]
     for filename in file_list:
 
         # Skip OS generated files

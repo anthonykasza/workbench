@@ -20,7 +20,7 @@ def test():
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
 
-    md5 = c.store_sample('http.pcap', open('../../test_files/pcap/http.pcap', 'rb').read(), 'pcap')
+    md5 = c.store_sample('http.pcap', open('../../data/pcap/http.pcap', 'rb').read(), 'pcap')
     output = c.work_request('view_pcap_meta', md5)
     print 'ViewPcap: '
     import pprint

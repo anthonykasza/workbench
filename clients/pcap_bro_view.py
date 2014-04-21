@@ -18,7 +18,7 @@ def main():
     # Test out getting the raw Bro logs from a PCAP file
     # Note: you can get a super nice 'generator' python list of dict by using
     #       'stream_sample' instead of 'get_sample'.
-    file_list = [os.path.join('../test_files/pcap', child) for child in os.listdir('../test_files/pcap')]
+    file_list = [os.path.join('../data/pcap', child) for child in os.listdir('../data/pcap')]
     for filename in file_list:
 
         # Skip OS generated files

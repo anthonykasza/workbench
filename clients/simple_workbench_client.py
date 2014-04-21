@@ -17,8 +17,8 @@ def main():
     c.connect(server+':'+port)
 
     '''
-    # Test out PEFile test_files
-    file_list = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
+    # Test out PEFile data
+    file_list = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
     for filename in file_list:
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'pe')
@@ -26,8 +26,8 @@ def main():
             print 'Filename: %s results: %s' % (filename, results)
     '''
 
-    # Test out zip test_files
-    file_list = [os.path.join('../test_files/zip', child) for child in os.listdir('../test_files/zip')]
+    # Test out zip data
+    file_list = [os.path.join('../data/zip', child) for child in os.listdir('../data/zip')]
     for filename in file_list:
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'zip')

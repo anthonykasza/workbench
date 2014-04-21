@@ -32,13 +32,13 @@ def test():
     ''' pe_classifier.py: Unit test'''
     import pe_features
     input_worker = pe_features.PEFileWorker()
-    _raw_output = input_worker.execute({'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
+    _raw_output = input_worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
     wrapped_output = {'pe_features':_raw_output}
 
 
     import pe_indicators
     input_worker2 = pe_indicators.Indicators()
-    _raw_output = input_worker2.execute({'sample':{'raw_bytes':open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
+    _raw_output = input_worker2.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
     wrapped_output2 = {'pe_indicators':_raw_output}
 
     # Now join up the inputs

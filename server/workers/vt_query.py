@@ -59,7 +59,7 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('bad.zip', open('../../test_files/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    md5 = c.store_sample('bad.zip', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
     output = c.work_request('vt_query', md5)
 
     import pprint

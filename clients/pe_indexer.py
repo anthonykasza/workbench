@@ -14,7 +14,7 @@ def main():
     c.connect('tcp://127.0.0.1:'+port)
 
     # Test out PEFile -> strings -> indexer -> search
-    file_list = [os.path.join('../test_files/pe/bad', child) for child in os.listdir('../test_files/pe/bad')]
+    file_list = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
     for filename in file_list:
 
         # Skip OS generated files
