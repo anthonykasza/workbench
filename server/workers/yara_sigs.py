@@ -35,15 +35,11 @@ class YaraSigs():
         rules = yara.compile(filepaths=filepaths)
         return rules
 
-    def mycallback(self, data):
-	    print data
-	    yara.CALLBACK_CONTINUE
-
     def execute(self, input_data):
         ''' yara worker execute method '''
 
         raw_bytes = input_data['sample']['raw_bytes']
-        matches = self.rules.match_data(raw_bytes) #, callback=self.mycallback)
+        matches = self.rules.match_data(raw_bytes)
         return {'matches': matches}
 
 
