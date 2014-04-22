@@ -269,14 +269,16 @@ def main():
     import os
     import argparse
     parser = argparse.ArgumentParser()
+    parser.add_argument('-ds_uri', '--datastore_uri', type=str, default='localhost', help='machine used by workbench datastore')
     parser.add_argument('-db', '--database', type=str, default='workbench', help='database used by workbench server')
     args = parser.parse_args()
 
 
     # Spin up Workbench ZeroRPC
+    datastore_uri = args.datastore_uri
     database = args.database
     print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
-    s = zerorpc.Server(WorkBench(store_uri='mongodb://localhost/'+database), name='workbench')
+    s = zerorpc.Server(WorkBench(store_uri='mongodb://'+datastore_uri+'/'+database), name='workbench')
     s.bind('tcp://0.0.0.0:4242')
     s.run()
 
