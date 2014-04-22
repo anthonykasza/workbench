@@ -1,5 +1,5 @@
 
-''' Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and execution. '''
+''' Workbench: Open Source Security Framework '''
 
 import zerorpc
 import gevent.monkey
@@ -33,7 +33,7 @@ except ValueError:
 
 
 class WorkBench():
-    ''' Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and execution. '''
+    ''' Workbench: Open Source Security Framework '''
     def __init__(self, store_args=None, els_hosts=None, neo_uri=None):
 
         # Open DataStore
