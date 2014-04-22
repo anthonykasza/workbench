@@ -25,7 +25,7 @@ def test():
     ''' log_meta.py: Unit test'''
 
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../data/logs/system.log', 'rb').read(),
+    sample = {'sample':{'raw_bytes':open('../../data/log/system.log', 'rb').read(),
               'filename': 'system.log', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
 
     # Send it through meta
