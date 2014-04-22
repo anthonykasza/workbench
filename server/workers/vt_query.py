@@ -3,6 +3,8 @@
 import zerorpc
 import requests
 import collections
+import sys
+import workbench_keys
 
 def plugin_info():
     return {'name':'vt_query', 'class':'VTQuery', 'dependencies': ['meta'],
@@ -12,10 +14,10 @@ class VTQuery(object):
     
     def __init__(self):
         ''' VTQuery Init'''
-        
-        # Put your API Key here!
-        self.apikey = None
-        if not self.apikey:
+
+        # Grab our API key
+        self.apikey = workbench_keys.API_KEYS['vt_apikey']
+        if self.apikey == '123':
             raise RuntimeError('VTQuery needs to be given an API key to work')
         
         # Change this if you want these fields
@@ -59,7 +61,7 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('bad.zip', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    md5 = c.store_sample('bad_067b39', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
     output = c.work_request('vt_query', md5)
 
     import pprint
