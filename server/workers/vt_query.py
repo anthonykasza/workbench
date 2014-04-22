@@ -18,7 +18,7 @@ class VTQuery(object):
         # Grab our API key
         self.apikey = workbench_keys.API_KEYS['vt_apikey']
         if self.apikey == '123':
-            raise RuntimeError('VTQuery needs to be given an API key to work')
+            raise RuntimeError('VTQuery: Invalid api_key, put your VT api key in the config.ini file.')
         
         # Change this if you want these fields
         self.exclude = ['scan_id', 'md5', 'sha1', 'sha256', 'resource', 'response_code', 'permalink',
