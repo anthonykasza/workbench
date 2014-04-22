@@ -19,7 +19,7 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
-    md5 = c.store_sample('system.log', open('../../data/logs/system.log', 'rb').read(), 'log')
+    md5 = c.store_sample('system.log', open('../../data/log/system.log', 'rb').read(), 'log')
     output = c.work_request('view_log_meta', md5)
     print 'ViewLogMeta: '
     import pprint

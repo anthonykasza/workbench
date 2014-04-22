@@ -21,7 +21,6 @@ If Workbench had political leanings they would be **'libertarian minarchist'**.
 * **Loosely coupled**
   * No inheritance relationships
   * No knowledge of data structures
-  * No config files
   * Just take some input and barf some output (no format requirements)
 * **Flat**
   * Workers (that's it... everything is a worker)
