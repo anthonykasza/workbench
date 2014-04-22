@@ -268,15 +268,31 @@ class WorkBench():
 def main():
     import os
     import argparse
+
+    # Load the configuration file
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    workbench_conf = config['workbench']
+
+    # Pull configuration settings (or set defaults if don't exist)
+    server_uri = workbench_conf.get('server_uri', 'localhost')
+    datastore_uri = workbench_conf.get('datastore_uri', 'localhost')
+    database = workbench_conf.get('database', 'workbench')
+    capped = int(workbench_conf.get('capped', 10))
+    vt_api = workbench_conf.get('vt_api', '123')
+
+    # Parse the arguments (args overwrite configuration file settings)
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ds_uri', '--datastore_uri', type=str, default='localhost', help='machine used by workbench datastore')
-    parser.add_argument('-db', '--database', type=str, default='workbench', help='database used by workbench server')
+    parser.add_argument('-ds_uri', '--datastore_uri', type=str, default=None, help='machine used by workbench datastore')
+    parser.add_argument('-db', '--database', type=str, default=None, help='database used by workbench server')
     args = parser.parse_args()
 
+    # Overwrite if specified
+    datastore_uri = args.datastore_uri if (args.datastore_uri) else datastore_uri
+    database = args.database if (args.database) else database
 
     # Spin up Workbench ZeroRPC
-    datastore_uri = args.datastore_uri
-    database = args.database
     print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
     s = zerorpc.Server(WorkBench(store_uri='mongodb://'+datastore_uri+'/'+database), name='workbench')
     s.bind('tcp://0.0.0.0:4242')
