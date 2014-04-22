@@ -12,8 +12,8 @@ import json
 import hashlib
 
 ''' Add bro to path for bro_log_reader '''
-import os
-os.sys.path.insert(0, os.path.join(os.getcwd(),'workers/bro'))
+import sys
+sys.path.extend(['workers','workers/bro'])
 
 # Local modules
 try:
@@ -22,19 +22,22 @@ try:
     from . import neo_db
     from . import plugin_manager
     from . import bro_log_reader
+    from . import workbench_keys
 except ValueError:
     import data_store
     import els_indexer
     import neo_db
     import plugin_manager
     import bro_log_reader
+    import workbench_keys
+
 
 class WorkBench():
     ''' Just a playground for exploring the characteristics of using ZeroRPC/gevent for worker tasking and execution. '''
-    def __init__(self, store_uri=None, els_hosts=None, neo_uri=None):
+    def __init__(self, store_args=None, els_hosts=None, neo_uri=None):
 
         # Open DataStore
-        self.data_store = data_store.DataStore(**{'uri': store_uri} if store_uri else {})
+        self.data_store = data_store.DataStore(**store_args)
 
         # ELS Indexer
         self.indexer = els_indexer.ELS_Indexer(**{'hosts': els_hosts} if els_hosts else {})
@@ -280,7 +283,9 @@ def main():
     datastore_uri = workbench_conf.get('datastore_uri', 'localhost')
     database = workbench_conf.get('database', 'workbench')
     capped = int(workbench_conf.get('capped', 10))
-    vt_api = workbench_conf.get('vt_api', '123')
+
+    # API keys just get tossed into API_KEYS dict
+    workbench_keys.API_KEYS['vt_apikey'] = workbench_conf.get('vt_apikey', '123')
 
     # Parse the arguments (args overwrite configuration file settings)
     parser = argparse.ArgumentParser()
@@ -294,7 +299,8 @@ def main():
 
     # Spin up Workbench ZeroRPC
     print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
-    s = zerorpc.Server(WorkBench(store_uri='mongodb://'+datastore_uri+'/'+database), name='workbench')
+    store_args = {'uri': 'mongodb://'+datastore_uri+'/'+database, 'capped':capped}
+    s = zerorpc.Server(WorkBench(store_args=store_args), name='workbench')
     s.bind('tcp://0.0.0.0:4242')
     s.run()
 
