@@ -10,7 +10,7 @@ import bson
 
 class DataStore():
 
-    def __init__(self, uri='mongodb://localhost/workbench', capped=None):
+    def __init__(self, uri='mongodb://localhost/workbench', capped=0):
 
         self.sample_collection = 'samples'
         self.capped = capped
@@ -141,10 +141,12 @@ class DataStore():
 
         # Convert collections to capped if desired
         if (self.capped):
-            size = self.capped * pow(1024, 2)  # Defaults to 100 MegaBytes per collection
+            size = self.capped * pow(1024, 2)  # self.capped MegaBytes per collection
             for collection in all_c:
-                if collection == 'samples': continue  # Don't cap samples collection
-                self.db.command('convertToCapped', collection, size=size)
+                if collection == 'samples': # Samples collection get 10x allocation
+                    self.db.command('convertToCapped', collection, size=size*10)
+                else:
+                    self.db.command('convertToCapped', collection, size=size)
 
         # Loop through all collections ensuring they have an index on MD5s
         for collection in all_c:
