@@ -10,14 +10,15 @@ import bson
 
 class DataStore():
 
-    def __init__(self, uri='mongodb://localhost/workbench', capped=0):
+    def __init__(self, uri='mongodb://localhost/workbench', database='workbench', capped=0):
 
         self.sample_collection = 'samples'
         self.capped = capped
 
         # Get connection to mongo
         self.uri = uri
-        self.c = pymongo.MongoClient(uri)
+        self.db_name = database
+        self.c = pymongo.MongoClient('mongodb://'+self.uri+'/'+self.db_name)
         self.db = self.c.get_default_database()
 
         # Get the gridfs handle

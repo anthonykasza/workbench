@@ -210,10 +210,6 @@ class WorkBench():
         ''' Gives you the current datastore URL '''
         return self.data_store.get_uri()
 
-    def set_datastore_uri(self, uri):
-        ''' Sets the datastore URL. Note: Don't use this unless you know what you're doing. '''
-        self.data_store = data_store.DataStore(uri)
-
     def _new_plugin(self, plugin, mod_time):
         ''' The method handles the mechanics around new plugins. '''
         print '< %s: loaded >' % (plugin['name'])
@@ -299,7 +295,7 @@ def main():
 
     # Spin up Workbench ZeroRPC
     print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
-    store_args = {'uri': 'mongodb://'+datastore_uri+'/'+database, 'capped':capped}
+    store_args = {'uri': datastore_uri, 'database': database, 'capped':capped}
     s = zerorpc.Server(WorkBench(store_args=store_args), name='workbench')
     s.bind('tcp://0.0.0.0:4242')
     s.run()
