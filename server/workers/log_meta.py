@@ -3,11 +3,9 @@
 import hashlib
 import datetime
 
-def plugin_info():
-    return {'name':'log_meta', 'class':'LogMetaData', 'dependencies': ['sample', 'meta'],
-            'description': 'This worker computes a meta-data for log files. Output keys: [md5, type_tag, file_type, mime_type, encoding, file_size, filename, import_time]'}
-
 class LogMetaData():
+    ''' This worker computes a meta-data for log files. '''
+    dependencies = ['sample', 'meta']
 
     def execute(self, input_data):
         raw_bytes = input_data['sample']['raw_bytes']
@@ -25,8 +23,9 @@ def test():
     ''' log_meta.py: Unit test'''
 
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../data/log/system.log', 'rb').read(),
-              'filename': 'system.log', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
+    sample = {'sample':{'raw_bytes':open('../../data/log/system.log', 'rb').read(), 'length':0,
+              'filename': 'system.log', 'type_tag': 'pe', 'customer':'MegaCorp',
+              'import_time':datetime.datetime.now()}}
 
     # Send it through meta
     import meta

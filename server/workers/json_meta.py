@@ -4,11 +4,9 @@ import hashlib
 import datetime
 import json
 
-def plugin_info():
-    return {'name':'json_meta', 'class':'JSONMetaData', 'dependencies': ['sample', 'meta'],
-            'description': 'This worker computes a meta-data for log files. Output keys: [md5, type_tag, file_type, mime_type, encoding, file_size, filename, import_time]'}
-
 class JSONMetaData():
+    ''' This worker computes a meta-data for json files. '''
+    dependencies = ['sample', 'meta']
 
     def execute(self, input_data):
         raw_bytes = input_data['sample']['raw_bytes']
@@ -32,8 +30,9 @@ def test():
     ''' json_meta.py: Unit test'''
 
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../data/json/generated.json', 'rb').read(),
-              'filename': 'generated.json', 'type_tag': 'json','import_time':datetime.datetime.now()}}
+    sample = {'sample':{'raw_bytes':open('../../data/json/generated.json', 'rb').read(), 'length':0,
+              'filename': 'generated.json', 'type_tag': 'json', 'customer':'MegaCorp',
+              'import_time':datetime.datetime.now()}}
 
     # Send it through meta
     import meta

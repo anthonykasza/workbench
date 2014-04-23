@@ -4,11 +4,9 @@ import hashlib
 import ssdeep as ssd
 import datetime
 
-def plugin_info():
-    return {'name':'meta_deep', 'class':'MetaDeepData', 'dependencies': ['sample', 'meta'],
-            'description': 'This worker computes deeper meta-data. Output keys: [md5, sha1, sha256, ssdeep, entropy, file_type, mime_type, encoding, file_size, filename, import_time]'}
-
 class MetaDeepData():
+    ''' This worker computes deeper meta-data '''
+    dependencies = ['sample', 'meta']
 
     def execute(self, input_data):
         raw_bytes = input_data['sample']['raw_bytes']
@@ -34,7 +32,8 @@ def test():
 
     # Grab a sample
     sample = {'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(),
-              'filename': 'bad_033d91', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
+              'length':0, 'filename': 'bad_033d91', 'type_tag': 'pe', 'customer':'MegaCorp', 
+              'import_time':datetime.datetime.now()}}
 
     # Send it through meta
     import meta

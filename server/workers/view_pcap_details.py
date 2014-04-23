@@ -3,13 +3,10 @@ import zerorpc
 import itertools
 import view_pcap
 
-
-def plugin_info():
-    return {'name':'view_pcap_details', 'class':'ViewPcapDetails', 'dependencies': ['view_pcap'],
-            'description': 'This worker generates a detailed pcap view. Output keys: [...]'}
-
 class ViewPcapDetails():
     ''' ViewPcapDetails: Generates a view for a pcap sample (depends on Bro)'''
+    dependencies = ['view_pcap']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")

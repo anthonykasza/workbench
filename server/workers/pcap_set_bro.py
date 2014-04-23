@@ -2,11 +2,9 @@
 import os
 import pcap_bro
 
-def plugin_info():
-    return {'name':'pcap_set_bro', 'class':'PcapSetBro', 'dependencies': ['sample_sets'],
-            'description': 'This worker runs Bro scripts on a set of pcap files. Output keys: [log_name:md5...]'}
-
 class PcapSetBro(pcap_bro.PcapBro):
+    ''' This worker runs Bro scripts on a set of pcap files '''
+    dependencies = ['sample_sets']
 
     def pcap_inputs(self, input_data):
         

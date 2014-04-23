@@ -8,11 +8,9 @@ import gevent.subprocess
 import glob
 import zerorpc
 
-def plugin_info():
-    return {'name':'pcap_bro', 'class':'PcapBro', 'dependencies': ['sample'],
-            'description': 'This worker runs Bro scripts on a pcap file. Output keys: [log_name:md5...]'}
-
 class PcapBro(object):
+    ''' This worker runs Bro scripts on a pcap file '''
+    dependencies = ['sample']
 
     def __init__(self):
         self.c = zerorpc.Client()
@@ -122,7 +120,7 @@ def test():
     ''' pcap_bro.py: Unit test'''
     worker = PcapBro()
     print worker.execute({'sample':{'raw_bytes':open('../../data/pcap/http.pcap', 'rb').read(),
-                'filename':'http.pcap', 'import_time':datetime.datetime.now()}})
+                'filename':'http.pcap',  'customer':'MegaCorp', 'import_time':datetime.datetime.now()}})
 
 if __name__ == "__main__":
     test()

@@ -7,11 +7,9 @@ import gridfs
 import hashlib
 import datetime
 
-def plugin_info():
-    return {'name':'pe_classifier', 'class':'PEFileClassify', 'dependencies': ['pe_features','pe_indicators'],
-            'description': 'This worker classifies PEFiles as Evil or Benign. Output keys: [classification]'}
-
 class PEFileClassify():
+    ''' This worker classifies PEFiles as Evil or Benign '''
+    dependencies = ['pe_features','pe_indicators']
 
     def execute(self, input_data):
 

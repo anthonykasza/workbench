@@ -4,11 +4,10 @@ import StringIO
 import zipfile
 import zerorpc
 
-def plugin_info():
-    return {'name':'unzip', 'class':'Unzip', 'dependencies': ['sample'],
-            'description': 'This worker unzips a zipped file. Output keys: [payload_md5s]'}
-
 class Unzip():
+    ''' This worker unzips a zipped file '''
+    dependencies = ['sample']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")

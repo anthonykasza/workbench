@@ -1,12 +1,10 @@
 
 ''' view_log_meta worker '''
 
-def plugin_info():
-    return {'name':'view_log_meta', 'class':'ViewLogMeta', 'dependencies': ['log_meta'],
-            'description': 'This worker generates a view for log meta. Output keys: [mime_type, encoding, import_time, file_size]'}
-
 class ViewLogMeta():
     ''' ViewLogMeta: Generates a view for meta data on the sample '''
+    dependencies = ['log_meta']
+
     def execute(self, input_data):
 
         # Deprecation unless something more interesting happens with this class

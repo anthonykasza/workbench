@@ -4,12 +4,10 @@ import os, glob
 import yara
 import datetime
 
-def plugin_info():
-    return {'name':'yara_sigs', 'class':'YaraSigs', 'dependencies': ['sample'], 'description':'hi'}
-
 class YaraSigs():
     ''' This worker check for matches against yara sigs. 
         Output keys: [matches:list of matches] '''
+    dependencies = ['sample']
 
     def __init__(self):
         self.orig_dir = os.getcwd()

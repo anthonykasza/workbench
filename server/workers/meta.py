@@ -4,11 +4,9 @@ import hashlib
 import magic
 import datetime
 
-def plugin_info():
-    return {'name':'meta', 'class':'MetaData', 'dependencies': ['sample'],
-            'description': 'This worker computes meta-data. Output keys: [md5, type_tag, file_type, mime_type, encoding, file_size, filename, import_time]'}
-
 class MetaData():
+    ''' This worker computes meta data for any file type. '''
+    dependencies = ['sample']
 
     def execute(self, input_data):
         raw_bytes = input_data['sample']['raw_bytes']
@@ -23,6 +21,8 @@ class MetaData():
         file_size = len(raw_bytes)
         filename = input_data['sample']['filename']
         import_time = input_data['sample']['import_time']
+        customer = input_data['sample']['customer']
+        length = input_data['sample']['length']
 
         return {name:value for name,value in locals().iteritems()
                 if name not in ['self', 'input_data','raw_bytes', 'm']}
@@ -35,7 +35,8 @@ def test():
 
     import pprint
     pprint.pprint(worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(),
-                    'filename': 'bad_033d91', 'type_tag': 'pe','import_time':datetime.datetime.now()}}))
+                    'length':0, 'filename': 'bad_033d91', 'type_tag': 'pe','customer':'MegaCorp',
+                    'import_time':datetime.datetime.now()}}))
 
 if __name__ == "__main__":
     test()

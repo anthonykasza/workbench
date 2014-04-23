@@ -3,11 +3,9 @@ import hashlib
 import datetime
 import struct
 
-def plugin_info():
-    return {'name':'pcap_meta', 'class':'PcapMeta', 'dependencies': ['sample', 'meta'],
-            'description': 'This worker computes a bunch of meta-data about a pcap file. Output keys: [summary, sessions]'}
-
 class PcapMeta():
+    ''' This worker computes a bunch of meta-data about a pcap file '''
+    dependencies = ['sample', 'meta']
 
     def execute(self, input_data):
         # Fixme: Put some PCAP specific Meta data here :)
@@ -22,8 +20,9 @@ class PcapMeta():
 def test():
     ''' pcap_meta.py: Unit test'''
     # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../data/pcap/http.pcap', 'rb').read(),
-              'filename': 'http.pcap', 'type_tag': 'pe','import_time':datetime.datetime.now()}}
+    sample = {'sample':{'raw_bytes':open('../../data/pcap/http.pcap', 'rb').read(), 'length':0,
+              'filename': 'http.pcap', 'type_tag': 'pe', 'customer':'MegaCorp', 
+              'import_time':datetime.datetime.now()}}
 
     # Send it through meta
     import meta

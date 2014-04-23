@@ -2,11 +2,10 @@
 ''' URLS worker: Tries to extract URL from strings output '''
 import re
 
-def plugin_info():
-    return {'name':'urls', 'class':'URLS', 'dependencies': ['strings'],
-            'description': 'This worker looks for url patterns in strings output. Output keys: [url_list]'}
-
 class URLS():
+    ''' This worker looks for url patterns in strings output '''
+    dependencies = ['strings']
+
     def __init__(self):
         self.url_match = re.compile(r'http[s]?://[^\s<>"]+|www\.[^\s<>"]+', re.MULTILINE)
 

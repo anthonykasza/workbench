@@ -4,14 +4,11 @@
 import sys
 import pefile
 
-def plugin_info():
-    return {'name':'pe_features', 'class':'PEFileWorker', 'dependencies': ['sample'],
-            'description': 'This worker pulls out a bunch of static features from a PEFile. Output keys: [dense_features, sparse_features]'}
-
 class PEFileWorker():
     ''' Create instance of PEFileWorker class. This class pulls static
         features out of a PE file using the python pefile module.
     '''
+    dependencies = ['sample']
 
     def __init__(self):
         ''' Init method '''

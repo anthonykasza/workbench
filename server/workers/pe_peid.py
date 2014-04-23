@@ -5,15 +5,13 @@ import peutils
 import pefile
 import pkg_resources
 
-def plugin_info():
-    return {'name':'pe_peid', 'class':'PEIDWorker', 'dependencies': ['sample'],
-            'description': 'This worker using the peid database to look for signatures in a PEFile. Output keys: [match_list]'}
-
 # Fixme: We want to load this once per module load
 g_peid_sigs = pkg_resources.resource_string(__name__, 'peid_userdb.txt')
 
 class PEIDWorker():
     ''' Create instance of PEIDWorker class. This class looks up signature for a PE file. '''
+    dependencies = ['sample']
+
     def __init__(self):
         self.peid_sigs = g_peid_sigs
 

@@ -6,11 +6,9 @@ import collections
 import sys
 import workbench_keys
 
-def plugin_info():
-    return {'name':'vt_query', 'class':'VTQuery', 'dependencies': ['meta'],
-            'description': 'This worker query Virus Total, an apikey needs to be provided. Output keys: [positives, total, scan_date]'}
-
 class VTQuery(object):
+    ''' This worker query Virus Total, an apikey needs to be provided '''
+    dependencies = ['meta']
     
     def __init__(self):
         ''' VTQuery Init'''

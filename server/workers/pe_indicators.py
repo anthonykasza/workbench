@@ -28,10 +28,6 @@ import re
 import inspect
 import pefile
 
-def plugin_info():
-    return {'name':'pe_indicators', 'class':'Indicators', 'dependencies': ['sample'],
-            'description': 'This worker uses the static features from the pefile module to look for weird stuff.  Output keys: [indicator_list]'}
-
 class Indicators():
     ''' Create instance of Indicators class. This class uses the
         static features from the pefile module to look for weird stuff.
@@ -39,6 +35,7 @@ class Indicators():
               included as part of the checks that happen when 'execute'
               is called.
     '''
+    dependencies = ['sample']
 
     def __init__(self):
         ''' Init method of the Indicators class. '''

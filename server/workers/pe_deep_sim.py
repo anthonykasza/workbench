@@ -4,11 +4,10 @@ import ssdeep as ssd
 import zerorpc
 from operator import itemgetter
 
-def plugin_info():
-    return {'name':'pe_deep_sim', 'class':'PEDeepSim', 'dependencies': ['meta_deep'],
-            'description': 'This worker computes fuzzy matches between samples with ssdeep. Output keys: [md5, sim_list]'}
-
 class PEDeepSim():
+    ''' This worker computes fuzzy matches between samples with ssdeep '''
+    dependencies = ['meta_deep']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")

@@ -2,12 +2,10 @@
 ''' view worker '''
 import zerorpc
 
-def plugin_info():
-    return {'name':'view', 'class':'View', 'dependencies': ['meta'],
-            'description': 'This worker generates a view for any type of file. Output keys: [this view calls sub-views, see the concrete class (view_pdf for instance)]'}
-
 class View():
     ''' View: Generates a view for any file type '''
+    dependencies = ['meta']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")
@@ -18,7 +16,7 @@ class View():
         md5 = input_data['meta']['md5']
         mime_type = input_data['meta']['mime_type']
         if mime_type == 'application/x-dosexec':
-            result = self.c.work_request('view_pefile', md5)
+            result = self.c.work_request('view_pe', md5)
         elif mime_type == 'application/pdf':
             result = self.c.work_request('view_pdf', md5)
         elif mime_type == 'application/zip':

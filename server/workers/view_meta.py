@@ -1,12 +1,10 @@
 
 ''' view_meta worker '''
 
-def plugin_info():
-    return {'name':'view_meta', 'class':'ViewMetaData', 'dependencies': ['meta'],
-            'description': 'This worker generates a view for meta about a sample. Output keys: [mime_type, encoding, import_time, ssdeep, entropy, file_size]'}
-
 class ViewMetaData():
     ''' ViewMetaData: Generates a view for meta data on the sample '''
+    dependencies = ['meta']
+
     def execute(self, input_data):
 
         # Deprecation unless something more interesting happens with this class

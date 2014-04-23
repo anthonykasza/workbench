@@ -1,17 +1,15 @@
 ''' view_customer worker '''
 import zerorpc
 
-def plugin_info():
-    return {'name':'view_customer', 'class':'ViewCustomer', 'dependencies': ['sample'],
-            'description': 'This worker generates a customer usage view. Output keys: [filename, md5, length, customer, upload_date]'}
-
 class ViewCustomer():
     ''' ViewCustomer: Generates a customer usage view. '''
+    dependencies = ['meta']
+
     def execute(self, input_data):
 
         # View on all the meta data files in the sample
         fields = ['filename', 'md5', 'length', 'customer', 'import_time','type_tag']
-        view = {key:input_data['sample'][key] for key in fields}
+        view = {key:input_data['meta'][key] for key in fields}
         return view
 
 # Unit test: Create the class, the proper input and run the execute() method for a test

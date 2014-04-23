@@ -1,12 +1,10 @@
 
 ''' view_pdffile worker '''
 
-def plugin_info():
-    return {'name':'view_pdf', 'class':'ViewPDFFile', 'dependencies': ['meta', 'strings'],
-            'description': 'This worker generates a view for a PDF File. Output keys: [filename, filetype, mime_type, encoding, import_time, ssdeep, strings]'}
-
 class ViewPDFFile():
     ''' ViewPDFFile: Generates a view for PDF files '''
+    dependencies = ['meta', 'strings']
+
     def execute(self, input_data):
 
         # Just a small check to make sure we haven't been called on the wrong file type

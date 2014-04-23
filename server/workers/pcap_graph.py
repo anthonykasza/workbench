@@ -3,13 +3,10 @@ import zerorpc
 import itertools
 import collections
 
-
-def plugin_info():
-    return {'name':'pcap_graph', 'class':'PcapGraph', 'dependencies': ['pcap_bro'],
-            'description': 'This worker generates a graph from a PCAP. Output keys: [...]'}
-
 class PcapGraph():
-    ''' PcapGraph: Generates a view for a pcap sample (depends on Bro)'''
+    ''' This worker generates a graph from a PCAP (depends on Bro) '''
+    dependencies = ['pcap_bro']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect('tcp://127.0.0.1:4242')

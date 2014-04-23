@@ -253,7 +253,7 @@ class WorkBench():
         for dependency in dependencies:
             dependant_results.update(self._recursive_work_resolver(dependency, md5))
         print 'New work for plugin: %s' % (worker_class)
-        work_results = self.plugin_meta[worker_class]['handler']().execute(dependant_results)
+        work_results = self.plugin_meta[worker_class]['class']().execute(dependant_results)
 
         # Store the results and return
         self._store_work_results(work_results, collection, md5)

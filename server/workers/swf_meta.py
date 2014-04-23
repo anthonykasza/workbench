@@ -4,11 +4,9 @@
 from swf.movie import SWF
 import StringIO
 
-def plugin_info():
-    return {'name':'swf_meta', 'class':'SWFMeta', 'dependencies': ['sample', 'meta'],
-            'description': 'This worker computes a bunch of meta-data about a pcap file. Output keys: [summary, sessions]'}
-
 class SWFMeta():
+    ''' This worker computes a bunch of meta-data about a SWF file '''
+    dependencies = ['sample', 'meta']
 
     def execute(self, input_data):
         

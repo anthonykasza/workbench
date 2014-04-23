@@ -7,6 +7,8 @@ def plugin_info():
 
 class ViewPcap():
     ''' ViewPcap: Generates a pcap view for the sample '''
+    dependencies = ['pcap_meta']
+
     def execute(self, input_data):
 
         # Deprecation unless something more interesting happens with this class

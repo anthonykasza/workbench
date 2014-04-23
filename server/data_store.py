@@ -118,7 +118,14 @@ class DataStore():
     def store_work_results(self, results, collection, md5):
         results['md5'] = md5
         results['__time_stamp'] = datetime.datetime.utcnow()
-        self.db[collection].update({'md5':md5}, self.clean_for_storage(results), True)
+
+        # Fixme: Occasionally a capped collection will not let you update with a 
+        #        larger object, if you have MongoDB 2.6 or above this shouldn't
+        #        really happen, so for now just kinda punting and giving a message.
+        try:
+            self.db[collection].update({'md5':md5}, self.clean_for_storage(results), True)
+        except pymongo.errors.OperationFailure:
+            print 'Not updating exising object in capped collection...(upgrade to mongodb 2.6)'
 
     def get_work_results(self, collection, md5):
         return self.db[collection].find_one({'md5':md5})

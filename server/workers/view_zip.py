@@ -2,12 +2,10 @@
 ''' view_zip worker '''
 import zerorpc
 
-def plugin_info():
-    return {'name':'view_zip', 'class':'ViewZipFile', 'dependencies': ['meta', 'unzip'],
-            'description': 'This worker generates a view for a zip File. Output keys: [filename, filetype, mime_type, payload_md5s, payload_meta]'}
-
 class ViewZipFile():
     ''' ViewZipFile: Generates a view for Zip files '''
+    dependencies = ['meta', 'unzip']
+
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")

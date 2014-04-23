@@ -2,11 +2,10 @@
 ''' Strings worker '''
 import re
 
-def plugin_info():
-    return {'name':'strings', 'class':'Strings', 'dependencies': ['sample'],
-            'description': 'This worker extracts all the strings from any type of file. Output keys: [string_list]'}
-
 class Strings():
+    ''' This worker extracts all the strings from any type of file '''
+    dependencies = ['sample']
+
     def __init__(self):
         self.find_strings = re.compile(r'[^\x00-\x1F\x7F-\xFF]{4,}', re.MULTILINE)
 
