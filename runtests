@@ -3,3 +3,5 @@ echo '<<< Note: Most of these tests require a local server running >>>'
 echo
 cd server/workers
 nosetests --cover-branches --with-coverage --cover-erase --cover-package=.
+cd ../..
+mv server/workers/.coverage .
