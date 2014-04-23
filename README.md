@@ -1,4 +1,6 @@
 <p align="center"><img src="http://raw.github.com/supercowpowers/workbench/master/images/workbench.jpg"></p>
+
+[![Coverage Status](https://coveralls.io/repos/SuperCowPowers/workbench/badge.png)](https://coveralls.io/r/SuperCowPowers/workbench)
 workbench
 =========
 A light-weight and flexible approach to task management, execution and pipelining.
