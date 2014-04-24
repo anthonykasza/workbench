@@ -1,7 +1,7 @@
 echo
-echo '<<< Note: Most of these tests require a local server running >>>'
+echo '<<< Running all tests in server/workers >>>'
 echo
 cd server/workers
-nosetests --cover-branches --with-coverage --cover-erase --cover-package=.
+./runtests
 cd ../..
 mv server/workers/.coverage .
