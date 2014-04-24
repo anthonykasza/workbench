@@ -41,8 +41,15 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
     md5 = c.store_sample('bad_067b392', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
-    output = c.work_request('pe_deep_sim', md5)
+    input_data = c.work_request('meta_deep', md5)
+
+    # Execute the worker
+    worker = PEDeepSim()
+    output = worker.execute(input_data)
+
     print 'SSDeep Similarities: '
     import pprint
     pprint.pprint(output)
