@@ -37,7 +37,7 @@ class PcapGraph():
         stream = self.c.stream_sample(bro_logs['files_log'], None)
         self.files_log_graph(stream)  
 
-        return {'output':'graph_complete'}
+        return {'output':'go to http://localhost:7474/browser and execute this query "match (n)-[r]-() return n,r"'}
 
     def conn_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro conn.log) '''
@@ -118,8 +118,13 @@ def test():
     c = zerorpc.Client(timeout=300)
     c.connect("tcp://127.0.0.1:4242")
 
+    # Generate the input data for this worker
     md5 = c.store_sample('kitchen_boss.pcap', open('../../data/pcap/kitchen_boss.pcap', 'rb').read(), 'pcap')
-    output = c.work_request('pcap_graph', md5)
+    input_data = c.work_request('pcap_bro', md5)
+
+    # Execute the worker
+    worker = PcapGraph()
+    output = worker.execute(input_data)
     print 'PcapGraph: '
     import pprint
     pprint.pprint(output)
