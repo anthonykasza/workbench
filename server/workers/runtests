@@ -2,4 +2,4 @@ echo
 echo '<<< Note: Most of these tests require a local server running >>>'
 echo
 export NOSE_ALL_MODULES=1
-nosetests --cover-branches --with-coverage --cover-erase --cover-package=.
+nosetests --with-coverage --cover-erase --cover-package=.
