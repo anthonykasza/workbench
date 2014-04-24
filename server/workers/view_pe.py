@@ -37,8 +37,19 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
     md5 = c.store_sample('bad_033d91', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
-    output = c.work_request('view_pe', md5)
+    input_data = c.work_request('meta', md5)
+    input_data.update(c.work_request('strings', md5))
+    input_data.update(c.work_request('pe_peid', md5))
+    input_data.update(c.work_request('pe_indicators', md5))
+    input_data.update(c.work_request('pe_classifier', md5))
+    #input_data.update(c.work_request('pe_disass', md5))
+
+    # Execute the worker
+    worker = ViewPEFile()
+    output = worker.execute(input_data)
     print 'ViewPEFile: '
     import pprint
     pprint.pprint(output)

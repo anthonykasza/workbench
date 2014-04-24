@@ -44,20 +44,41 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
     md5 = c.store_sample('bad_067b39', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
-    output = c.work_request('view', md5)
+    input_data = c.work_request('meta', md5)
+
+    # Execute the worker
+    worker = View()
+    output = worker.execute(input_data)
     print '\nView: '
     pprint.pprint(output)
+
+    # Generate the input data for this worker
     md5 = c.store_sample('bad_033d91', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
-    output = c.work_request('view', md5)
+    input_data = c.work_request('meta', md5)
+
+    # Execute the worker
+    output = worker.execute(input_data)
     print '\nView: '
     pprint.pprint(output)
+
+    # Generate the input data for this worker
     md5 = c.store_sample('good.zip', open('../../data/zip/good.zip', 'rb').read(), 'zip')
-    output = c.work_request('view', md5)
+    input_data = c.work_request('meta', md5)
+
+    # Execute the worker
+    output = worker.execute(input_data)
     print '\nView: '
     pprint.pprint(output)
+
+    # Generate the input data for this worker
     md5 = c.store_sample('workbench.py', open('../../server/workbench.py', 'rb').read(), 'python')
-    output = c.work_request('view', md5)
+    input_data = c.work_request('meta', md5)
+
+    # Execute the worker
+    output = worker.execute(input_data)
     print '\nView: '
     pprint.pprint(output)
 

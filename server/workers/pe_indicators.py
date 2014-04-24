@@ -332,17 +332,14 @@ class Indicators():
         else:
             return None
 
+    def check_exports(self):
+        ''' This is just a stub function right now, might be useful later '''
+        exports = ['evil']
+        matching_imports = self._search_for_export_symbols(exports)
+
     #
     # Helper methods
     #
-    def _get_pe_warnings(self):
-        ''' Reflect the warnings given by pe file '''
-        pe_warnings = []
-        for warning in self.pefile_handle.get_warnings():
-            pe_warnings.append({'description':warning,'severity':1, 'category':'PE_WARNINGS'})
-
-        return pe_warnings
-
     def _search_within_pe_warnings(self, matches):
         ''' Just encapsulating a search that takes place fairly often '''
         pattern = '|'.join(re.escape(match) for match in matches)
@@ -355,7 +352,7 @@ class Indicators():
     def _search_for_import_symbols(self, matches):
         ''' Just encapsulating a search that takes place fairly often '''
 
-        # Sanity check (FogBugz 10975)
+        # Sanity check
         if not hasattr(self.pefile_handle,'DIRECTORY_ENTRY_IMPORT'):
             return []
 
@@ -378,14 +375,17 @@ class Indicators():
         pattern = '|'.join(re.escape(match) for match in matches)
         exp = re.compile(pattern)
         symbol_list = []
-        for symbol in self.pefile_handle.DIRECTORY_ENTRY_EXPORT.symbols:
-            if (symbol.name):
-                symbol_list.append(symbol.name.lower())
-        symbol_matches = []
-        for symbol in symbol_list:
-            if (exp.search(symbol)):
-                symbol_matches.append(symbol)
-        return symbol_matches
+        try:
+            for symbol in self.pefile_handle.DIRECTORY_ENTRY_EXPORT.symbols:
+                if (symbol.name):
+                    symbol_list.append(symbol.name.lower())
+            symbol_matches = []
+            for symbol in symbol_list:
+                if (exp.search(symbol)):
+                    symbol_matches.append(symbol)
+            return symbol_matches
+        except AttributeError:
+            return []
 
     def _get_check_methods(self):
         results = []
@@ -399,16 +399,6 @@ class Indicators():
         return results
 
 # Helper functions
-def convertToUTF8(s):
-    if (isinstance(s, unicode)):
-        return s.encode( "utf-8" )
-    try:
-        u = unicode( s, "utf-8" )
-    except:
-        return str(s)
-    utf8 = u.encode( "utf-8" )
-    return utf8
-
 def convertToAsciiNullTerm(s):
     s = s.split('\x00', 1)[0]
     return s.decode('ascii', 'ignore')
@@ -418,6 +408,7 @@ def test():
     ''' pe_indicators.py: Unit test'''
     worker = Indicators()
     print worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
+    print worker.execute({'sample':{'raw_bytes':open('../../data/pe/good/4be7ec02133544cde7a580875e130208', 'rb').read()}})
 
 if __name__ == "__main__":
     test()

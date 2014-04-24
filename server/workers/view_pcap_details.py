@@ -57,8 +57,13 @@ def test():
     c = zerorpc.Client(timeout=300)
     c.connect("tcp://127.0.0.1:4242")
 
+    # Generate the input data for this worker
     md5 = c.store_sample('http.pcap', open('../../data/pcap/winmediaplayer.pcap', 'rb').read(), 'pcap')
-    output = c.work_request('view_pcap_details', md5)
+    input_data = c.work_request('view_pcap', md5)
+
+    # Execute the worker
+    worker = ViewPcapDetails()
+    output = worker.execute(input_data)
     print 'ViewPcapDetails: '
     import pprint
     pprint.pprint(output)

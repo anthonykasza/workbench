@@ -2,8 +2,8 @@
 ''' view_zip worker '''
 import zerorpc
 
-class ViewZipFile():
-    ''' ViewZipFile: Generates a view for Zip files '''
+class ViewZip():
+    ''' ViewZip: Generates a view for Zip files '''
     dependencies = ['meta', 'unzip']
 
     def __init__(self):
@@ -36,9 +36,17 @@ def test():
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
     md5 = c.store_sample('bad.zip', open('../../data/zip/bad.zip', 'rb').read(), 'zip')
-    output = c.work_request('view_zip', md5)
-    print 'ViewZipFile: '
+
+    input_data = c.work_request('meta', md5)
+    input_data.update(c.work_request('unzip', md5))
+
+    # Execute the worker
+    worker = ViewZip()
+    output = worker.execute(input_data)
+    print 'ViewZip: '
     import pprint
     pprint.pprint(output)
 

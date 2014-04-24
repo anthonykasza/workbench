@@ -10,11 +10,16 @@ class VTQuery(object):
     ''' This worker query Virus Total, an apikey needs to be provided '''
     dependencies = ['meta']
     
-    def __init__(self):
+    def __init__(self, apikey=None):
         ''' VTQuery Init'''
 
         # Grab our API key
-        self.apikey = workbench_keys.API_KEYS['vt_apikey']
+        if apikey:
+            self.apikey = apikey
+        else:
+            self.apikey = workbench_keys.API_KEYS['vt_apikey']
+
+        # Make sure key isn't the dummy value
         if self.apikey == '123':
             raise RuntimeError('VTQuery: Invalid api_key, put your VT api key in the config.ini file.')
         
@@ -56,11 +61,22 @@ class VTQuery(object):
 def test():
     ''' vt_query.py: Unit test'''
 
+    # Grab API key from configuration file
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('../config.ini')
+    workbench_conf = config['workbench']
+    vt_api = workbench_conf.get('vt_apikey', '123')
+
     # This worker test requires a local server as it relies heavily on the recursive dependencies
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
     md5 = c.store_sample('bad_067b39', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
-    output = c.work_request('vt_query', md5)
+    input_data = c.work_request('meta', md5)
+
+    # Execute the worker
+    worker = VTQuery(vt_api)
+    output = worker.execute(input_data)
 
     import pprint
     pprint.pprint(output)

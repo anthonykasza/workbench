@@ -322,6 +322,7 @@ def test():
     ''' pe_features.py: Unit test'''
     worker = PEFileWorker()
     print worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232','rb').read()}})
+    print worker.execute({'sample':{'raw_bytes':open('../../data/pe/good/4be7ec02133544cde7a580875e130208', 'rb').read()}})
 
 if __name__ == "__main__":
     test()
