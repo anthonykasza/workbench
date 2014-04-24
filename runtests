@@ -3,5 +3,9 @@ echo '<<< Running all tests in server/workers >>>'
 echo
 cd server/workers
 ./runtests
-cd ../..
-mv server/workers/.coverage .
+mv .coverage ../../.coverage.workers
+cd ../../clients
+./runtests
+mv .coverage ../.coverage.clients
+cd ..
+coverage combine
