@@ -110,7 +110,7 @@ def main():
 
 
 def test():
-    ''' pe_peid test '''
+    ''' pe_sim_graph test '''
     main()
 
 if __name__ == '__main__':
