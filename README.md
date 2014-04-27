@@ -145,7 +145,9 @@ Unit testing and sub-pipeline tests
 $ cd workbench/server/workers
 $ ./runtests
 </pre>
-**Note:** If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16. Using brew on Mac:
+**Note 1:** If you look at the test() method of the workers they are setup in a way so that most of the code executes locally. This is so the test can be stepped through with a debugger and 'coverage' gets a proper line count. You should not emulate the test code for general usage of workbench (see clients for better examples of general usage).
+
+**Note 2:** If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16. Using brew on Mac:
 
     $ cd /usr/local
     $ brew versions libmagic # Copy the line for version 5.16, then paste (for me it looked like the following line)
@@ -167,6 +169,8 @@ Workers should adhere to the following naming conventions (not enforced)
 - A worker that is new/experimental should start with 'x_' (x_pcap_razor.py)
 - A 'view'(worker that handles 'presentation') should start with 'view_'
   - Examples: view_log_meta.py, view_pdf.py, view_pe.py
+  
+
 
 ### Open Issues:
 * Your Mom
@@ -200,10 +204,8 @@ If you'd like to play with the alpha indexing functionality you can install elas
 - Mike Sconzo for general awesomeness.
 - David Dorsey for lots of great discussions and insights.
 - Eric Chavez for helping with installation challenges and docs.
-- Click Security: seriously best company I've ever worked for (super hugs to all specially Kit).
-- My dog Noodles (and no she's not dead.. just sleeping)
+- Click Security: Super hugs to all specially Kit :).
 
-  ![](https://raw.github.com/supercowpowers/workbench/master/images/noodles_sm.jpg)
 
 <br><br><br>
 ### Deprecated Stuff
