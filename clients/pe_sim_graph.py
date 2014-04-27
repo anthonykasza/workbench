@@ -103,7 +103,7 @@ def main():
     results = c.batch_work_request('pe_deep_sim', {'type_tag': 'pe'})
 
     # Store the ssdeep sims as relationships
-    for result in results:
+    for result in list(results):
         for sim_info in result['sim_list']:
             c.add_rel(result['md5'], sim_info['md5'], 'ssdeep')
 
