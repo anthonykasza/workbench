@@ -10,6 +10,7 @@ from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import inspect
+from contextlib import contextmanager
 
 class PluginManager(FileSystemEventHandler):
 
@@ -19,14 +20,14 @@ class PluginManager(FileSystemEventHandler):
         self.plugin_callback = plugin_callback
 
         # First go through the existing python files in the plugin directory
-        plugin_path = os.path.realpath(plugin_dir)
+        self.plugin_path = os.path.realpath(plugin_dir)
         sys.path.append(plugin_dir)
         for f in [os.path.join(plugin_dir, child) for child in os.listdir(plugin_dir)]:
             self.add_plugin(f)
 
         # Now setup dynamic monitoring of the plugins directory
         observer = Observer()
-        observer.schedule(self, path=plugin_path)
+        observer.schedule(self, path=self.plugin_path)
         observer.start()
 
     def on_created(self, event):
@@ -71,12 +72,32 @@ class PluginManager(FileSystemEventHandler):
                 mod_time = datetime.utcfromtimestamp(os.path.getmtime(f))
                 self.plugin_callback(plugin_info, mod_time)
 
+    def run_test(self, handler):
+        previousDir = os.getcwd()
+        os.chdir(self.plugin_path)
+        try:
+            handler.test()
+            return True
+        except AttributeError:
+            print 'Failure for plugin: %s' % (handler.__name__)
+            print 'Plugin file is required to have a test() method that runs'
+            return False
+        finally:
+            os.chdir(previousDir)
+
     def validate(self, handler):
 
         # First does the handler have a class (worker)
         if not inspect.getmembers(handler, inspect.isclass):
             print 'Failure for plugin: %s' % (handler.__name__)
             print 'Plugin is required to be a class'
+            return None
+
+        # Second each module is required to have a test method
+        methods = [name for name,value in inspect.getmembers(handler, callable)]
+        if 'test' not in methods:
+            print 'Failure for plugin: %s' % (handler.__name__)
+            print 'Plugin is required to be have a test named test()'
             return None
 
         # Fixme: This is a bit silly, here we iterate through the classes found
