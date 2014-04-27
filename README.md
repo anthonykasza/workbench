@@ -57,54 +57,27 @@ Most of the dependencies are for the server.
 #### Yara
 - brew install yara (or port or aptget or aptitude..)
 
+#### IPython Notebooks (optional):
+* brew install freetype
+* brew install gfortran
 
-##### Python Dependencies:
-You don't really have to install pip but you should, it's significantly better than easy_install.
+#### Python Dependencies:
+Install pip, it's significantly better than easy_install.
+
+* easy_install pip
 
 Also setting up a python virtualenv is the way to go.. if you don't do that than you'll have to add 'sudo' in front of these commands
 
-* easy_install pip
-* pip install -U zerorpc
+* cd workbench
+* pip install -r requirements.txt
+* Go have a large cup of coffee..
+
+    Note: If you get a bunch of clang errors about unknown arguments or 'cannot link a simple C program' add the following FLAGs:
     
-    Note: If you get a bunch of clang errors about unknown arguments:
     ```
-    $ pip uninstall zerorpc
     $ export CFLAGS=-Qunused-arguments
     $ export CPPFLAGS=-Qunused-arguments
-    $ pip install zerorpc
     ```
-* pip install -U pymongo
-* pip install -U watchdog
-* pip install -U pefile
-* pip install -U cython
-* pip install -U ssdeep
-* pip install -U filemagic
-* pip install -U pyswf
-* pip install -U yara
-* pip install -U nose
-* pip install -U yourmom --superfat
-
-
-##### If you want to run the Notebooks:
-
-* pip install -U pandas
-* pip install -U ipython
-* pip install -U jinja2
-* pip install -U tornado
-* brew install freetype
-* pip install -U matplotlib
-* brew install gfortran
-* pip install -U scipy (can take a long time :)
-* pip install -U scikit-learn
-
-Note: If when installing these you get an error like: 
-
-    RuntimeError: Broken toolchain: cannot link a simple C program or
-    clang: error: unknown argument: '-mno-fused-madd'
-do the same trick as above:
-
-    $ export CFLAGS=-Qunused-arguments
-    $ export CPPFLAGS=-Qunused-arguments
 
 ### Running It:
 #### Server (localhost or server machine)
@@ -214,7 +187,7 @@ If you'd like to play with the alpha indexing functionality you can install elas
 - brew install scapy
 - brew install pypcap
   - If you get error about pyrex.distutils:
-    - pip install pyrex
+    - pip install pyrex (or if this doesn't work do easy_install pyrex)
     - and then retry the 'brew install pypcap' 
   - Still not working try pyrex from scatch [pyrex](http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/)
 <br><br>
