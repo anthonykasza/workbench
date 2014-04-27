@@ -29,24 +29,21 @@ class JSONMetaData():
 def test():
     ''' json_meta.py: Unit test'''
 
-    # Grab a sample
-    sample = {'sample':{'raw_bytes':open('../../data/json/generated.json', 'rb').read(), 'length':0,
-              'filename': 'generated.json', 'type_tag': 'json', 'customer':'MegaCorp',
-              'import_time':datetime.datetime.now()}}
+    # This worker test requires a local server as it relies heavily on the recursive dependencies
+    import zerorpc
+    c = zerorpc.Client()
+    c.connect("tcp://127.0.0.1:4242")
 
-    # Send it through meta
-    import meta
-    input_worker = meta.MetaData()
-    _raw_output = input_worker.execute(sample)
-    wrapped_output = {'meta':_raw_output}
+    # Generate the input data for this worker
+    md5 = c.store_sample('unknown.swf', open('../../data/json/generated.json', 'rb').read(), 'json')
+    input_data = c.get_sample(md5)
+    input_data.update(c.work_request('meta', md5))
 
-    # Now join up the inputs
-    wrapped_output.update(sample)
-
+    # Execute the worker
     worker = JSONMetaData()
-
+    output = worker.execute(input_data)
     import pprint
-    pprint.pprint(worker.execute(wrapped_output))
+    pprint.pprint(output)
 
 if __name__ == "__main__":
     test()
