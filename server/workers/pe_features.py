@@ -10,7 +10,7 @@ class PEFileWorker():
     '''
     dependencies = ['sample']
 
-    def __init__(self):
+    def __init__(self, verbose=False):
         ''' Init method '''
 
         # Dense feature list: this only functions to ensure that all of these
@@ -23,7 +23,7 @@ class PEFileWorker():
         self._sparse_features = None
 
         # Verbose
-        self._verbose = False
+        self._verbose = verbose
 
         # Warnings handle
         self._warnings = []
@@ -149,7 +149,6 @@ class PEFileWorker():
         try:
             extracted_dense['generated_check_sum'] = pe.generate_checksum()
         except ValueError:
-            #self._logger.logMessage('warning', 'pe.generate_check_sum() threw an exception, setting to 0!')
             extracted_dense['generated_check_sum'] = 0
         if (len(pe.sections) > 0):
             extracted_dense['virtual_address']     = pe.sections[0].VirtualAddress
@@ -284,16 +283,14 @@ class PEFileWorker():
             if (extracted_dense[feature] == feature_not_found_flag):
                 extracted_dense[feature] = feature_default_value
                 if (self._verbose):
-                    self.log('info: Feature: %s not found! Setting to %d' % (feature, feature_default_value))
-                    self._warnings.append('Feature: %s not found! Setting to %d' % (feature, feature_default_value))
+                    print 'info: Feature: %s not found! Setting to %d' % (feature, feature_default_value)
 
         # Issue a warning if the feature isn't found
         for feature in self._sparse_feature_list:
             if (extracted_sparse[feature] == feature_not_found_flag):
                 extracted_sparse[feature] = [] # For sparse data probably best default
                 if (self._verbose):
-                    self.log('info: Feature: %s not found! Setting to %d' % (feature, feature_default_value))
-                    self._warnings.append('Feature: %s not found! Setting to %d' % (feature, feature_default_value))
+                    print 'info: Feature: %s not found! Setting to %d' % (feature, feature_default_value)
 
 
         # Set the features for the class var
@@ -320,9 +317,10 @@ def convertToAsciiNullTerm(s):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_features.py: Unit test'''
-    worker = PEFileWorker()
+    worker = PEFileWorker(verbose=True)
     print worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232','rb').read()}})
     print worker.execute({'sample':{'raw_bytes':open('../../data/pe/good/4be7ec02133544cde7a580875e130208', 'rb').read()}})
+    print worker.execute({'sample':{'raw_bytes':'invalid pe file to hit exception code'}})
 
 if __name__ == "__main__":
     test()
