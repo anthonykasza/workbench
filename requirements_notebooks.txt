@@ -1,0 +1,6 @@
+jinja2
+tornado
+ipython
+pandas
+scipy
+scikit-learn
