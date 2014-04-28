@@ -132,8 +132,17 @@ Full pipeline tests (clients exercise a larger set of components)
 $ cd workbench/clients
 $ ./runtests
 </pre>
+#### Coverage:
+If you want to run the test code coverage properly you'll need to create a ~/.noserc file with these options:
 
-### Notes:
+    [nosetests]
+    with-coverage=1
+    cover-erase=1
+    cover-inclusive=1
+    cover-min-percentage=90
+    cover-package=.
+
+### Conventions:
 Workers should adhere to the following naming conventions (not enforced)
 
 - If you work on a specific type of sample than start the name with that
@@ -145,7 +154,7 @@ Workers should adhere to the following naming conventions (not enforced)
 
 
 ### Open Issues:
-* Your Mom
+* Dorsey's Mom
 
 ### Tools/Optional:
 #### Robomongo
