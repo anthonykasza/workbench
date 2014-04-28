@@ -300,5 +300,9 @@ def main():
     s.bind('tcp://0.0.0.0:4242')
     s.run()
 
+# Test that just calls main
+def test():
+    main()
+
 if __name__ == '__main__':
     main()
