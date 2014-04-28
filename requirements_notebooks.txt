@@ -1,6 +1,7 @@
 jinja2
 tornado
 ipython
-pandas
+numpy
 scipy
 scikit-learn
+pandas
