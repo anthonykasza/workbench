@@ -63,7 +63,7 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 
 * cd workbench
 * pip install -r requirements.txt
-* Go have a large cup of coffee..
+* Go have a large cup of coffee...
 
     Note: If you get a bunch of clang errors about unknown arguments or 'cannot link a simple C program' add the following FLAGs:
     
@@ -76,6 +76,7 @@ Also setting up a python virtualenv is the way to go.. if you don't do that than
 * brew install freetype
 * brew install gfortran
 * pip install -r requirements_notebooks.txt
+* Go to Starbucks...
 
 
 ### Running It:
