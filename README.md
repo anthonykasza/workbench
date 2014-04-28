@@ -48,11 +48,11 @@ Most of the dependencies are for the server.
 - brew install mongodb (or port or aptget or aptitude..)
 - Note: Follow instructions posted at the end of install to start mongodb at login. (Recommended)
 
-** Bro IDS: ** brew install bro (or port or aptget or aptitude..)
+** Bro IDS: **brew install bro (or port or aptget or aptitude..)
 
-** LibMagic: ** brew install libmagic (or port or aptget or aptitude..)
+** LibMagic: **brew install libmagic (or port or aptget or aptitude..)
 
-** Yara: ** brew install yara (or port or aptget or aptitude..)
+** Yara: **brew install yara (or port or aptget or aptitude..)
 
 #### Python Dependencies:
 Install pip, it's significantly better than easy_install.
