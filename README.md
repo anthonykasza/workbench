@@ -18,8 +18,6 @@ git clone https://github.com/supercowpowers/workbench.git
 ### Project Description
 The workbench project takes the workbench metaphore seriously. It's a platform that allows you to do work; it provides a flat work surface that supports your ability to combine tools (python modules) together. In general a workbench never constrains you (oh no! you can't use those 3 tools together!) on the flip side it doesn't hold your hand either. Using the workbench software is a bit like using a Lego set, you can put the pieces together however you want AND adding your own pieces is super easy!.
 
-If Workbench had political leanings they would be **'libertarian minarchist'**.
-
 * **Loosely coupled**
   * No inheritance relationships
   * No knowledge of data structures
@@ -37,12 +35,10 @@ If Workbench had political leanings they would be **'libertarian minarchist'**.
   * The system works by passing references from one worker to another so there is NO benefit to large granularity workers.
   * It's super easy to have a worker that aggregates information from a set of workers, the opposite (breaking apart a large code chunk into smaller units) is almost never easy.
   * Pull just what you want, workers and views (which are just workers) can be selectve about exactly which fields get pulled from which workers.
-  * We cannot emphasize enough how AMAZINGLY useful small granularity is, if you don't agree you are stupid and ugly.
 
 
 ### Workbench Dependencies:
-If the dependencies below are 'scary' than workbench probably isn't for you..
-Most of the dependencies are for the server.
+There are quite a few dependencies but workbench does a lot of kewl stuff, so it will be worth it :).
   
 #### MongoDB
 - brew install mongodb (or port or aptget or aptitude..)
