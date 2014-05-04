@@ -31,7 +31,15 @@ class VTQuery(object):
         md5 = input_data['meta']['md5']
         response = requests.get('https://www.virustotal.com/vtapi/v2/file/report', 
                                 params={'apikey':self.apikey,'resource':md5, 'allinfo':1})
-        vt_output = response.json()
+
+        # Make sure we got a json blob back
+        try:
+            vt_output = response.json()
+        except ValueError, error:
+            vt_err = 'VirusTotal Query Error, no valid response... past per min quota?'
+            print vt_err
+            output = {'vt_error': vt_err}
+            return output
         
         # Just pull some of the fields
         output = {field:vt_output[field] for field in vt_output.keys() if field not in self.exclude}
