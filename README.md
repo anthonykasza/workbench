@@ -50,6 +50,8 @@ There are quite a few dependencies but workbench does a lot of kewl stuff, so it
 
 **Yara:** brew install yara (or port or aptget or aptitude..)
 
+#### Python 2.7:
+Workbench has only been tested with python 2.7. If you'd like to volunteer to add support for other versions please do so. :)
 #### Python Dependencies:
 Install pip, it's significantly better than easy_install.
 
