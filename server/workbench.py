@@ -267,11 +267,15 @@ class WorkBench():
 def main():
     import os
     import argparse
-
-    # Load the configuration file
+    import shutil
     import configparser
+
+    # Load the configuration file (might not exist, so copy the default over)
+    if not os.path.exists('config.ini'):
+        shutil.copyfile('default.ini', 'config.ini')
     config = configparser.ConfigParser()
     config.read('config.ini')
+
     workbench_conf = config['workbench']
 
     # Pull configuration settings (or set defaults if don't exist)

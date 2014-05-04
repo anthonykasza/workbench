@@ -40,3 +40,6 @@ nosetests.xml
 
 # Mac DS files
 .DS_Store
+
+# Local Configuration file
+config.ini
