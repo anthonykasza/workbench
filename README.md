@@ -14,7 +14,7 @@ A light-weight and flexible approach to task management, execution and pipelinin
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Generator_Pipelines.ipynb">Generator Pipelines Notebook</a>**
 
 <br><br>
-<img src="images/warning.jpg" width=100 align="left">
+<img src="http://raw.github.com/supercowpowers/workbench/master/images/warning.jpg" width=100 align="left">
 ### Pull the repository
 <pre>
 git clone https://github.com/supercowpowers/workbench.git
