@@ -112,7 +112,7 @@ class PcapGraph():
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
-    ''' pcap_graph.py: Unit test'''
+    ''' pcap_graph.py: Unit test '''
     # This worker test requires a local server as it relies on the recursive dependencies
     import zerorpc
     c = zerorpc.Client(timeout=300)
