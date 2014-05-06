@@ -31,6 +31,11 @@ class NeoDB():
         # Add the relationship
         n1_ref = self.graph_db.get_indexed_node('Node', 'md5', source_md5)
         n2_ref = self.graph_db.get_indexed_node('Node', 'md5', target_md5)
+
+        # Sanity check
+        if not n1_ref or not n2_ref:
+            print 'Cannot add relationship between unfound nodes: %s --> %s' % (source_md5, target_md5)
+            return
         path = neo4j.Path(n1_ref, rel, n2_ref)
         path.get_or_create(self.graph_db)
 
