@@ -3,13 +3,11 @@
 [![Coverage Status](https://coveralls.io/repos/SuperCowPowers/workbench/badge.png)](https://coveralls.io/r/SuperCowPowers/workbench)
 workbench
 =========
-A light-weight and flexible approach to task management, execution and pipelining.
-
-
+Open source python framework for light-weight task management, execution and pipelining.
 
 ### Why should I give a rat's pitootie about workbench?
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Workbench_Demo.ipynb">Workbench Demo</a>**
-* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/PCAP_DriveBy.ipynb">WIP: PCAP DriveBy Analysis</a>**
+* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/PCAP_DriveBy.ipynb">PCAP DriveBy Analysis</a>**
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/PE_SimGraph.ipynb">Using Neo4j for PE File Sim Graph</a>**
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Generator_Pipelines.ipynb">Generator Pipelines Notebook</a>**
 
@@ -43,6 +41,17 @@ The workbench project takes the workbench metaphore seriously. It's a platform t
   * It's super easy to have a worker that aggregates information from a set of workers, the opposite (breaking apart a large code chunk into smaller units) is almost never easy.
   * Pull just what you want, workers and views (which are just workers) can be selectve about exactly which fields get pulled from which workers.
 
+### Top Bounties
+- [Bro Scripts for OWASP Top 10 (1000 Cow Points)](/../../issues/27)
+- [Python based SWF Decompiler/Decompression (500 Cow Points)](/../../issues/28)
+- [Deep PDF Static Analysis (500 Cow Points)](/../../issues/29)
+- [Worker for Cab File extraction (100 Cow Points)](/../../issues/30)
+
+### FAQ about Cow Points
+- Are Cow Points worth anything? : No
+- Will Cow Points ever be worth anything? : Maybe
+- Are Cow Points officially tracked? : Yes
+- Will I receive good Karma for Cow Points? : Yes
 
 ### Workbench Dependencies:
 There are quite a few dependencies but workbench does a lot of kewl stuff, so it will be worth it :).
