@@ -1,6 +1,6 @@
 <p align="center"><img src="http://raw.github.com/supercowpowers/workbench/master/images/workbench.jpg"></p>
 
-[![Coverage Status](https://coveralls.io/repos/SuperCowPowers/workbench/badge.png)](https://coveralls.io/r/SuperCowPowers/workbench)
+[![Build Status](https://travis-ci.org/SuperCowPowers/workbench.svg?branch=develop)](https://travis-ci.org/SuperCowPowers/workbench)[![Coverage Status](https://coveralls.io/repos/SuperCowPowers/workbench/badge.png)](https://coveralls.io/r/SuperCowPowers/workbench)
 workbench
 =========
 Open source python framework for light-weight task management, execution and pipelining.
