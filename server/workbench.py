@@ -204,7 +204,7 @@ class WorkBench():
 
     def worker_info(self):
         ''' List the current worker plugins. '''
-        return {plugin['name']:plugin['description'] for name, plugin in self.plugin_meta.iteritems()}
+        return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
 
     def get_datastore_uri(self):
         ''' Gives you the current datastore URL '''
