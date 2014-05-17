@@ -34,6 +34,10 @@ def test():
     file_list = [os.path.join(data_dir, child) for child in os.listdir(data_dir)]
     pcap_md5s = []
     for filename in file_list:
+
+        # Skip OS generated files
+        if '.DS_Store' in filename: continue        
+
         with open(filename,'rb') as f:
             pcap_md5s.append(c.store_sample(filename, f.read(), 'pcap'))
 
