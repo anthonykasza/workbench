@@ -1,17 +1,16 @@
 
 ''' PE Classify worker (just a placeholder, not a real classifier at this point) '''
 
-import json
-import pymongo
-import gridfs
-import hashlib
-import datetime
+class PEFileClassify(object):
+    ''' This worker classifies PEFiles as Evil or Benign  (TOY not a real classifier at this point)'''
+    dependencies = ['pe_features', 'pe_indicators']
 
-class PEFileClassify():
-    ''' This worker classifies PEFiles as Evil or Benign '''
-    dependencies = ['pe_features','pe_indicators']
+    def __init__(self):
+        ''' Initialization '''
+        self.output = {'classification':'Benign'}
 
     def execute(self, input_data):
+        ''' This worker classifies PEFiles as Evil or Benign  (TOY not a real classifier at this point)'''
 
         # In general you'd do something different with these two outputs
         # for this toy example will just smash them in a big string
@@ -21,9 +20,9 @@ class PEFileClassify():
 
         flag = 'Reported Checksum does not match actual checksum'
         if flag in all_input:
-            return {'classification':'Evil!'}
-        else:
-            return {'classification':'Benign'}
+            self.output['classification'] = 'Evil!'
+
+        return self.output
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
