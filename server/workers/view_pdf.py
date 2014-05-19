@@ -32,13 +32,13 @@ def test():
     # Execute the worker (unit test)
     worker = ViewPDFFile()
     output = worker.execute(input_data)
-    print 'ViewPDFFile: '
+    print '\n<<< Unit Test >>>'
     import pprint
     pprint.pprint(output)
     
     # Execute the worker (server test)
     output = c.work_request('view_pdf', md5)
-    print 'ViewPDFFile: '
+    print '\n<<< Server Test >>>'
     import pprint
     pprint.pprint(output)
 
