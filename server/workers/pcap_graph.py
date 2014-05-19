@@ -8,12 +8,16 @@ class PcapGraph():
     dependencies = ['pcap_bro']
 
     def __init__(self):
+        ''' Initialization '''
         self.c = zerorpc.Client()
         self.c.connect('tcp://127.0.0.1:4242')
         self.mime_types = ['application/x-dosexec', 'application/pdf', 'application/zip',
                            'application/jar', 'application/vnd.ms-cab-compressed',
                            'application/x-shockwave-flash']
         self.uid_uri_map = collections.defaultdict(list)
+
+        # In general this is heavy handed but seems better to do than not do
+        self.c.clear_graph_db()
 
     def execute(self, input_data):
         ''' Okay this worker is going build graphs from PCAP Bro output logs '''

@@ -129,6 +129,10 @@ class WorkBench():
             'rel' is the name of the relationship 'contains' or whatever. '''
         self.neo_db.add_rel(source_md5, target_md5, rel)
 
+    def clear_graph_db(self):
+        ''' Clear the Graph Database of all nodes and edges '''
+        self.neo_db.clear_db()
+
     # Make a work request for an existing stored sample
     def work_request(self, worker_class, md5, subkeys=None):
         ''' Make a work request for an existing stored sample '''

@@ -39,6 +39,13 @@ class NeoDB():
         path = neo4j.Path(n1_ref, rel, n2_ref)
         path.get_or_create(self.graph_db)
 
+    def clear_db(self):
+        ''' Clear the Graph Database of all nodes and edges '''
+        query = neo4j.CypherQuery(self.graph_db, 'match (n)-[r]-() delete n,r')
+        query.run()
+        query = neo4j.CypherQuery(self.graph_db, 'match n delete n')
+        query.run()
+
 class NeoDBStub():
 
     def __init__(self,  uri='http://localhost:7474/db/data'):
@@ -52,6 +59,9 @@ class NeoDBStub():
         print 'NeoDB Stub getting called...'
 
     def add_rel(self, source_md5, target_md5, rel):
+        print 'NeoDB Stub getting called...'
+
+    def clear_db(self):
         print 'NeoDB Stub getting called...'
 
 try:
