@@ -23,7 +23,20 @@ def test():
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
+
+    # Generate input for the worker
     md5 = c.store_sample('bad_067b392', open('../../data/pdf/bad/067b3929f096768e864f6a04f04d4e54', 'rb').read(), 'pdf')
+    input_data = c.work_request('meta', md5)
+    input_data.update(c.work_request('strings', md5))
+
+    # Execute the worker (unit test)
+    worker = ViewPDFFile()
+    output = worker.execute(input_data)
+    print 'ViewPDFFile: '
+    import pprint
+    pprint.pprint(output)
+    
+    # Execute the worker (server test)
     output = c.work_request('view_pdf', md5)
     print 'ViewPDFFile: '
     import pprint
