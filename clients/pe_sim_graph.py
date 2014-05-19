@@ -38,7 +38,6 @@ def jaccard_sim(features1, features2):
         return len(set1.intersection(set2))/float(max(len(set1),len(set2)))
     except ZeroDivisionError:
         return 0
-    #return len(set1.intersection(set2))/float(len(set1.union(set2)))
 
 def main():
 

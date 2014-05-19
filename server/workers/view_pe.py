@@ -45,7 +45,7 @@ def test():
     input_data.update(c.work_request('pe_peid', md5))
     input_data.update(c.work_request('pe_indicators', md5))
     input_data.update(c.work_request('pe_classifier', md5))
-    #input_data.update(c.work_request('pe_disass', md5))
+    # input_data.update(c.work_request('pe_disass', md5))
 
     # Execute the worker
     worker = ViewPEFile()

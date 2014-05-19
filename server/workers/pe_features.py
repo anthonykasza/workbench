@@ -199,7 +199,7 @@ class PEFileWorker():
                         symbol_info = 'ordinal=' + str(symbol.ordinal)
                     else:
                         symbol_info = 'name=' + symbol.name
-                        #symbol_info['hint'] = symbol.hint
+                        # symbol_info['hint'] = symbol.hint
                     if symbol.bound:
                         symbol_info += ' bound=' + str(symbol.bound)
 
