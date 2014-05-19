@@ -1,7 +1,12 @@
 echo
+echo '<<< Starting workbench server >>>'
+echo
+cd server
+python workbench.py &
+echo
 echo '<<< Running all tests in server/workers >>>'
 echo
-cd server/workers
+cd workers
 ./runtests
 mv .coverage ../../.coverage.workers
 cd ../../clients

@@ -2,6 +2,7 @@
 ''' Workbench: Open Source Security Framework '''
 
 import zerorpc
+import zmq
 import gevent.monkey
 gevent.monkey.patch_all(thread=False) # Monkey!
 import logging
@@ -302,11 +303,14 @@ def main():
     database = args.database if (args.database) else database
 
     # Spin up Workbench ZeroRPC
-    print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
-    store_args = {'uri': datastore_uri, 'database': database, 'capped':capped}
-    s = zerorpc.Server(WorkBench(store_args=store_args), name='workbench')
-    s.bind('tcp://0.0.0.0:4242')
-    s.run()
+    try:
+        store_args = {'uri': datastore_uri, 'database': database, 'capped':capped}
+        s = zerorpc.Server(WorkBench(store_args=store_args), name='workbench')
+        s.bind('tcp://0.0.0.0:4242')
+        s.run()
+        print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
+    except zmq.error.ZMQError:
+        print '\n<<<Error>>>: Could not start ZMQ server (might already be running?)\n'
 
 # Test that just calls main
 def test():
