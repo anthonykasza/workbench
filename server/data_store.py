@@ -40,8 +40,7 @@ class DataStore():
         sample_info['md5'] = hashlib.md5(sample_bytes).hexdigest()
 
         # Check if sample already exists
-        sample = self.db[self.sample_collection].find_one({'md5':sample_info['md5']})
-        if (sample):
+        if self.have_sample(sample_info['md5']):
             print 'Sample %s: already exists in DataStore' % (sample_info['md5'])
             return sample_info['md5']
 
@@ -95,25 +94,31 @@ class DataStore():
                     data[k] = [self.clean_for_storage(item) for item in data[k]]
         return data
 
-    def get_sample(self, md5_or_filename):
-        sample_info = self.db[self.sample_collection].find_one({'md5':md5_or_filename})
+    def get_sample(self, md5):
+        ''' Get the sample from the data store '''
+        sample_info = self.db[self.sample_collection].find_one({'md5':md5})
         if (not sample_info):
-            sample_info = self.db[self.sample_collection].find_one({'filename':md5_or_filename})
-            if (not sample_info):
-                raise Exception('Sample %s not found in Data Store' % (md5_or_filename))
-        grid_fs_id = sample_info['__grid_fs']
-        sample_info = self.clean_for_serialization(sample_info)
-        sample_info.update({'raw_bytes':self.gridfs_handle.get(grid_fs_id).read()})
-        return sample_info
+            raise Exception('Sample %s not found in Data Store' % (md5))
 
-    def have_sample(self, md5_or_filename):
-        # Try both md5 and filename
-        info = self.db[self.sample_collection].find_one({'md5':md5_or_filename})
-        if info: return info['md5']
-        else:
-            info = self.db[self.sample_collection].find_one({'filename':md5_or_filename})
-            if info: return info['md5']
-        return None
+        # Get the raw bytes from GridFS (note: this could fail)
+        try:
+            grid_fs_id = sample_info['__grid_fs']
+            sample_info = self.clean_for_serialization(sample_info)
+            sample_info.update({'raw_bytes':self.gridfs_handle.get(grid_fs_id).read()})
+            return sample_info
+        except gridfs.errors.CorruptGridFile:
+            raise Exception('Sample %s not found in Data Store' % (md5))
+
+    def have_sample(self, md5):
+        ''' See if the data store has this sample '''
+
+        # The easiest thing is to simply get the sample and if that
+        # succeeds than return True, else return False
+        try:
+            self.get_sample(md5)
+            return True
+        except:
+            return False
 
     def store_work_results(self, results, collection, md5):
         results['md5'] = md5
@@ -145,13 +150,12 @@ class DataStore():
         # Get all the collections in the workbench database
         all_c = self.db.collection_names()
         all_c.remove('system.indexes')
-        all_c.remove('fs.chunks')
 
         # Convert collections to capped if desired
         if (self.capped):
             size = self.capped * pow(1024, 2)  # self.capped MegaBytes per collection
             for collection in all_c:
-                if collection == 'samples': # Samples collection get 10x allocation
+                if collection == 'fs.chunks': # Chunks collection get 10x allocation
                     self.db.command('convertToCapped', collection, size=size*10)
                 else:
                     self.db.command('convertToCapped', collection, size=size)
@@ -160,8 +164,8 @@ class DataStore():
         for collection in all_c:
             self.db[collection].ensure_index('md5')
 
-        # Add another index for filename on the samples collection
-        self.db[self.sample_collection].ensure_index('filename')
+        # Add required index for fs.chunks
+        self.db['fs.chunks'].create_index( [('files_id',pymongo.ASCENDING), ('n',pymongo.ASCENDING)] )
 
     # Helper functions
     def to_unicode(self, s):
