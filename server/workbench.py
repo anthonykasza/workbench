@@ -60,9 +60,9 @@ class WorkBench():
         sample = self.data_store.get_sample(md5_or_filename)
         return {'sample': sample} if sample else None
 
-    def has_sample(self, md5_or_filename):
+    def have_sample(self, md5):
         ''' Do we have this sample in the DataStore. '''
-        return self.data_store.have_sample(md5_or_filename)
+        return self.data_store.have_sample(md5)
 
     @zerorpc.stream
     def stream_sample(self, md5_or_filename, max_rows):
@@ -193,7 +193,7 @@ class WorkBench():
         ''' Store a sample set (which is just a list of md5s).
             Note: All md5s must already be in the data store. '''
         for md5 in md5_list:
-            if not self.has_sample(md5):
+            if not self.have_sample(md5):
                 raise RuntimeError('All samples in the sample set must be in the datastore: %s (not found)' % (md5))
         set_md5 = hashlib.md5(str(md5_list)).hexdigest()
         self._store_work_results({'md5_list':md5_list}, 'sample_sets', set_md5)
