@@ -4,7 +4,7 @@ import ssdeep as ssd
 import zerorpc
 from operator import itemgetter
 
-class PEDeepSim():
+class PEDeepSim(object):
     ''' This worker computes fuzzy matches between samples with ssdeep '''
     dependencies = ['meta_deep']
 

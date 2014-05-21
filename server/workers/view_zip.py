@@ -2,7 +2,7 @@
 ''' view_zip worker '''
 import zerorpc
 
-class ViewZip():
+class ViewZip(object):
     ''' ViewZip: Generates a view for Zip files '''
     dependencies = ['meta', 'unzip']
 

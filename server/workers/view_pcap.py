@@ -2,7 +2,7 @@
 import zerorpc
 import itertools
 
-class ViewPcap():
+class ViewPcap(object):
     ''' ViewPcap: Generates a view for a pcap sample (depends on Bro)'''
     dependencies = ['pcap_bro', 'pcap_meta']
 

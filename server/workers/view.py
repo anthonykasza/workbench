@@ -2,7 +2,7 @@
 ''' view worker '''
 import zerorpc
 
-class View():
+class View(object):
     ''' View: Generates a view for any file type '''
     dependencies = ['meta']
 

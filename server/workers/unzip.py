@@ -4,7 +4,7 @@ import StringIO
 import zipfile
 import zerorpc
 
-class Unzip():
+class Unzip(object):
     ''' This worker unzips a zipped file '''
     dependencies = ['sample']
 

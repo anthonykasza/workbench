@@ -3,7 +3,7 @@ import zerorpc
 import itertools
 import collections
 
-class PcapGraph():
+class PcapGraph(object):
     ''' This worker generates a graph from a PCAP (depends on Bro) '''
     dependencies = ['pcap_bro']
 
