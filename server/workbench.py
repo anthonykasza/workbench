@@ -94,7 +94,7 @@ class WorkBench():
             generator = (row for row in json.loads(raw_bytes)[:max_rows])
             return generator
         else:
-            raise Exception('Cannot stream file %s with type_tag:%s' % (md5_or_filename, type_tag))
+            raise Exception('Cannot stream file %s with type_tag:%s' % (md5, type_tag))
 
     # Index methods
     def index_sample(self, md5, index_name):

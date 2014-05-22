@@ -1,12 +1,10 @@
 
 import zerorpc
 import os, sys
-import pprint
 import argparse
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import tempfile
-import contextlib
 import shutil
 import subprocess
 
@@ -33,9 +31,7 @@ class TCPDumpToWorkbench(object):
     def __init__(self):
         ''' Initialization '''
 
-        # Spin up workbench
-        #self.c = zerorpc.Client()
-        #self.c.connect("tcp://127.0.0.1:4242")
+        # Setup directories
         self.orig_dir = os.getcwd()
         self.temp_dir = None
 
@@ -61,7 +57,7 @@ class TCPDumpToWorkbench(object):
         os.chdir(self.temp_dir)
 
         # Spin up the directory watcher
-        watcher = DirWatcher(self.temp_dir, self.file_created)
+        DirWatcher(self.temp_dir, self.file_created)
 
         # Spin up tcpdump
         self.subprocess_manager(self.tcpdump_cmd)
@@ -88,7 +84,7 @@ class TCPDumpToWorkbench(object):
         storage_name = "streaming_pcap" + str(self.pcap_index)
         print filename, storage_name
         with open(filename,'rb') as file:
-            pcap_md5 = self.c.store_sample(storage_name, file.read(), 'pcap')
+            self.c.store_sample(storage_name, file.read(), 'pcap')
         self.pcap_index += 1
 
         # Close workbench client
@@ -104,8 +100,8 @@ class TCPDumpToWorkbench(object):
             print 'standard output of subprocess: %s' % out
         if err:
             raise Exception('%s\ntcpdump had output on stderr: %s' % (exec_args, err))
-        if sp.returncode:
-            raise Exception('%s\ntcpdump had returncode: %d' % (exec_args, sp.returncode))                
+        if self.tcpdump_process.returncode:
+            raise Exception('%s\ntcpdump had returncode: %d' % (exec_args, self.tcpdump_process.returncode))
 
     def __exit__(self, type, value, traceback):
         ''' Class Cleanup '''
@@ -129,6 +125,8 @@ def main():
     args = parser.parse_args()
     port = str(args.port)
     server = str(args.server)
+
+    # Spin up workbench client
     c = zerorpc.Client()
     c.connect(server+':'+port)
 
