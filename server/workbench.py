@@ -55,21 +55,21 @@ class WorkBench():
         ''' Store a sample into the DataStore. '''
         return self.data_store.store_sample(filename, input_bytes, type_tag)
 
-    def get_sample(self, md5_or_filename):
+    def get_sample(self, md5):
         ''' Get a sample from the DataStore. '''
-        sample = self.data_store.get_sample(md5_or_filename)
-        return {'sample': sample} if sample else None
+        sample = self.data_store.get_sample(md5)
+        return {'sample': sample}
 
     def have_sample(self, md5):
         ''' Do we have this sample in the DataStore. '''
         return self.data_store.have_sample(md5)
 
     @zerorpc.stream
-    def stream_sample(self, md5_or_filename, max_rows):
+    def stream_sample(self, md5, max_rows):
         ''' Stream the sample by giving back a generator '''
 
         # Grab the sample and it's raw bytes
-        sample = self.data_store.get_sample(md5_or_filename)
+        sample = self.data_store.get_sample(md5)
         raw_bytes = sample['raw_bytes']
 
         # Figure out the type of file to be streamed
@@ -194,7 +194,7 @@ class WorkBench():
             Note: All md5s must already be in the data store. '''
         for md5 in md5_list:
             if not self.have_sample(md5):
-                raise RuntimeError('All samples in the sample set must be in the datastore: %s (not found)' % (md5))
+                raise RuntimeError('Sample not found all items in sample_set must be in the datastore: %s (not found)' % (md5))
         set_md5 = hashlib.md5(str(md5_list)).hexdigest()
         self._store_work_results({'md5_list':md5_list}, 'sample_sets', set_md5)
         return set_md5
@@ -287,7 +287,8 @@ def main():
     server_uri = workbench_conf.get('server_uri', 'localhost')
     datastore_uri = workbench_conf.get('datastore_uri', 'localhost')
     database = workbench_conf.get('database', 'workbench')
-    capped = int(workbench_conf.get('capped', 10))
+    worker_cap = int(workbench_conf.get('worker_cap', 10))
+    samples_cap = int(workbench_conf.get('samples_cap', 100))
 
     # API keys just get tossed into API_KEYS dict
     workbench_keys.API_KEYS['vt_apikey'] = workbench_conf.get('vt_apikey', '123')
@@ -304,7 +305,7 @@ def main():
 
     # Spin up Workbench ZeroRPC
     try:
-        store_args = {'uri': datastore_uri, 'database': database, 'capped':capped}
+        store_args = {'uri': datastore_uri, 'database': database, 'worker_cap':worker_cap, 'samples_cap':samples_cap}
         s = zerorpc.Server(WorkBench(store_args=store_args), name='workbench')
         s.bind('tcp://0.0.0.0:4242')
         s.run()
