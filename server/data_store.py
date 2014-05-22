@@ -10,10 +10,11 @@ import bson
 
 class DataStore():
 
-    def __init__(self, uri='mongodb://localhost/workbench', database='workbench', capped=0):
+    def __init__(self, uri='mongodb://localhost/workbench', database='workbench', worker_cap=0, samples_cap=0):
 
         self.sample_collection = 'samples'
-        self.capped = capped
+        self.worker_cap = worker_cap
+        self.samples_cap = samples_cap
 
         # Get connection to mongo
         self.uri = uri
@@ -44,6 +45,17 @@ class DataStore():
             print 'Sample %s: already exists in DataStore' % (sample_info['md5'])
             return sample_info['md5']
 
+        # Print info
+        print 'Sample Storage: %.2f out of %.2f MB' % (self.sample_storage_size(), self.samples_cap)
+
+        # Check if we need to run periodic operations
+        if (self.sample_storage_size() > self.samples_cap):
+            self.periodic_ops()
+
+        # Check if we need to expire anything
+        self.expire_data()
+
+        # Okay start populating the sample for adding to the data store
         # Filename, length, import time and type_tag
         sample_info['filename'] = filename
         sample_info['length'] = len(sample_bytes)
@@ -54,14 +66,36 @@ class DataStore():
         import random
         sample_info['customer'] = random.choice(['Mega Corp','Huge Inc','BearTron','Dorseys Mom'])
 
-        # Goes into the sample collection and GridFS
-
         # Push the file into the MongoDB GridFS
         print 'Storing Sample into Mongo GridFS'
         sample_info['__grid_fs'] = self.gridfs_handle.put(sample_bytes)
         self.db[self.sample_collection].insert(sample_info)
 
+        # Return the sample md5
         return sample_info['md5']
+
+    def sample_storage_size(self):
+        ''' Get the storage size of the samples storage collection '''
+        coll_stats = self.db.command('collStats', 'fs.chunks')
+        sample_storage_size = coll_stats['size']/1024.0/1024.0
+        return sample_storage_size
+
+    def expire_data(self):
+        ''' Expire data within the samples collection '''
+
+        # Do we need to start deleting stuff?
+        while (self.sample_storage_size() > self.samples_cap):
+
+            # This should return the 'oldest' record in samples
+            record = self.db[self.sample_collection].find().sort('import_time',pymongo.ASCENDING).limit(1)[0]
+
+            # Delete it
+            print 'Deleting sample: %s (%.2f MB)...' % (record['md5'], record['length']/1024.0/1024.0)
+            self.db[self.sample_collection].remove({'md5': record['md5']})
+            self.gridfs_handle.delete(record['__grid_fs'])
+
+            # Print info
+            print 'Sample Storage: %.2f out of %.2f MB' % (self.sample_storage_size(), self.samples_cap)
 
     def clean_for_serialization(self, data):
         if isinstance(data, dict):
@@ -98,7 +132,7 @@ class DataStore():
         ''' Get the sample from the data store '''
         sample_info = self.db[self.sample_collection].find_one({'md5':md5})
         if (not sample_info):
-            raise Exception('Sample %s not found in Data Store' % (md5))
+            raise RuntimeError('Sample not found: %s ' % (md5))
 
         # Get the raw bytes from GridFS (note: this could fail)
         try:
@@ -107,7 +141,9 @@ class DataStore():
             sample_info.update({'raw_bytes':self.gridfs_handle.get(grid_fs_id).read()})
             return sample_info
         except gridfs.errors.CorruptGridFile:
-            raise Exception('Sample %s not found in Data Store' % (md5))
+            # If we don't have the gridfs files, delete the entry from samples
+            self.db[self.sample_collection].update({'md5':md5}, {'md5':None})
+            raise RuntimeError('Sample not found: %s ' % (md5))
 
     def have_sample(self, md5):
         ''' See if the data store has this sample '''
@@ -140,7 +176,7 @@ class DataStore():
             cursor = self.db[self.sample_collection].find({'type_tag':type_tag},{'md5':1, '_id':0})
         else:
             cursor = self.db[self.sample_collection].find({},{'md5':1, '_id':0})
-        return [ match.values()[0] for match in cursor]
+        return [ match.values()[0] for match in cursor ]
 
     def periodic_ops(self):
         ''' Run periodic operations on the the data store
@@ -149,23 +185,28 @@ class DataStore():
 
         # Get all the collections in the workbench database
         all_c = self.db.collection_names()
-        all_c.remove('system.indexes')
+
+        # Remove collections that we don't want to cap
+        try:
+            all_c.remove('system.indexes')
+            all_c.remove('fs.chunks')
+            all_c.remove('fs.files')
+            all_c.remove(self.sample_collection)
+        except ValueError:
+            pass
 
         # Convert collections to capped if desired
-        if (self.capped):
-            size = self.capped * pow(1024, 2)  # self.capped MegaBytes per collection
+        if (self.worker_cap):
+            size = self.worker_cap * pow(1024, 2)  # MegaBytes per collection
             for collection in all_c:
-                if collection == 'fs.chunks': # Chunks collection get 10x allocation
-                    self.db.command('convertToCapped', collection, size=size*10)
-                else:
-                    self.db.command('convertToCapped', collection, size=size)
+                self.db.command('convertToCapped', collection, size=size)
 
         # Loop through all collections ensuring they have an index on MD5s
         for collection in all_c:
             self.db[collection].ensure_index('md5')
 
-        # Add required index for fs.chunks
-        self.db['fs.chunks'].create_index( [('files_id',pymongo.ASCENDING), ('n',pymongo.ASCENDING)] )
+        # Add required index for samples collection
+        self.db[self.sample_collection].create_index('import_time')
 
     # Helper functions
     def to_unicode(self, s):
