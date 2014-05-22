@@ -8,16 +8,18 @@ class MetaDeepData():
     ''' This worker computes deeper meta-data '''
     dependencies = ['sample', 'meta']
 
+    def __init__(self):
+        ''' Initialization '''
+        self.meta = {}
+
     def execute(self, input_data):
         raw_bytes = input_data['sample']['raw_bytes']
-        sha1 = hashlib.sha1(raw_bytes).hexdigest()
-        sha256 = hashlib.sha256(raw_bytes).hexdigest()
-        ssdeep = ssd.hash(raw_bytes)
-        entropy = self._entropy(raw_bytes)
-        output = {name:value for name,value in locals().iteritems()
-                if name not in ['self', 'input_data','raw_bytes']}
-        output.update(input_data['meta'])
-        return output
+        self.meta['sha1'] = hashlib.sha1(raw_bytes).hexdigest()
+        self.meta['sha256'] = hashlib.sha256(raw_bytes).hexdigest()
+        self.meta['ssdeep'] = ssd.hash(raw_bytes)
+        self.meta['entropy'] = self._entropy(raw_bytes)
+        self.meta.update(input_data['meta'])
+        return self.meta
 
     def _entropy(self, s):
         # Grabbed this snippet from Rosetta Code (rosettacode.org)
