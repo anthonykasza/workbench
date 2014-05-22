@@ -45,10 +45,19 @@ def test():
     set_md5 = c.store_sample_set(pcap_md5s)
     print set_md5
 
-    # Execute the worker
-    output = c.work_request('pcap_set_bro', set_md5)
+    # Execute the worker (unit test)
+    worker = PcapSetBro()
+    output = worker.execute({'sample_sets':{'md5_list':pcap_md5s}})
+    print '\n<<< Unit Test >>>'
     import pprint
     pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('pcap_set_bro', set_md5)
+    print '\n<<< Server Test >>>'
+    import pprint
+    pprint.pprint(output)
+
 
 if __name__ == "__main__":
     test()
