@@ -39,9 +39,16 @@ def test():
     input_data = c.get_sample(md5)
     input_data.update(c.work_request('meta', md5))
 
-    # Execute the worker
+    # Execute the worker (unit test)
     worker = JSONMetaData()
     output = worker.execute(input_data)
+    print '\n<<< Unit Test >>>'
+    import pprint
+    pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('json_meta', md5)
+    print '\n<<< Server Test >>>'
     import pprint
     pprint.pprint(output)
 

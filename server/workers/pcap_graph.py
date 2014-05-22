@@ -126,10 +126,16 @@ def test():
     md5 = c.store_sample('kitchen_boss.pcap', open('../../data/pcap/kitchen_boss.pcap', 'rb').read(), 'pcap')
     input_data = c.work_request('pcap_bro', md5)
 
-    # Execute the worker
+    # Execute the worker (unit test)
     worker = PcapGraph()
     output = worker.execute(input_data)
-    print 'PcapGraph: '
+    print '\n<<< Unit Test >>>'
+    import pprint
+    pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('pcap_graph', md5)
+    print '\n<<< Server Test >>>'
     import pprint
     pprint.pprint(output)
 
