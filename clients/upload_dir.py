@@ -1,7 +1,5 @@
 import zerorpc
 import os
-import pprint
-import hashlib
 import argparse
 
 
@@ -34,7 +32,7 @@ def main():
         with open(path,'rb') as f:
             filename = os.path.basename(path)
             md5 = c.store_sample(filename, f.read(), args.tag)
-            print 'Filename: %s uploaded... with type_tag: %s' % (filename, args.tag)
+            print 'Filename %s uploaded: type_tag %s, md5 %s' % (filename, args.tag, md5)
 
 def test():
     ''' file_upload test '''
