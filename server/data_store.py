@@ -28,7 +28,7 @@ class DataStore():
         # Run the periodic operations
         self.periodic_ops()
 
-        print 'WorkBench DataStore connected: %s' % (uri)
+        print 'WorkBench DataStore connected: %s:%s' % (self.uri, self.db_name)
 
     def get_uri(self):
         return self.uri
