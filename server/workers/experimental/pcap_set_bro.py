@@ -4,14 +4,14 @@ import pcap_bro
 
 class PcapSetBro(pcap_bro.PcapBro):
     ''' This worker runs Bro scripts on a set of pcap files '''
-    dependencies = ['sample_sets']
+    dependencies = ['sample_set']
 
     def pcap_inputs(self, input_data):
         
         # For PcapSetBro the input_data is expected to be set of md5s
         # Setup handles for the set of md5s.
         filenames = []
-        for md5 in input_data['sample_sets']['md5_list']:
+        for md5 in input_data['sample_set']['md5_list']:
             sample = self.c.get_sample(md5)['sample']
             raw_bytes = sample['raw_bytes']
             filename = os.path.basename(sample['filename'])
@@ -47,7 +47,7 @@ def test():
 
     # Execute the worker (unit test)
     worker = PcapSetBro()
-    output = worker.execute({'sample_sets':{'md5_list':pcap_md5s}})
+    output = worker.execute({'sample_set':{'md5_list':pcap_md5s}})
     print '\n<<< Unit Test >>>'
     import pprint
     pprint.pprint(output)
