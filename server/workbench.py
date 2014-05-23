@@ -196,15 +196,15 @@ class WorkBench():
             if not self.have_sample(md5):
                 raise RuntimeError('Sample not found all items in sample_set must be in the datastore: %s (not found)' % (md5))
         set_md5 = hashlib.md5(str(md5_list)).hexdigest()
-        self._store_work_results({'md5_list':md5_list}, 'sample_sets', set_md5)
+        self._store_work_results({'md5_list':md5_list}, 'sample_set', set_md5)
         return set_md5
 
     def get_sample_set(self, md5):
-        return self._get_work_results('sample_sets', md5)
+        return self._get_work_results('sample_set', md5)
 
     @zerorpc.stream
     def stream_sample_set(self, md5):
-        for md5 in self._get_work_results('sample_sets', md5)['md5_list']:
+        for md5 in self._get_work_results('sample_set', md5)['md5_list']:
             yield md5
 
     def worker_info(self):
@@ -234,9 +234,10 @@ class WorkBench():
 
         # Looking for the sample or sample_set?
         if (worker_class == 'sample'):
-            return self.get_sample(md5)
-        if (worker_class == 'sample_sets'):
-            return self.get_sample_set(md5)
+            try:
+                return self.get_sample(md5)
+            except RuntimeError:
+                return self.get_sample_set(md5)
 
         # Do I actually have this plugin? (might have failed, etc)
         if (worker_class not in self.plugin_meta):
