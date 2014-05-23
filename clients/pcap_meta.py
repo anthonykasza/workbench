@@ -24,7 +24,7 @@ def main():
 
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'pcap')
-            results = c.work_request('view_pcap_meta', md5)
+            results = c.work_request('view_pcap', md5)
             print 'Filename: %s results:' % (filename)
             pprint.pprint(results)
 

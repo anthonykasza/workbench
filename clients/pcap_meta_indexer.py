@@ -25,10 +25,10 @@ def main():
         with open(filename,'rb') as file:
             md5 = c.store_sample(filename, file.read(), 'pcap')
 
-            # Index the view_pcap_meta output (notice we can ask for any worker output)
+            # Index the view_pcap output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
-            c.index_worker_output('view_pcap_meta', md5, 'view_pcap_meta')
-            print '\n\n<<< PCAP Meta Data: %s Indexed>>>' % (filename)
+            c.index_worker_output('view_pcap', md5, 'view_pcap')
+            print '\n\n<<< PCAP Data: %s Indexed>>>' % (filename)
 
 def test():
     ''' pcap_meta_indexer test '''
