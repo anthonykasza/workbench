@@ -6,6 +6,7 @@ import gridfs
 import hashlib
 import datetime
 import bson
+import time
 
 
 class DataStore():
@@ -26,6 +27,7 @@ class DataStore():
         self.gridfs_handle = gridfs.GridFS(self.db)
 
         # Run the periodic operations
+        self.last_ops_run = time.time()
         self.periodic_ops()
 
         print 'WorkBench DataStore connected: %s:%s' % (self.uri, self.db_name)
@@ -45,12 +47,8 @@ class DataStore():
             print 'Sample %s: already exists in DataStore' % (sample_info['md5'])
             return sample_info['md5']
 
-        # Print info
-        print 'Sample Storage: %.2f out of %.2f MB' % (self.sample_storage_size(), self.samples_cap)
-
-        # Check if we need to run periodic operations
-        if (self.sample_storage_size() > self.samples_cap):
-            self.periodic_ops()
+        # Run the periodic operations
+        self.periodic_ops()
 
         # Check if we need to expire anything
         self.expire_data()
@@ -67,9 +65,11 @@ class DataStore():
         sample_info['customer'] = random.choice(['Mega Corp','Huge Inc','BearTron','Dorseys Mom'])
 
         # Push the file into the MongoDB GridFS
-        print 'Storing Sample into Mongo GridFS'
         sample_info['__grid_fs'] = self.gridfs_handle.put(sample_bytes)
         self.db[self.sample_collection].insert(sample_info)
+
+        # Print info
+        print 'Sample Storage: %.2f out of %.2f MB' % (self.sample_storage_size(), self.samples_cap)
 
         # Return the sample md5
         return sample_info['md5']
@@ -182,6 +182,14 @@ class DataStore():
         ''' Run periodic operations on the the data store
             Things like making sure collections are capped
             and indexes are set up '''
+
+        # Only run every 5 minutes
+        if (time.time() - self.last_ops_run) < 300:
+            return
+
+        # Reset last ops run
+        self.last_ops_run = time.time()
+        print 'Running Periodic Ops'
 
         # Get all the collections in the workbench database
         all_c = self.db.collection_names()
