@@ -22,7 +22,7 @@ class View(object):
         elif mime_type == 'application/zip':
             result = self.c.work_request('view_zip', md5)
         elif mime_type == 'application/vnd.tcpdump.pcap':
-            result = self.c.work_request('view_pcap_meta', md5)
+            result = self.c.work_request('view_pcap', md5)
         elif mime_type == 'application/x-shockwave-flash':
             result = self.c.work_request('swf_meta', md5)
         else:

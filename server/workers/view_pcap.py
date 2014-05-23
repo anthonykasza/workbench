@@ -4,16 +4,15 @@ import itertools
 
 class ViewPcap(object):
     ''' ViewPcap: Generates a view for a pcap sample (depends on Bro)'''
-    dependencies = ['pcap_bro', 'pcap_meta']
+    dependencies = ['pcap_bro']
 
     def __init__(self):
         self.c = zerorpc.Client()
         self.c.connect("tcp://127.0.0.1:4242")
 
     def execute(self, input_data):
-
-        # Loop around the output keys for pcap_meta and pcap_bro output
-        view = {key: input_data['pcap_meta'][key] for key in input_data['pcap_meta'].keys()}
+        ''' Execute '''
+        view = {}
 
         # Grab logs from Bro
         view['bro_logs'] = {key: input_data['pcap_bro'][key] for key in input_data['pcap_bro'].keys() if '_log' in key}
@@ -39,7 +38,7 @@ def test():
     # Generate the input data for this worker
     md5 = c.store_sample('http.pcap', open('../../data/pcap/winmediaplayer.pcap', 'rb').read(), 'pcap')
     input_data = c.work_request('pcap_bro', md5)
-    input_data.update(c.work_request('pcap_meta', md5))
+    input_data.update(c.work_request('meta', md5))
 
     # Execute the worker
     worker = ViewPcap()
