@@ -53,7 +53,7 @@ class SWFMeta():
 def test():
     ''' swf_meta.py: Unit test'''
     
-    # This worker test requires a local server as it relies heavily on the recursive dependencies
+    # This worker test requires a local server running
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")

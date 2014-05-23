@@ -37,7 +37,7 @@ class PEDeepSim(object):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_deep_sim.py: Unit test '''
-    # This worker test requires a local server as it relies heavily on the recursive dependencies
+    # This worker test requires a local server running
     import zerorpc
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")

@@ -33,7 +33,7 @@ class ViewZip(object):
 def test():
     ''' view_zip.py: Unit test'''
 
-    # This worker test requires a local server as it relies heavily on the recursive dependencies
+    # This worker test requires a local server running
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
 
