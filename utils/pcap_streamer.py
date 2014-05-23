@@ -45,6 +45,9 @@ class TCPDumpToWorkbench(object):
         # finished, sent to workbench and then deleted
         self.on_deck = None
 
+        # Report the tcpdump command being used
+        print 'Capturing with: %s' % self.tcpdump_cmd
+
     def __enter__(self):
         ''' Return self (with statement idiom) '''
         return self
@@ -105,7 +108,7 @@ class TCPDumpToWorkbench(object):
 
     def __exit__(self, type, value, traceback):
         ''' Class Cleanup '''
-        print 'TCP Dumper.. Cleaning up :)'
+        print '\nTCP Dumper.. Cleaning up :)'
 
         # Terminate the tcpdump process
         self.tcpdump_process.kill()
@@ -125,6 +128,9 @@ def main():
     args = parser.parse_args()
     port = str(args.port)
     server = str(args.server)
+
+    # Print out informative message
+    print 'Dumping PCAPs to Workbench server. Use ^C to stop this script...'
 
     # Spin up workbench client
     c = zerorpc.Client()
