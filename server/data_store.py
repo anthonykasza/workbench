@@ -76,9 +76,12 @@ class DataStore():
 
     def sample_storage_size(self):
         ''' Get the storage size of the samples storage collection '''
-        coll_stats = self.db.command('collStats', 'fs.chunks')
-        sample_storage_size = coll_stats['size']/1024.0/1024.0
-        return sample_storage_size
+        try:
+            coll_stats = self.db.command('collStats', 'fs.chunks')
+            sample_storage_size = coll_stats['size']/1024.0/1024.0
+            return sample_storage_size
+        except pymongo.errors.OperationFailure:
+            return 0
 
     def expire_data(self):
         ''' Expire data within the samples collection '''
@@ -177,6 +180,11 @@ class DataStore():
         else:
             cursor = self.db[self.sample_collection].find({},{'md5':1, '_id':0})
         return [ match.values()[0] for match in cursor ]
+
+    def clear_db(self):
+        ''' Drop the entire workbench database (spooky stuff!)'''
+        print 'Dropping the entire workbench database... Whee!'
+        self.c.drop_database(self.db_name)
 
     def periodic_ops(self):
         ''' Run periodic operations on the the data store
