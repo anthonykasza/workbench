@@ -3,7 +3,7 @@
 
 
 class ViewPEFile():
-    ''' ViewPEFile: Generates a view for PE files '''
+    ''' Generates a high level summary view for PE files that incorporates a large set of workers '''
     dependencies = ['meta', 'strings', 'pe_peid', 'pe_indicators', 'pe_classifier', 'pe_disass']
 
     def execute(self, input_data):
