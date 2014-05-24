@@ -28,7 +28,7 @@ class DirWatcher(FileSystemEventHandler):
 class TCPDumpToWorkbench(object):
     ''' This is a very specific tcpdump to workbench client. '''
 
-    def __init__(self):
+    def __init__(self, listen=False):
         ''' Initialization '''
 
         # Setup directories
@@ -36,7 +36,10 @@ class TCPDumpToWorkbench(object):
         self.temp_dir = None
 
         # This command will create two files workbench.pcap[0-1]
-        self.tcpdump_cmd = 'tcpdump -i en0 -C 1 -s 0 -k NP -W 2 -w workbench.pcap'
+        if (listen):
+            self.tcpdump_cmd = 'tcpdump -I -P -i en0 -C 1 -s 0 -k NP -W 2 -w workbench.pcap'
+        else:
+            self.tcpdump_cmd = 'tcpdump -i en0 -C 1 -s 0 -k NP -W 2 -w workbench.pcap'
         self.tcpdump_process = None
         self.pcap_index = 0
 
@@ -125,9 +128,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--port', type=int, default=4242, help='port used by workbench server')
     parser.add_argument('-s', '--server', type=str, default='tcp://127.0.0.1', help='location of workbench server')
+    parser.add_argument('-l', '--listen', dest='listen', default=False, action='store_true', help='listen/monitor mode')
     args = parser.parse_args()
     port = str(args.port)
     server = str(args.server)
+    listen = args.listen
 
     # Print out informative message
     print 'Dumping PCAPs to Workbench server. Use ^C to stop this script...'
@@ -138,7 +143,7 @@ def main():
 
     # Spin up our tcpdumper
     try:
-        with TCPDumpToWorkbench() as dumper:
+        with TCPDumpToWorkbench(listen) as dumper:
             dumper.execute()
     except KeyboardInterrupt:
         print 'Exiting...'
