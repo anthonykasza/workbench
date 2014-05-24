@@ -11,6 +11,7 @@ import datetime
 import StringIO
 import json
 import hashlib
+import inspect
 
 ''' Add bro to path for bro_log_reader '''
 import sys
@@ -52,16 +53,34 @@ class WorkBench():
 
     # Data storage methods
     def store_sample(self, filename, input_bytes, type_tag):
-        ''' Store a sample into the DataStore. '''
+        ''' Store a sample into the DataStore.
+            Args:
+                filename: name of the file (used purely as meta data not for lookup)
+                input_bytes: the actual bytes of the sample e.g. f.read()
+                type_tag: ('pe','pcap','pdf','json','swf', or ...)
+            Returns:
+                the md5 of the sample
+        '''
         return self.data_store.store_sample(filename, input_bytes, type_tag)
 
     def get_sample(self, md5):
-        ''' Get a sample from the DataStore. '''
+        ''' Get a sample from the DataStore.
+            Args:
+                md5: the md5 of the sample
+            Returns:
+                A dictionary of meta data about the sample which includes
+                a ['raw_bytes'] key that contains the raw bytes.
+        '''
         sample = self.data_store.get_sample(md5)
         return {'sample': sample}
 
     def have_sample(self, md5):
-        ''' Do we have this sample in the DataStore. '''
+        ''' Do we have this sample in the DataStore.
+            Args:
+                md5: the md5 of the sample
+            Returns:
+                True or False
+        '''
         return self.data_store.have_sample(md5)
 
     @zerorpc.stream
@@ -207,10 +226,6 @@ class WorkBench():
         for md5 in self._get_work_results('sample_set', md5)['md5_list']:
             yield md5
 
-    def worker_info(self):
-        ''' List the current worker plugins. '''
-        return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
-
     def get_datastore_uri(self):
         ''' Gives you the current datastore URL '''
         return self.data_store.get_uri()
@@ -269,6 +284,42 @@ class WorkBench():
         if k in d: return d[k]
         submatch = [d[_k][k] for _k in d if k in d[_k]]
         return submatch[0] if submatch else None
+
+    def help(self):
+        ''' Returns help commands '''
+
+        help_str =  '\nWelcome to Workbench: Here\'s a list of help commands:'
+        help_str += '\n\t - Run c.help_basic() for beginner help'
+        help_str += '\n\t - Run c.help_commands() for command help'
+        help_str += '\n\t - Run c.help_workers() for a list of workers'
+        help_str += '\n\t - Run c.help_advanced() for advanced help'
+        help_str += '\n\nSee https://github.com/SuperCowPowers/workbench for more information'
+        return help_str
+
+    def help_basic(self):
+        ''' Returns basic help commands '''
+        help_str =  '\nWorkbench: Getting started...'
+        help_str += '\n\t - 1) $ c.help_commands() for a list of commands'
+        help_str += '\n\t - 2) $ print c.help_commands()[\'store_sample\']'
+        help_str += '\n\t - 3) $ c.help_workers() for a list a workers'
+        help_str += '\n\t - 4) $ print c.help_commands()[\'meta\']'
+        help_str += '\n\t - 5) $ my_md5 = c.store_sample(...)'
+        help_str += '\n\t - 6) $ output = c.work_request(\'meta\', my_md5)'
+        return help_str
+
+    def help_commands(self):
+        ''' Returns Workbench commands and docstrings '''
+        return {name:meth.__doc__ for name, meth in inspect.getmembers(self, predicate=inspect.ismethod) if not name.startswith('_')}
+
+    def help_workers(self):
+            ''' List the current worker plugins '''
+            return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
+
+    def help_advanced(self):
+        help_str =  '\nWoo! Advanced... <fixme: add documentation for advanced> :)'
+        help_str += '\n\nSee https://github.com/SuperCowPowers/workbench for more information'
+        return help_str
+
 
 def main():
     import os
