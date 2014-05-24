@@ -153,6 +153,10 @@ class WorkBench():
         ''' Clear the Graph Database of all nodes and edges '''
         self.neo_db.clear_db()
 
+    def clear_db(self):
+        ''' Clear the database of all samples and worker output '''
+        self.data_store.clear_db()
+
     # Make a work request for an existing stored sample
     def work_request(self, worker_class, md5, subkeys=None):
         ''' Make a work request for an existing stored sample '''
