@@ -182,7 +182,7 @@ class DataStore():
         return [ match.values()[0] for match in cursor ]
 
     def clear_db(self):
-        ''' Drop the entire workbench database (spooky stuff!)'''
+        ''' Drop the entire workbench database... Whee! '''
         print 'Dropping the entire workbench database... Whee!'
         self.c.drop_database(self.db_name)
 
