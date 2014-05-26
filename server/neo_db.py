@@ -15,26 +15,26 @@ class NeoDB():
             print 'Neo4j connection failed! Is your Neo4j server running?'
             exit(1)
 
-    def add_node(self, md5, name, labels):
+    def add_node(self, node_id, name, labels):
         ''' Add the node with name and labels '''
-        node = self.graph_db.get_or_create_indexed_node('Node', 'md5', md5, {'md5':md5, 'name':name})
+        node = self.graph_db.get_or_create_indexed_node('Node', 'node_id', node_id, {'node_id':node_id, 'name':name})
         node.add_labels(*labels)
 
-    def has_node(self, md5):
+    def has_node(self, node_id):
         ''' Add the node with name and labels '''
-        return True if self.graph_db.get_indexed_node('Node', 'md5', md5) else False
+        return True if self.graph_db.get_indexed_node('Node', 'node_id', node_id) else False
 
-    def add_rel(self, source_md5, target_md5, rel):
+    def add_rel(self, source_node_id, target_node_id, rel):
         ''' Add a relationship: source, target must already exist (see add_node)
             'rel' is the name of the relationship 'contains' or whatever. '''
 
         # Add the relationship
-        n1_ref = self.graph_db.get_indexed_node('Node', 'md5', source_md5)
-        n2_ref = self.graph_db.get_indexed_node('Node', 'md5', target_md5)
+        n1_ref = self.graph_db.get_indexed_node('Node', 'node_id', source_node_id)
+        n2_ref = self.graph_db.get_indexed_node('Node', 'node_id', target_node_id)
 
         # Sanity check
         if not n1_ref or not n2_ref:
-            print 'Cannot add relationship between unfound nodes: %s --> %s' % (source_md5, target_md5)
+            print 'Cannot add relationship between unfound nodes: %s --> %s' % (source_node_id, target_node_id)
             return
         path = neo4j.Path(n1_ref, rel, n2_ref)
         path.get_or_create(self.graph_db)
@@ -52,13 +52,13 @@ class NeoDBStub():
         print 'NeoDB Stub connected: %s' % (str(uri))
         print 'Install Neo4j and python bindings for Neo4j. See README.md'
 
-    def add_node(self, md5, name, labels):
+    def add_node(self, node_id, name, labels):
         print 'NeoDB Stub getting called...'
 
-    def has_node(self, md5):
+    def has_node(self, node_id):
         print 'NeoDB Stub getting called...'
 
-    def add_rel(self, source_md5, target_md5, rel):
+    def add_rel(self, source_node_id, target_node_id, rel):
         print 'NeoDB Stub getting called...'
 
     def clear_db(self):
