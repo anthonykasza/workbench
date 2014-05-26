@@ -26,10 +26,6 @@ class PcapBro(object):
         else:
             raise Exception('pcap_bro could not find bro directory under: %s' % os.getcwd())
 
-        # Construct absolute paths to bro scripts
-        # script_paths = [os.path.abspath(bro_script) for bro_script in glob.glob('*.bro')]
-        # return script_paths
-
     def setup_pcap_inputs(self, input_data):
         ''' Write the PCAPs to disk for Bro to process and return the pcap filenames '''
 
@@ -101,8 +97,14 @@ class PcapBro(object):
                     raw_bytes = extracted_file.read()
                     my_output['extracted_files'].append(self.c.store_sample(output_name, raw_bytes, type_tag))
 
-            # Return my output
-            return my_output
+        # Construct back-pointers to the PCAPs
+        if 'sample' in input_data:
+            my_output['pcaps'] = [input_data['sample']['md5']]
+        else:
+            my_output['pcaps'] = input_data['sample_set']['md5_list']
+
+        # Return my output
+        return my_output
 
     def subprocess_manager(self, exec_args):
         try:
