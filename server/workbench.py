@@ -1,10 +1,9 @@
 
 ''' Workbench: Open Source Security Framework '''
 
+from gevent import monkey; monkey.patch_all(thread=False, subprocess=True) # Monkey!
 import zerorpc
 import zmq
-import gevent.monkey
-gevent.monkey.patch_all(thread=False) # Monkey!
 import logging
 logging.basicConfig()
 import datetime
