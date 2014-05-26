@@ -16,26 +16,8 @@ class PcapGraph(object):
                            'application/x-shockwave-flash']
         self.uid_uri_map = collections.defaultdict(list)
 
-        # Caches for nodes and relationships to avoid adding things over and over
-        self.node_cache = set()
-        self.rel_cache = set()
-
         # In general this is heavy handed but seems better to do than not do
         self.c.clear_graph_db()
-
-    # Graph methods
-    def add_node(self, node_id, name, labels):
-        ''' Cache aware add_node '''
-        if node_id not in self.node_cache:
-            self.c.add_node(node_id, name, labels)
-            self.node_cache.add(node_id)
-
-    def add_rel(self, source_id, target_id, rel):
-        ''' Cache aware add_rel '''
-        if (source_id, target_id) not in self.rel_cache:
-            self.c.add_rel(source_id, target_id, rel)
-            self.rel_cache.add((source_id, target_id))
-
 
     def execute(self, input_data):
         ''' Okay this worker is going build graphs from PCAP Bro output logs '''
@@ -43,30 +25,23 @@ class PcapGraph(object):
         # Grab the Bro log handles from the input
         bro_logs = input_data['pcap_bro']
 
-        # DNS log
-        #stream = self.c.stream_sample(bro_logs['dns_log'], None)
-        #self.dns_log_graph(stream)
-
-        # Weird log
-        if 'weird_log' in bro_logs:
-            stream = self.c.stream_sample(bro_logs['weird_log'], None)
-            self.weird_log_graph(stream)
+        # Conn log
+        stream = self.c.stream_sample(bro_logs['conn_log'], None)
+        self.conn_log_graph(stream)
 
         # HTTP log
         stream = self.c.stream_sample(bro_logs['http_log'], None)
         self.http_log_graph(stream)
 
-        '''
-        # Conn log
-        stream = self.c.stream_sample(bro_logs['conn_log'], None)
-        self.conn_log_graph(stream)
+        # DNS log
+        stream = self.c.stream_sample(bro_logs['dns_log'], None)
+        self.dns_log_graph(stream)
 
         # Files log
         stream = self.c.stream_sample(bro_logs['files_log'], None)
-        self.files_log_graph(stream)
-        '''
+        self.files_log_graph(stream)  
 
-        return {'output':'go to http://localhost:7474/browser and execute this query "match (s:origin), (t:file), p=allShortestPaths((s)--(t)) return p"'}
+        return {'output':'go to http://localhost:7474/browser and execute this query "match (n)-[r]-() return n,r"'}
 
     def conn_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro conn.log) '''
@@ -87,82 +62,35 @@ class PcapGraph(object):
 
     def http_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro http.log) '''
-        print 'Entering http_log_graph...'
         for row in list(stream):
-
-            # Skip '-' hosts
-            if (row['id.orig_h'] == '-'):
-                continue
-
-            # Add the originating host
-            self.add_node(row['id.orig_h'], row['id.orig_h'], ['host', 'origin'])
-
-            # Add the response host and reponse ip
-            self.add_node(row['host'], row['host'], ['host'])
-            self.add_node(row['id.resp_h'], row['id.resp_h'], ['host'])
-
-            # Add the http request relationships
-            self.c.add_rel(row['id.orig_h'], row['host'], 'http_request')
-            self.c.add_rel(row['host'], row['id.resp_h'], 'A')
             
-            # If the mime-type is interesting add the uri and the host->uri->host relationships
+            # Okay we assume that all the conn.log stuff is already captured
+
+            # Add the web host
+            self.c.add_node(row['host'], row['host'], ['host'])
+
+            # Add the host->uid relationship
+            self.c.add_rel(row['host'], row['uid'], 'conn')
+            
+            # If the mime-type is interesting add the uri and 
+            # add the host->uri relationship
             if row['resp_mime_types'] in self.mime_types:
-                self.add_node(row['uri'], row['resp_mime_types'], ['file'])
-                self.add_rel(row['uri'], row['id.resp_h'], 'file')
+                self.c.add_node(row['host']+row['uri'], row['resp_mime_types'], ['uri'])
+                self.c.add_rel(row['host'], row['host']+row['uri'], 'uri')
+            
+                # UID -> URI map (used in files_log_graph)
+                self.uid_uri_map[row['uid']].append({'uri':row['host']+row['uri'],'mime':row['resp_mime_types']})
 
     def dns_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro dns.log) '''
-        print 'Entering dns_log_graph..'
         for row in list(stream):
             
-            # Skip '-' hosts
-            if (row['id.orig_h'] == '-'):
-                continue
+            # Okay we assume that all the conn.log and http.log are already captured
 
-            # Add the originating host
-            self.add_node(row['id.orig_h'], row['id.orig_h'], ['host', 'origin'])
-
-            # Add the query host
-            self.add_node(row['query'], row['query'], ['host', 'dns_query'])
-
-            # The relationship between origin host and query
-            self.add_rel(row['id.orig_h'], row['query'], 'dns_query')
-
-            # Add the DNS answers as hosts and add the relationships
+            # Add the host->ip relationship
             for answer in row['answers'].split(','):
-                self.add_node(answer, answer, ['host'])
-                self.add_rel(row['query'], answer, row['qtype_name'])
-            print '\tdns_log_graph...'
-
-    def weird_log_graph(self, stream):
-        ''' Build up a graph (nodes and edges from a Bro weird.log) '''
-
-        # Here we're just going to capture that something weird
-        # happened between two hosts
-        weird_pairs = set()
-        for row in list(stream):
-            weird_pairs.add((row['id.orig_h'], row['id.resp_h']))
-
-        # Okay now make the weird node for each pair
-        for pair in weird_pairs:
-
-            # Skip '-' hosts
-            if (pair[0] == '-'):
-                continue
-
-            # Add the originating host
-            self.c.add_node(pair[0], pair[0], ['host', 'origin'])
-
-            # Add the response host
-            self.c.add_node(pair[1], pair[1], ['host'])
-
-            # Add a weird node
-            weird_name = 'weird'+pair[0]+'_'+pair[1]
-            self.c.add_node(weird_name, 'weird', ['weird'])
-
-            # The relationships between the nodes
-            self.c.add_rel(pair[0], weird_name, 'weird')
-            self.c.add_rel(weird_name, pair[1], 'weird')
+                if self.c.has_node(answer):
+                    self.c.add_rel(row['query'], answer, row['qtype_name'])
 
     def files_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro dns.log) '''
