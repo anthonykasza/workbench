@@ -10,7 +10,7 @@ node {
 
 node.origin {
   color: #CC66CC;
-  diameter: 80px;
+  diameter: 70px;
 }
 
 node.ip {
@@ -19,7 +19,11 @@ node.ip {
 
 node.file {
   color: #EE8888;
-  diameter: 80px;
+  diameter: 70px;
+}
+
+node.weird {
+  color: #CCCC88;
 }
 
 node.host {
