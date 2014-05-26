@@ -1,4 +1,5 @@
 
+from gevent import monkey; monkey.patch_all(thread=False)
 import zerorpc
 import os, sys
 import argparse
