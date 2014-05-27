@@ -170,8 +170,10 @@ class PcapGraph(object):
             # If the mime-type is interesting add the uri and the host->uri->host relationships
             if row['mime_type'] not in self.exclude_mime_types:
 
-                # Check for weird total bytes
+                # Check for weird conditions
                 if (row['total_bytes'] == '-'):
+                    continue
+                if ('-' in row['md5']):
                     continue
 
                 # Check for missing bytes
