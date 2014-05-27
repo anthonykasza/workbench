@@ -1,7 +1,6 @@
 
 ''' ELS_Indexer class for WorkBench '''
-import hashlib
-import StringIO
+import elasticsearch
 
 class ELS_Indexer():
 

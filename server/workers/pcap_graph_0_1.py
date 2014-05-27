@@ -1,6 +1,5 @@
 ''' pcap_graph worker '''
 import zerorpc
-import itertools
 import collections
 
 class PcapGraph(object):

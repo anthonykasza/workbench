@@ -1,7 +1,5 @@
 ''' pcap_graph worker '''
 import zerorpc
-import itertools
-import collections
 
 class PcapGraph(object):
     ''' This worker generates a graph from a PCAP (depends on Bro) '''

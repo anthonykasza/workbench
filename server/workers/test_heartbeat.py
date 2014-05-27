@@ -39,6 +39,7 @@ def test():
     print '\n<<< Server Test >>>'
     try:
         output = c.work_request('test_heartbeat','123')
+        raise RuntimeError('Heartbeat did not fail... unexpected, investigate!')
     except zerorpc.exceptions.LostRemote:
         print 'Heartbeat failed as expected.. so success!'
 

@@ -1,7 +1,5 @@
 ''' pcap_http_graph worker '''
 import zerorpc
-import itertools
-import collections
 
 class PcapHTTPGraph(object):
     ''' This worker generates a graph from a PCAP (depends on Bro) '''

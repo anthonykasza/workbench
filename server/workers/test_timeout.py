@@ -37,6 +37,7 @@ def test():
     # Execute the worker (server test) (note no unit test as the test is testing server timeouts)
     try:
         c.work_request('test_timeout','123')
+        raise RuntimeError('Timeout did not fail... unexpected, investigate!')
     except zerorpc.exceptions.TimeoutExpired:
         print 'Timeout failed as expected.. so success!'
 

@@ -1,7 +1,5 @@
 ''' PcapMeta worker '''
-import hashlib
 import datetime
-import struct
 
 class PcapMeta():
     ''' This worker computes a bunch of meta-data about a pcap file '''
