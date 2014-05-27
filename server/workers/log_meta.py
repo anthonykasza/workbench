@@ -29,7 +29,7 @@ def test():
     c.connect("tcp://127.0.0.1:4242")
 
     # Generate input for the worker
-    md5 = c.store_sample('bad_067b392', open('../../data/log/system.log', 'rb').read(), 'log')
+    md5 = c.store_sample('system.log', open('../../data/log/system.log', 'rb').read(), 'log')
     input_data = c.get_sample(md5)
     input_data.update(c.work_request('meta', md5))
 
