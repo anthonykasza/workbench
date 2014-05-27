@@ -1,6 +1,7 @@
 
 ''' DataStore class for WorkBench '''
 
+from gevent import monkey; monkey.patch_socket()
 import pymongo
 import gridfs
 import hashlib
@@ -20,7 +21,7 @@ class DataStore():
         # Get connection to mongo
         self.db_name = database
         self.uri = 'mongodb://'+uri+'/'+self.db_name
-        self.c = pymongo.MongoClient(self.uri)
+        self.c = pymongo.MongoClient(self.uri, use_greenlets=True)
         self.db = self.c.get_default_database()
 
         # Get the gridfs handle
