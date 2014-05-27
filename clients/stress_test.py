@@ -16,6 +16,14 @@ def main():
 
 def process_files(path):
     ''' Processes all the files within a directory '''
+
+    # Cheesy, infer file_type based on path
+    if 'pdf' in path:
+        type_tag = 'pdf'
+    else:
+        type_tag = 'pe'
+
+    # Open a connection to workbench
     c = zerorpc.Client()
     c.connect("tcp://127.0.0.1:4242")
 
@@ -27,7 +35,7 @@ def process_files(path):
     for i in xrange(10):
         for filename in file_list:
             with open(filename, 'rb') as f:
-                md5 = c.store_sample(filename, f.read(), 'pe')
+                md5 = c.store_sample(filename, f.read(), type_tag)
                 c.work_request('view', md5)
                 print 'Filename: %s' % (filename)
         total_files += num_files
