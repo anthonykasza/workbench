@@ -63,6 +63,7 @@ class PcapBro(object):
             os.chdir(temp_dir)
 
             # Get the pcap inputs (filenames)
+            print 'pcap_bro: Setting up PCAP inputs...'
             filenames = self.setup_pcap_inputs(input_data)
             command_line = ['bro']
             for filename in filenames:
@@ -71,9 +72,11 @@ class PcapBro(object):
                 command_line.append(script_path)
 
             # Execute command line as a subprocess
+            print 'pcap_bro: Executing subprocess...'
             self.subprocess_manager(command_line)
 
             # Scrape up all the output log files
+            print 'pcap_bro: Scraping output logs...'
             my_output = {}
             for output_log in glob.glob('*.log'):
 
@@ -84,6 +87,7 @@ class PcapBro(object):
                     my_output[output_name] = self.c.store_sample(output_name, raw_bytes, 'bro')
 
             # Scrape any extracted files
+            print 'pcap_bro: Scraping extracted files...'
             my_output['extracted_files'] = []
             for output_file in glob.glob('extract_files/*'):
 
