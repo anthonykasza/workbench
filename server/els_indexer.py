@@ -1,6 +1,5 @@
 
 ''' ELS_Indexer class for WorkBench '''
-import elasticsearch
 
 class ELS_Indexer():
 
