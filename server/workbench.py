@@ -1,7 +1,7 @@
 
 ''' Workbench: Open Source Security Framework '''
 
-from gevent import monkey; monkey.patch_all(thread=False, subprocess=True) # Monkey!
+from gevent import monkey; monkey.patch_all(thread=False) # Monkey!
 import zerorpc
 import zmq
 import logging
@@ -72,6 +72,16 @@ class WorkBench():
         '''
         sample = self.data_store.get_sample(md5)
         return {'sample': sample}
+
+    def get_sample_window(self, type_tag, size):
+        ''' Get a sample from the DataStore.
+            Args:
+                type_tag: the type of samples ('pcap','pe','pdf')
+                size: the size of the window in MegaBytes (10 = 10MB)
+            Returns:
+                A list of md5s representing the newest samples within the size window
+        '''
+        return self.data_store.get_sample_window(type_tag, size)
 
     def have_sample(self, md5):
         ''' Do we have this sample in the DataStore.

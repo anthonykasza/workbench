@@ -18,9 +18,9 @@ class DataStore():
         self.samples_cap = samples_cap
 
         # Get connection to mongo
-        self.uri = uri
         self.db_name = database
-        self.c = pymongo.MongoClient('mongodb://'+self.uri+'/'+self.db_name)
+        self.uri = 'mongodb://'+uri+'/'+self.db_name
+        self.c = pymongo.MongoClient(self.uri)
         self.db = self.c.get_default_database()
 
         # Get the gridfs handle
@@ -147,6 +147,22 @@ class DataStore():
             # If we don't have the gridfs files, delete the entry from samples
             self.db[self.sample_collection].update({'md5':md5}, {'md5':None})
             raise RuntimeError('Sample not found: %s ' % (md5))
+
+    def get_sample_window(self, type_tag, size=10):
+        ''' Get a window of samples not to exceed size (in MB) '''
+
+        # Convert size to MB
+        size = size * 1024 * 1024
+
+        # Grab all the samples of type=type_tag, sort by import_time (newest to oldest)
+        cursor = self.db[self.sample_collection].find({'type_tag':type_tag},{'md5':1,'length':1}).sort('import_time',pymongo.DESCENDING)
+        total_size = 0
+        md5_list = []
+        for item in cursor:
+            if (total_size > size):
+                return md5_list
+            md5_list.append(item['md5'])
+            total_size += item['length']
 
     def have_sample(self, md5):
         ''' See if the data store has this sample '''
