@@ -165,6 +165,10 @@ class DataStore():
             md5_list.append(item['md5'])
             total_size += item['length']
 
+        # If you get this far you don't have 'size' amount of data
+        # so just return what you've got
+        return md5_list
+
     def have_sample(self, md5):
         ''' See if the data store has this sample '''
 
