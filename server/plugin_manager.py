@@ -5,12 +5,11 @@
     3) I kinda wanted to understand the process :)
 '''
 
-import os, sys, time
+import os, sys
 from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import inspect
-from contextlib import contextmanager
 
 class PluginManager(FileSystemEventHandler):
 

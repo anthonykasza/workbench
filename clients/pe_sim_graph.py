@@ -1,8 +1,6 @@
 import zerorpc
 import argparse
 import os
-import pprint
-
 
 def add_it(c, file_list, labels):
     md5s = []
