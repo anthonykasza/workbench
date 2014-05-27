@@ -14,7 +14,7 @@ class PcapGraph(object):
         self.mime_types = ['application/x-dosexec', 'application/pdf', 'application/zip',
                            'application/jar', 'application/vnd.ms-cab-compressed',
                            'application/x-shockwave-flash']
-        self.uid_uri_map = collections.defaultdict(list)
+        self.exclude_mime_types = ['text/plain','text/html','image/jpeg','image/png']
 
         # Caches for nodes and relationships to avoid adding things over and over
         self.node_cache = set()
@@ -36,7 +36,6 @@ class PcapGraph(object):
             self.c.add_rel(source_id, target_id, rel)
             self.rel_cache.add((source_id, target_id))
 
-
     def execute(self, input_data):
         ''' Okay this worker is going build graphs from PCAP Bro output logs '''
 
@@ -44,8 +43,8 @@ class PcapGraph(object):
         bro_logs = input_data['pcap_bro']
 
         # DNS log
-        #stream = self.c.stream_sample(bro_logs['dns_log'], None)
-        #self.dns_log_graph(stream)
+        stream = self.c.stream_sample(bro_logs['dns_log'], None)
+        self.dns_log_graph(stream)
 
         # Weird log
         if 'weird_log' in bro_logs:
@@ -56,15 +55,13 @@ class PcapGraph(object):
         stream = self.c.stream_sample(bro_logs['http_log'], None)
         self.http_log_graph(stream)
 
-        '''
-        # Conn log
-        stream = self.c.stream_sample(bro_logs['conn_log'], None)
-        self.conn_log_graph(stream)
-
         # Files log
         stream = self.c.stream_sample(bro_logs['files_log'], None)
         self.files_log_graph(stream)
-        '''
+
+        # Conn log
+        stream = self.c.stream_sample(bro_logs['conn_log'], None)
+        self.conn_log_graph(stream)
 
         return {'output':'go to http://localhost:7474/browser and execute this query "match (s:origin), (t:file), p=allShortestPaths((s)--(t)) return p"'}
 
@@ -106,9 +103,11 @@ class PcapGraph(object):
             self.c.add_rel(row['host'], row['id.resp_h'], 'A')
             
             # If the mime-type is interesting add the uri and the host->uri->host relationships
+            '''
             if row['resp_mime_types'] in self.mime_types:
                 self.add_node(row['uri'], row['resp_mime_types'], ['file'])
                 self.add_rel(row['uri'], row['id.resp_h'], 'file')
+            '''
 
     def dns_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro dns.log) '''
@@ -151,35 +150,52 @@ class PcapGraph(object):
                 continue
 
             # Add the originating host
-            self.c.add_node(pair[0], pair[0], ['host', 'origin'])
+            self.add_node(pair[0], pair[0], ['host', 'origin'])
 
             # Add the response host
-            self.c.add_node(pair[1], pair[1], ['host'])
+            self.add_node(pair[1], pair[1], ['host'])
 
             # Add a weird node
             weird_name = 'weird'+pair[0]+'_'+pair[1]
-            self.c.add_node(weird_name, 'weird', ['weird'])
+            self.add_node(weird_name, 'weird', ['weird'])
 
             # The relationships between the nodes
-            self.c.add_rel(pair[0], weird_name, 'weird')
-            self.c.add_rel(weird_name, pair[1], 'weird')
+            self.add_rel(pair[0], weird_name, 'weird')
+            self.add_rel(weird_name, pair[1], 'weird')
 
     def files_log_graph(self, stream):
         ''' Build up a graph (nodes and edges from a Bro dns.log) '''
         for row in list(stream):
-            
-            # Okay we assume that all the conn.log and http.log are already captured
-            
-            # Add the file node
-            if row['mime_type'] in self.mime_types:
-                self.c.add_node(row['md5'], row['md5'][:6], ['file'])
 
-                # Add the file->URI relationship through the # UID -> URI map
-                for conn in row['conn_uids'].split(','):
-                    uris = self.uid_uri_map[conn]
-                    for uri in uris:
-                        if uri['mime'] == row['mime_type']:
-                            self.c.add_rel(row['md5'], uri['uri'], 'file')
+            # dataframes['files_log'][['md5','mime_type','missing_bytes','rx_hosts','source','tx_hosts']]
+            
+            # If the mime-type is interesting add the uri and the host->uri->host relationships
+            if row['mime_type'] not in self.exclude_mime_types:
+
+                # Check for weird total bytes
+                if (row['total_bytes'] == '-'):
+                    continue
+
+                # Check for missing bytes
+                if row['missing_bytes']:
+                    labels = ['file','missing']
+                else:
+                    labels = ['file']
+
+                # Make the file node name kewl
+                name = '%6s  %s  %.0f-KB' % (row['md5'][:6], row['mime_type'], row['total_bytes']/1024.0)
+                if row['missing_bytes']:
+                    name += '*'
+                name = name.replace('application/','')
+
+                # Add the file node
+                self.add_node(row['md5'], name, labels)
+
+                # Add the tx_host
+                self.add_node(row['tx_hosts'], row['tx_hosts'], ['host'])
+
+                # Add the file->tx_host relationship
+                self.add_rel(row['tx_hosts'], row['md5'], 'file')
 
     def __del__(self):
         ''' Class Cleanup '''
