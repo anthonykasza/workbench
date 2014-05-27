@@ -35,12 +35,28 @@ class MetaData(object):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' meta.py: Unit test'''
-    worker = MetaData()
 
+    # This worker test requires a local server running
+    import zerorpc
+    c = zerorpc.Client()
+    c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
+    md5 = c.store_sample('unknown', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    input_data = c.get_sample(md5)
+
+    # Execute the worker (unit test)
+    worker = MetaData()
+    output = worker.execute(input_data)
+    print '\n<<< Unit Test >>>'
     import pprint
-    pprint.pprint(worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(),
-                                            'length':0, 'filename': 'bad_033d91', 'type_tag': 'pe', 'customer':'MegaCorp',
-                                            'import_time':datetime.datetime.now()}}))
+    pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('meta', md5)
+    print '\n<<< Server Test >>>'
+    import pprint
+    pprint.pprint(output)
 
 if __name__ == "__main__":
     test()
