@@ -56,7 +56,7 @@ class PcapBro(object):
         ''' Execute '''
 
         # Get the bro script path (workers/bro/__load__.bro)
-        script_path = self.get_bro_script_path()
+        script_path = None # self.get_bro_script_path()
 
         # Create a temporary directory
         with self.make_temp_directory() as temp_dir:
