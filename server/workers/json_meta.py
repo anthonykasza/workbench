@@ -36,7 +36,7 @@ def test():
     c.connect("tcp://127.0.0.1:4242")
 
     # Generate the input data for this worker
-    md5 = c.store_sample('unknown.swf', open('../../data/json/generated.json', 'rb').read(), 'json')
+    md5 = c.store_sample('unknown.json', open('../../data/json/generated.json', 'rb').read(), 'json')
     input_data = c.get_sample(md5)
     input_data.update(c.work_request('meta', md5))
 
