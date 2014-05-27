@@ -5,16 +5,12 @@ node {
   border-width: 1.5px;
   text-color-internal: #000000;
   caption: '{name}';
-  font-size: 12px;
+  font-size: 14px;
 }
 
 node.origin {
-  color: #CC66CC;
+  color: #8888CC;
   diameter: 70px;
-}
-
-node.ip {
-  color: #8888EE;
 }
 
 node.file {
@@ -28,7 +24,6 @@ node.weird {
 
 node.host {
   color: #88EE88;
-  font-size: 16px;
 }
 
 node.conn_id {
