@@ -6,7 +6,8 @@
 [![Project Stats](https://www.ohloh.net/p/workbench/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/workbench)
 workbench
 =========
-Open source python framework for light-weight task management, execution and pipelining.
+The Workbench framework focuses on simplicity, transparency, and easy on-site customization.
+As an open source python framework it provides light-weight task management, execution and pipelining for a loosely-coupled set of python classes. Adding your own code to Workbench is amazingly simple, please see our set of IPython notebooks below for examples.
 
 ### Why should I give a rat's pitootie about workbench?
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Workbench_Demo.ipynb">Workbench Demo</a>**
