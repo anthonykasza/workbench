@@ -2,6 +2,10 @@
 ''' Workbench: Open Source Security Framework '''
 
 from gevent import monkey; monkey.patch_all(thread=False) # Monkey!
+import os
+import argparse
+import shutil
+import configparser
 import zerorpc
 import zmq
 import logging
@@ -335,10 +339,6 @@ class WorkBench():
 
 
 def main():
-    import os
-    import argparse
-    import shutil
-    import configparser
 
     # Load the configuration file (might not exist, so copy the default over)
     if not os.path.exists('config.ini'):
@@ -377,6 +377,9 @@ def main():
         print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
     except zmq.error.ZMQError:
         print '\n<<<Error>>>: Could not start ZMQ server (might already be running?)\n'
+    except KeyboardInterrupt:
+        print '\nWorbench Server Exiting...'
+        exit()
 
 # Test that just calls main
 def test():
