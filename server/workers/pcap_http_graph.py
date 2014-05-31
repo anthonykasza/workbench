@@ -120,9 +120,11 @@ class PcapHTTPGraph(object):
                 if ('-' in row['md5']):
                     continue
 
-                # Check for missing bytes
+                # Check for missing bytes and small file
                 if row['missing_bytes']:
-                    labels = ['file','missing']
+                    labels = ['missing', 'file']
+                elif row['total_bytes'] < 50*1024:
+                    labels = ['small','file']
                 else:
                     labels = ['file']
 
