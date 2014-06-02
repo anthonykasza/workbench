@@ -67,7 +67,7 @@ There are quite a few dependencies but workbench does a lot of kewl stuff, so it
 #### MongoDB
 **For Mac**
 
-- brew install mongodb (or port or aptget or aptitude..)
+- brew install mongodb
 - Note: Follow instructions posted at the end of install to start mongodb at login. (Recommended)
 
 **For Ubuntu**
@@ -87,14 +87,14 @@ There are quite a few dependencies but workbench does a lot of kewl stuff, so it
 
 - brew install libmagic
 
-** or **
+  **or**
 
 - apt-get install libmagic-dev
 
 #### Yara
 **For Mac** 
 
-- brew install yara (or port or aptget or aptitude..)
+- brew install yara
 
 **For Ubuntu**
 
