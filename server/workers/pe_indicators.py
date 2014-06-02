@@ -28,7 +28,7 @@ import re
 import inspect
 import pefile
 
-class Indicators():
+class PEIndicators():
     ''' Create instance of Indicators class. This class uses the
         static features from the pefile module to look for weird stuff.
         Note: All methods that start with 'check_' will be automatically
@@ -406,9 +406,28 @@ def convertToAsciiNullTerm(s):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_indicators.py: Unit test'''
-    worker = Indicators()
-    print worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
-    print worker.execute({'sample':{'raw_bytes':open('../../data/pe/good/4be7ec02133544cde7a580875e130208', 'rb').read()}})
+
+    # This worker test requires a local server running
+    import zerorpc
+    c = zerorpc.Client()
+    c.connect("tcp://127.0.0.1:4242")
+
+    # Generate the input data for this worker
+    md5 = c.store_sample('unknown', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    input_data = c.get_sample(md5)
+
+    # Execute the worker (unit test)
+    worker = PEIndicators()
+    output = worker.execute(input_data)
+    print '\n<<< Unit Test >>>'
+    import pprint
+    pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('pe_indicators', md5)
+    print '\n<<< Server Test >>>'
+    import pprint
+    pprint.pprint(output)
 
 if __name__ == "__main__":
     test()
