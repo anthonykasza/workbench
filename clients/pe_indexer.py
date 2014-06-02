@@ -25,15 +25,17 @@ def main():
 
             # Index the strings and features output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
-            c.index_worker_output('strings', md5, 'pe_strings')
+            c.index_worker_output('strings', md5, 'strings')
             print '\n<<< Strings for PE: %s Indexed>>>' % (filename)
             c.index_worker_output('pe_features', md5, 'pe_features')
             print '<<< Features for PE: %s Indexed>>>' % (filename)
 
     # Now actually do something interesing with our ELS index
+    # Fixme: See https://github.com/SuperCowPowers/workbench/issues/38
     # ES Facets are kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-facets.html)
+    '''
     facet_query = '{"facets" : {"tag" : {"terms" : {"field" : "string_list","script": "term.length() > 3 ? true: false"}}}}'
-    results = c.search('pe_strings',facet_query)
+    results = c.search('strings',facet_query)
     try:
         print '\nQuery: %s' % facet_query
         print 'Number of hits: %d' % results['hits']['total']
@@ -51,7 +53,8 @@ def main():
         print 'Max Score: %f' % results['hits']['max_score']
         pprint.pprint([ (hit['fields']['md5'], hit['fields']['sparse_features.imported_symbols']) for hit in results['hits']['hits'] ])
     except TypeError:
-        print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'    
+        print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'
+    '''
 
 
 def test():
