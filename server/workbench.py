@@ -48,7 +48,11 @@ class WorkBench():
         self.indexer = els_indexer.ELS_Indexer(**{'hosts': els_hosts} if els_hosts else {})
 
         # Neo4j DB
-        self.neo_db = neo_db.NeoDB(**{'uri': neo_uri} if neo_uri else {})
+        try:
+            self.neo_db = neo_db.NeoDB(**{'uri': neo_uri} if neo_uri else {})
+        except RuntimeError:
+            print 'Could not connect to Neo4j DB. Is it running?  $ neo4j start'
+            self.neo_db = neo_db.NeoDBStub(**{'uri': neo_uri} if neo_uri else {})
 
         # Create Plugin Grabber
         self.plugin_meta = {}
