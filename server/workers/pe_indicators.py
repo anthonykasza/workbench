@@ -406,6 +406,7 @@ def convertToAsciiNullTerm(s):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_indicators.py: Unit test'''
+    import pprint
 
     # This worker test requires a local server running
     import zerorpc
@@ -413,20 +414,21 @@ def test():
     c.connect("tcp://127.0.0.1:4242")
 
     # Generate the input data for this worker
-    md5 = c.store_sample('unknown', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
-    input_data = c.get_sample(md5)
+    md5_bad = c.store_sample('bad', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    md5_good = c.store_sample('good', open('../../data/pe/good/4be7ec02133544cde7a580875e130208', 'rb').read(), 'pe')
 
     # Execute the worker (unit test)
     worker = PEIndicators()
-    output = worker.execute(input_data)
-    print '\n<<< Unit Test >>>'
-    import pprint
+    output = worker.execute(c.get_sample(md5_bad))
+    print '\n<<< Unit Test 1 >>>'
+    pprint.pprint(output)
+    output = worker.execute(c.get_sample(md5_good))
+    print '\n<<< Unit Test 2 >>>'
     pprint.pprint(output)
 
     # Execute the worker (server test)
-    output = c.work_request('pe_indicators', md5)
+    output = c.work_request('pe_indicators', md5_bad)
     print '\n<<< Server Test >>>'
-    import pprint
     pprint.pprint(output)
 
 if __name__ == "__main__":
