@@ -27,21 +27,28 @@ class PEFileClassify(object):
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
     ''' pe_classifier.py: Unit test'''
-    import pe_features
-    input_worker = pe_features.PEFileWorker()
-    _raw_output = input_worker.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
-    wrapped_output = {'pe_features':_raw_output}
+    import pprint
 
+    # This worker test requires a local server running
+    import zerorpc
+    c = zerorpc.Client()
+    c.connect("tcp://127.0.0.1:4242")
 
-    import pe_indicators
-    input_worker2 = pe_indicators.Indicators()
-    _raw_output = input_worker2.execute({'sample':{'raw_bytes':open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read()}})
-    wrapped_output2 = {'pe_indicators':_raw_output}
+    # Generate the input data for this worker
+    md5 = c.store_sample('bad', open('../../data/pe/bad/033d91aae8ad29ed9fbb858179271232', 'rb').read(), 'pe')
+    input_data = c.work_request('pe_features', md5)
+    input_data.update(c.work_request('pe_indicators', md5))
 
-    # Now join up the inputs
-    wrapped_output.update(wrapped_output2)
+    # Execute the worker (unit test)
     worker = PEFileClassify()
-    print worker.execute(wrapped_output)
+    output = worker.execute(input_data)
+    print '\n<<< Unit Test >>>'
+    pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('pe_classifier', md5)
+    print '\n<<< Server Test >>>'
+    pprint.pprint(output)
 
 if __name__ == "__main__":
     test()
