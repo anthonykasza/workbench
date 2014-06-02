@@ -65,14 +65,44 @@ The workbench project takes the workbench metaphore seriously. It's a platform t
 There are quite a few dependencies but workbench does a lot of kewl stuff, so it will be worth it :).
   
 #### MongoDB
+**For Mac**
+
 - brew install mongodb (or port or aptget or aptitude..)
 - Note: Follow instructions posted at the end of install to start mongodb at login. (Recommended)
 
-**Bro IDS:** brew install bro (or port or aptget or aptitude..)
+**For Ubuntu**
 
-**LibMagic:** brew install libmagic (or port or aptget or aptitude..)
+- Go through the steps given at [MongoDB Installation Tutorial](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
 
-**Yara:** brew install yara (or port or aptget or aptitude..)
+#### Bro IDS
+**For Mac**
+
+- brew install bro
+
+**For Ubuntu**
+
+- Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
+
+#### LibMagic 
+
+- brew install libmagic
+
+** or **
+
+- apt-get install libmagic-dev
+
+#### Yara
+**For Mac** 
+
+- brew install yara (or port or aptget or aptitude..)
+
+**For Ubuntu**
+
+- Read the installation instructions [here](https://github.com/plusvic/yara/releases/latest)
+
+#### Only for Ubuntu
+- sudo apt-get install libxml2-dev
+- sudo apt-get install libxslt-dev
 
 #### Python 2.7:
 Workbench has only been tested with python 2.7. If you'd like to volunteer to add support for other versions please do so. :)
