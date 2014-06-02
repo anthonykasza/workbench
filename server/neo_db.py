@@ -1,7 +1,5 @@
 
 ''' NeoDB class for WorkBench '''
-import hashlib
-import StringIO
 
 class NeoDB():
 
@@ -9,11 +7,13 @@ class NeoDB():
 
         # Get connection to Neo4j
         try:
+            # Open the Neo4j DB and get version (just testing Neo connection)
             self.graph_db = neo4j.GraphDatabaseService(uri)
-            print 'Neo4j GraphDB connected: %s' % (str(uri))
-        except:
-            print 'Neo4j connection failed! Is your Neo4j server running?'
-            exit(1)
+            version = self.graph_db.neo4j_version
+            print 'Neo4j GraphDB connected: %s %s' % (str(uri), version)
+        except packages.httpstream.http.SocketError:
+            print 'Neo4j connection failed! Is your Neo4j server running? $ neo4j start'
+            raise RuntimeError('Could not connect to Neo4j')
 
     def add_node(self, node_id, name, labels):
         ''' Add the node with name and labels '''
@@ -41,10 +41,7 @@ class NeoDB():
 
     def clear_db(self):
         ''' Clear the Graph Database of all nodes and edges '''
-        query = neo4j.CypherQuery(self.graph_db, 'match (n)-[r]-() delete n,r')
-        query.run()
-        query = neo4j.CypherQuery(self.graph_db, 'match n delete n')
-        query.run()
+        self.graph_db.clear()
 
 class NeoDBStub():
 
@@ -66,6 +63,7 @@ class NeoDBStub():
 
 try:
     from py2neo import neo4j
+    from py2neo import packages
     NeoDB = NeoDB
-except ImportError:
+except (ImportError, RuntimeError):
     NeoDB = NeoDBStub
