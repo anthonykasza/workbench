@@ -1,18 +1,24 @@
 
-''' Benchmark that throws files at workbench with 8 subprocesses '''
+''' Benchmark that throws files at workbench with 4 subprocesses '''
 import zerorpc
 import os
 import datetime
 import multiprocessing
 
 def main():
-    ''' Benchmark that throws files at workbench with 8 subprocesses '''
-
-    # Spin off 4 subprocesses
-    pool = multiprocessing.Pool(processes=8)
+    ''' Benchmark that throws files at workbench with 4 subprocesses '''
+    jobs = []
     args = ['../data/pe/bad', '../data/pe/good', '../data/pdf/bad', '../data/pdf/good']
-    args += ['../data/pe/bad', '../data/pe/good', '../data/pdf/bad', '../data/pdf/good']
-    pool.map(process_files, args)
+
+    # These jobs are for stress testing
+    for my_args in args:
+        p = multiprocessing.Process(target=process_files, args=(my_args,))
+        jobs.append(p)
+        p.start()
+    p.join()
+
+    # This job is for test coverage
+    process_files('../data/pe/bad')
 
 def process_files(path):
     ''' Processes all the files within a directory '''
@@ -43,8 +49,11 @@ def process_files(path):
     delta = end - start
     print 'Files processed: %d  Time: %d seconds' % (total_files, delta.seconds)
 
+    # Close the workbench connection
+    c.close()
+
 def test():
-    ''' benchmark test '''
+    ''' stress_test test '''
     main()
 
 if __name__ == '__main__':
