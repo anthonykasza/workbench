@@ -16,16 +16,6 @@ def main():
     c = zerorpc.Client()
     c.connect(server+':'+port)
 
-    '''
-    # Test out PEFile data
-    file_list = [os.path.join('../data/pe/bad', child) for child in os.listdir('../data/pe/bad')]
-    for filename in file_list:
-        with open(filename,'rb') as file:
-            md5 = c.store_sample(filename, file.read(), 'pe')
-            results = c.work_request('view', md5)
-            print 'Filename: %s results: %s' % (filename, results)
-    '''
-
     # Test out zip data
     file_list = [os.path.join('../data/zip', child) for child in os.listdir('../data/zip')]
     for filename in file_list:
@@ -35,7 +25,6 @@ def main():
             print 'Filename: %s ' % (filename)
             pprint.pprint(results)
 
-            # Or you could do this manually using leaf workers
             # The unzip worker gives you a list of md5s back
             # Run meta on all the unzipped files.
             results = c.work_request('unzip', md5)
