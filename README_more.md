@@ -37,7 +37,7 @@ Fill in info
 
 ### Optional Indexers/Tools
 
-** Neo4j Install **
+**Neo4j Install**
 
 If you'd like to play with the alpha graph database functionality you can install Neo4j and look at the clients with _graph in the name.
 
@@ -48,7 +48,7 @@ If you'd like to play with the alpha graph database functionality you can instal
 - open http://localhost:7474/browser/
 - Run one of the Neo4j indexing clients and behold the awesome
 
-** ElasticSearch Install **
+**ElasticSearch Install**
 
 If you'd like to play with the alpha indexing functionality you can install elasticsearch and look at the clients with _indexer in the name.
 
@@ -56,7 +56,7 @@ If you'd like to play with the alpha indexing functionality you can install elas
 - Note: Follow instructions posted at the end of install to start elasticsearch at login. (Recommended)
 - pip install -U elasticsearch
 
-** Robomongo **
+**Robomongo**
 
 Robomongo is a shell-centric cross-platform MongoDB management tool. Simply, it is a handy GUI to inspect your mongodb.
 
@@ -114,14 +114,14 @@ If you want to run the test code coverage properly you'll need to create a ~/.no
 
 ### Bounties (Rewards for contributing to Workbench)
 
-** Top Bounties **
+**Top Bounties**
 
 - [Bro Scripts for OWASP Top 10 (1000 Cow Points)](/../../issues/27)
 - [Python based SWF Decompiler/Decompression (500 Cow Points)](/../../issues/28)
 - [Deep PDF Static Analysis (500 Cow Points)](/../../issues/29)
 - [Worker for Cab File extraction (100 Cow Points)](/../../issues/30)
 
-** FAQ about Cow Points **
+**FAQ about Cow Points**
 
 - Are Cow Points worth anything? : No
 - Will Cow Points ever be worth anything? : Maybe
@@ -129,7 +129,7 @@ If you want to run the test code coverage properly you'll need to create a ~/.no
 - Will I receive good Karma for Cow Points? : Yes
 
 ### Dependency Installation Errors
-** Python Modules **
+**Python Modules**
 
 Note: If you get a bunch of clang errors about unknown arguments or 'cannot link a simple C program' add the following FLAGs:
     
@@ -138,7 +138,7 @@ Note: If you get a bunch of clang errors about unknown arguments or 'cannot link
     $ export CPPFLAGS=-Qunused-arguments
     ```
 
-** Errors when running Tests **
+**Errors when running Tests**
 
 If when running the worker tests you get some errors like 'MagicError: regexec error 17, (illegal byte sequence)' it's an issue with libmagic 5.17, revert to libmagic 5.16. Using brew on Mac:
 
@@ -149,7 +149,7 @@ If when running the worker tests you get some errors like 'MagicError: regexec e
     $ brew install libmagic
 ### Deprecated Stuff
 
-** Scapy Install **
+**Scapy Install**
 
 - brew tap Homebrew/python
 - brew install scapy
