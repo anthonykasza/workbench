@@ -4,8 +4,6 @@ filemagic
 pefile
 py2neo
 pymongo
-pyswf
-pyzmq
 requests
 cython
 ssdeep
@@ -13,4 +11,5 @@ watchdog
 yara
 zerorpc
 nose
-git+https://github.com/newbrough/coverage.git
+# pyswf
+# git+https://github.com/newbrough/coverage.git

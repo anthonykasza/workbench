@@ -33,21 +33,23 @@ There are quite a few dependencies but workbench does a lot of kewl stuff so it 
 
 #### Mac/OSX
 - brew install mongodb
-- brew install bro
 - brew install yara
 - brew install libmagic
+- brew install bro
 
-#### Ubuntu (tested on 12.04)
-- Mongo: Go through the steps given at [MongoDB Installation Tutorial](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
-- Bro IDS: Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
-- Yara: Read the installation instructions [here](https://github.com/plusvic/yara/releases/latest)
-- sudo apt-get install libmagic-dev
-- sudo apt-get install libxml2-dev
-- sudo apt-get install libxslt-dev
+#### Ubuntu (tested on 14.04)
+- sudo apt-get install mongodb
+- sudo apt-get install python-dev
+- sudo apt-get install g++
+- Bro IDS
+    - Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
+    - or this one [here](http://www.justbeck.com/getting-started-with-bro-ids/)
+    - Editorial: In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. You can hack the package control file and remove those and it will work just fine.
 
-#### Python 2.7:
-Workbench has only been tested with python 2.7. If you'd like to volunteer to add support for other versions please do so. :)
-#### Python Dependencies:
+
+#### Python Modules:
+Note: Workbench has only been tested with python 2.7. If you'd like to volunteer to add support for other versions please do so. :)
+
 * cd workbench
 * pip install -r requirements.txt
 * Go have a large cup of coffee...

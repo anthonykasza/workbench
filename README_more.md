@@ -168,3 +168,13 @@ $ unzip scapy-latest.zip
 $ cd scapy-2.*
 $ sudo python setup.py install
 </pre>
+
+### Deprecated Instructions for Ubuntu 12.04
+#### Ubuntu (tested on 12.04)
+- Mongo: Go through the steps given at [MongoDB Installation Tutorial](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
+- Bro IDS: Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
+- Yara: Read the installation instructions [here](https://github.com/plusvic/yara/releases/latest)
+- sudo apt-get install libmagic-dev
+- sudo apt-get install libxml2-dev
+- sudo apt-get install libxslt-dev
+- sudo apt-get install libevent-dev
