@@ -29,7 +29,7 @@ git clone https://github.com/supercowpowers/workbench.git
 <br><br>
 
 ### Installing Workbench:
-This install gets you most of the workbench functionality, the only missing functionality are the 'indexers' Neo4j Graph DB and ElasticSearch. If you want those as well please see [Install Indexers](README_more.md####Install Indexers):
+This install gets you most of the workbench functionality, the only missing functionality are the 'indexers' Neo4j Graph DB and ElasticSearch. If you want those as well please see [Install Indexers](###Install Indexers) below.
 
 #### Mac/OSX
 - brew install mongodb
@@ -45,7 +45,22 @@ This install gets you most of the workbench functionality, the only missing func
     - Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
     - or this one [here](http://www.justbeck.com/getting-started-with-bro-ids/)
     - Editorial: In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. You can hack the package control file and remove those and it will work just fine.
+    
+###Install Indexers
 
+#### Mac/OSX
+- brew install elasticsearch
+- pip install -U elasticsearch
+- brew install neo4j
+    - Note: You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. 
+- pip install -U py2neo
+
+#### Ubuntu (14.04 and 12.04)
+- Neo4j: See official instructions for Neo4j [here](http://www.neo4j.org/download/linux)
+- ElasticSearch:
+    - sudo apt-get install openjdk-7-jre-headless -y
+    - wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.deb
+    - sudo dpkg -i elasticsearch-1.2.1.deb
 
 #### Python Modules:
 Note: Workbench has only been tested with python 2.7. If you'd like to volunteer to add support for other versions please do so. :)
@@ -86,7 +101,6 @@ For additional information on the following subjects:
  
 * Detailed Project Description
 * Configuration File Information
-* Install Indexers
 * Optional Tools
 * Making your own Worker
 * Making your own Client

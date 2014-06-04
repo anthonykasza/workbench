@@ -1,7 +1,6 @@
 ## Additional Information on Workbench
 * Detailed Project Description
 * Configuration File Information
-* Install Indexers
 * Optional Tools
 * Making your own Worker
 * Making your own Client
@@ -69,21 +68,6 @@ samples_cap = 200
 vt_apikey = 123
 ```
 
-### Install Indexers
-
-#### Mac/OSX
-- brew install elasticsearch
-- pip install -U elasticsearch
-- brew install neo4j
-    - Note: You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. 
-- pip install -U py2neo
-
-#### Ubuntu (14.04 and 12.04)
-- Neo4j: See official instructions for Neo4j [here](http://www.neo4j.org/download/linux)
-- ElasticSearch:
-    - sudo apt-get install openjdk-7-jre-headless -y
-    - wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.deb
-    - sudo dpkg -i elasticsearch-1.2.1.deb
 
 ### Optional Tools
 **Robomongo**
