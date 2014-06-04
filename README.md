@@ -37,7 +37,7 @@ This install gets you most of the workbench functionality, the only missing func
 - brew install libmagic
 - brew install bro
 
-#### Ubuntu (tested on 14.04)
+#### Ubuntu (14.04 and 12.04)
 - sudo apt-get install mongodb
 - sudo apt-get install python-dev
 - sudo apt-get install g++
@@ -46,7 +46,7 @@ This install gets you most of the workbench functionality, the only missing func
     - or this one [here](http://www.justbeck.com/getting-started-with-bro-ids/)
     - Editorial: In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. You can hack the package control file and remove those and it will work just fine.
     
-###Install Indexers
+###Install Indexers:
 
 #### Mac/OSX
 - brew install elasticsearch
