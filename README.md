@@ -28,12 +28,12 @@ git clone https://github.com/supercowpowers/workbench.git
 **Warning!: The repository contains malcious data samples, be careful, exclude the workbench directory from AV, etc...**
 <br><br>
 
-### Workbench Dependencies:
-There are quite a few dependencies but workbench does a lot of kewl stuff so it will be worth it :).
+### Installing Workbench:
+This install gets you most of the workbench functionality, the only missing functionality are the 'indexers' Neo4j Graph DB and ElasticSearch. If you want those as well please see [Install Indexers](README_more.md####Install Indexers):
 
 #### Mac/OSX
 - brew install mongodb
-- brew install yara
+- brew http://www.neo4j.org/download/linux yara
 - brew install libmagic
 - brew install bro
 
@@ -86,7 +86,8 @@ For additional information on the following subjects:
  
 * Detailed Project Description
 * Configuration File Information
-* Optional Indexers/Tools
+* Install Indexers
+* Optional Tools
 * Making your own Worker
 * Making your own Client
 * Running the IPython Notebooks

@@ -1,7 +1,8 @@
 ## Additional Information on Workbench
 * Detailed Project Description
 * Configuration File Information
-* Optional Indexers/Tools
+* Install Indexers
+* Optional Tools
 * Making your own Worker
 * Making your own Client
 * Running the IPython Notebooks
@@ -33,29 +34,58 @@ The workbench project takes the workbench metaphore seriously. It's a platform t
   * Pull just what you want, workers and views (which are just workers) can be selectve about exactly which fields get pulled from which workers.
 
 ### Configuration File Information
-Fill in info
+When you first run workbench it copies default.ini to config.ini within the workbench/server directory, you can make local changes to this file without worrying about it getting overwritten on the next 'git pull'. Also you can store API keys in it because it never gets pushed back to the repository.
 
-### Optional Indexers/Tools
+```
+# Example/default configuration for the workbench server
+[workbench]
 
-**Neo4j Install**
+# Server URI (server machine ip or name)
+# Example: mybigserver or 12.34.56.789
+server_uri = localhost
 
-If you'd like to play with the alpha graph database functionality you can install Neo4j and look at the clients with _graph in the name.
+# DataStore URI (datastore machine ip or name)
+# Example: mybigserver or 12.34.56.789
+datastore_uri = localhost
 
-- brew install neo4j (or port or aptget or aptitude..)
-- Note: Follow instructions posted at the end of install to start Neo4j at login. (Recommended)
-- You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. For other platforms you'll have to google (fixme: put better info here)
-- pip install -U py2neo
-- open http://localhost:7474/browser/
-- Run one of the Neo4j indexing clients and behold the awesome
+# Neo4j URI (Neo4j Graph DB machine ip or name)
+# Example: mybigserver or 12.34.56.789
+neo4j_uri = localhost
 
-**ElasticSearch Install**
+# ElasticSearch URI (ELS machine ip or name)
+# Example: mybigserver or 12.34.56.789
+els_uri = localhost
 
-If you'd like to play with the alpha indexing functionality you can install elasticsearch and look at the clients with _indexer in the name.
+# DataStore Database
+# Example: customer123, ml_talk, pdf_deep
+database = workbench
 
-- brew install elasticsearch (or port or aptget or aptitude..)
-- Note: Follow instructions posted at the end of install to start elasticsearch at login. (Recommended)
+# Storage Limits (in MegaBytes, 0 for no limit)
+worker_cap = 10
+samples_cap = 200
+
+# VT API Key
+# Example: 93748163412341234v123947
+vt_apikey = 123
+```
+
+### Install Indexers
+
+#### Mac/OSX
+- brew install elasticsearch
 - pip install -U elasticsearch
+- brew install neo4j
+    - Note: You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. 
+- pip install -U py2neo
 
+#### Ubuntu (14.04 and 12.04)
+- Neo4j: See official instructions for Neo4j [here](http://www.neo4j.org/download/linux)
+- ElasticSearch:
+    - sudo apt-get install openjdk-7-jre-headless -y
+    - wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.deb
+    - sudo dpkg -i elasticsearch-1.2.1.deb
+
+### Optional Tools
 **Robomongo**
 
 Robomongo is a shell-centric cross-platform MongoDB management tool. Simply, it is a handy GUI to inspect your mongodb.
@@ -69,16 +99,18 @@ Fill in info
 
 ### Making your own Client
 Although the Workbench repository has dozens of clients (see workbench/clients)there is NO official client to workbench. Clients are examples of how YOU can just use ZeroRPC from the Python, Node.js, or CLI interfaces. See [ZeroRPC](http://zerorpc.dotcloud.com/).
-<pre>
+
+```python
 import zerorpc
 c = zerorpc.Client()
 c.connect("tcp://127.0.0.1:4242")
 with open('evil.pcap','rb') as f:
     md5 = c.store_sample('evil.pcap', f.read())
 print c.work_request('pcap_meta', md5)
-</pre>
+```
+
 **Output from above 'client':**
-<pre>
+```python
 {'pcap_meta': {'encoding': 'binary',
   'file_size': 54339570,
   'file_type': 'tcpdump (little-endian) - version 2.4 (Ethernet, 65535)',
@@ -86,7 +118,7 @@ print c.work_request('pcap_meta', md5)
   'import_time': '2014-02-08T22:15:50.282000Z',
   'md5': 'bba97e16d7f92240196dc0caef9c457a',
   'mime_type': 'application/vnd.tcpdump.pcap'}}
-</pre>
+```
 ### Running the IPython Notebooks
 * brew install freetype
 * brew install gfortran
