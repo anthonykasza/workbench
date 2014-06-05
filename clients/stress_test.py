@@ -52,10 +52,11 @@ def process_files(path):
     # Close the workbench connection
     c.close()
 
-def test():
+# Fixme: see https://github.com/SuperCowPowers/workbench/issues/40
+def disabled():
     ''' stress_test test '''
     main()
 
 if __name__ == '__main__':
-    test()
+    disabled()
 
