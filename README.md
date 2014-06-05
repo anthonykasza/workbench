@@ -29,22 +29,31 @@ git clone https://github.com/supercowpowers/workbench.git
 <br><br>
 
 ### Installing Workbench:
-Please note the indexers 'Neo4j' and 'ElasticSearch' are optional. We suggest you install them because you'll miss out on some kewl functionality otherwise, but we also appreciate that there are cases where it's not possible or feasible to install them so we're trying to support that use case as well. :)
+Please note the indexers 'Neo4j' and 'ElasticSearch' are optional. We strongly suggest you install both of them but we also appreciate that there are cases where that's not possible or feasible.
 
 #### Mac/OSX
 - brew install mongodb
 - brew install yara
 - brew install libmagic
 - brew install bro
+   - Put the bro executable in your PATH (/usr/local/bin or wherever bro is)
 
 #### Ubuntu (14.04 and 12.04)
 - sudo apt-get install mongodb
 - sudo apt-get install python-dev
 - sudo apt-get install g++
-- Bro IDS
-    - Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
-    - or this one [here](http://www.justbeck.com/getting-started-with-bro-ids/)
-    - Editorial: In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. You can hack the package control file and remove those and it will work just fine.
+- sudo apt-get install libssl0.9.8
+- Bro IDS: 
+   - Put the bro executable in your PATH (/opt/bro/bin or wherever bro is)
+
+    In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. We have a more 'flexible' version [Bro-2.2-Linux-x86_64_flex.deb](https://drive.google.com/uc?export=download&id=0B1QHlgNhJmssNzZ4cDdTdktPNlU). 
+    - sudo dpkg -i Bro-2.2-Linux-x86_64_flex.deb
+ 
+   If using the Debian package above doesn't work out:
+   - Check out the Installation tutorial [here](https://www.digitalocean.com/community/articles/how-to-install-bro-ids-2-2-on-ubuntu-12-04)
+   - or this one [here](http://www.justbeck.com/getting-started-with-bro-ids/)
+   - or go to offical Bro Downloads [www.bro.org/download/](http://www.bro.org/download)
+
     
 ###Install Indexers:
 
@@ -104,6 +113,8 @@ _zpc_more {'response_to': '67d7df3f-1f3e-45f4-b2e6-352260fa1507', 'zmqid':
 ['\x00\x82*\x01\xea'], 'message_id': '67d7df42-1f3e-45f4-b2e6-352260fa1507',
 'v': 3} [...]
 </pre>
+### VirusTotal Error
+If you get an error on the vt_query.py test that is completely expected. You'll have to put your own VirusTotal API key in the workbench/server/config.ini file.
 <br>
 ### Additional Information
 For additional information on the following subjects:
