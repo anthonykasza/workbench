@@ -96,6 +96,15 @@ $ cd workbench/clients
 $ ./runtests
 </pre>
 
+### Benign Error
+We have no idea why occasionaly you see this pop up in the server output. To our knowledge it literally has no impact on any functionality or robustness. If you know anything about this please help us out by opening an issue and pull request. :)
+<pre>
+ERROR:zerorpc.channel:zerorpc.ChannelMultiplexer, unable to route event:
+_zpc_more {'response_to': '67d7df3f-1f3e-45f4-b2e6-352260fa1507', 'zmqid':
+['\x00\x82*\x01\xea'], 'message_id': '67d7df42-1f3e-45f4-b2e6-352260fa1507',
+'v': 3} [...]
+</pre>
+<br>
 ### Additional Information
 For additional information on the following subjects:
  
