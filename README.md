@@ -29,7 +29,7 @@ git clone https://github.com/supercowpowers/workbench.git
 <br><br>
 
 ### Installing Workbench:
-This install gets you most of the workbench functionality, the only missing functionality are the 'indexers' Neo4j Graph DB and ElasticSearch. If you want those as well please see [Install Indexers](###Install Indexers) below.
+Please note the indexers 'Neo4j' and 'ElasticSearch' are optional. We suggest you install them because you'll miss out on some kewl functionality otherwise, but we also appreciate that there are cases where it's not possible or feasible to install them so we're trying to support that use case as well. :)
 
 #### Mac/OSX
 - brew install mongodb
