@@ -61,13 +61,11 @@ Please note the indexers 'Neo4j' and 'ElasticSearch' are optional. We strongly s
 - brew install elasticsearch
 - pip install -U elasticsearch
 - brew install neo4j
-    - Note: You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs. 
-- pip install -U py2neo
+    - Note: You may need to install Java JDK 1.7 [Oracle JDK 1.7 DMG](http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-macosx-x64.dmg) for macs.
 
 #### Ubuntu (14.04 and 12.04)
 - Neo4j: See official instructions for Neo4j [here](http://www.neo4j.org/download/linux)
 - ElasticSearch:
-    - sudo apt-get install openjdk-7-jre-headless -y
     - wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.deb
     - sudo dpkg -i elasticsearch-1.2.1.deb
 
