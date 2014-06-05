@@ -15,6 +15,7 @@ import StringIO
 import json
 import hashlib
 import inspect
+import urllib3
 
 ''' Add bro to path for bro_log_reader '''
 import sys
@@ -45,7 +46,11 @@ class WorkBench():
         self.data_store = data_store.DataStore(**store_args)
 
         # ELS Indexer
-        self.indexer = els_indexer.ELS_Indexer(**{'hosts': els_hosts} if els_hosts else {})
+        try:
+            self.indexer = els_indexer.ELS_Indexer(**{'hosts': els_hosts} if els_hosts else {})
+        except SystemExit:
+            print 'Could not connect to ELS. Is it running?'
+            self.indexer = els_indexer.ELS_StubIndexer(**{'uri': neo_uri} if neo_uri else {})
 
         # Neo4j DB
         try:
