@@ -33,7 +33,7 @@ This install gets you most of the workbench functionality, the only missing func
 
 #### Mac/OSX
 - brew install mongodb
-- brew http://www.neo4j.org/download/linux yara
+- brew install yara
 - brew install libmagic
 - brew install bro
 
