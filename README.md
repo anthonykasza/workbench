@@ -19,6 +19,10 @@ As an open source python framework it provides light-weight task management, exe
 * WIP Notebooks
 	* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Network_Stream.ipynb">Network Stream Analysis Notebook</a>**
 
+### Email lists (anyone can join)
+- Users Email List: [workbench-users](https://groups.google.com/forum/#!forum/workbench-users)
+- Developers Email List: [workbench-devs](https://groups.google.com/forum/#!forum/workbench-devs)
+
 <br>
 <img src="http://raw.github.com/supercowpowers/workbench/master/images/warning.jpg" width=90 align="left">
 ### Pull the repository
