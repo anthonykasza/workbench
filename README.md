@@ -121,9 +121,8 @@ If you get an error on the vt_query.py test that is completely expected. You'll 
 
 ### Contributions/Support/Getting Involved
 Workbench is committed to providing open source security software. If you're a developer looking to chip-in or want to support the project please contact us at <support@supercowpowers.com> or visit one of the links below:
-<br>
-<img src="http://raw.github.com/supercowpowers/workbench/master/images/tshirt_back.jpg" width=150 align="right">
-<img src="http://raw.github.com/supercowpowers/workbench/master/images/tshirt_front.jpg" width=150 align="right">
+<img style="border:1px solid #888888"; src="http://raw.github.com/supercowpowers/workbench/master/images/tshirt_back.jpg" width=150 align="right">
+<img style="border:1px solid #888888"; src="http://raw.github.com/supercowpowers/workbench/master/images/tshirt_front.jpg" width=150 align="right">
 
 - Users email list: [workbench-users](https://groups.google.com/forum/#!forum/workbench-users)
 - Developer email list: [workbench-devs](https://groups.google.com/forum/#!forum/workbench-devs)
