@@ -20,7 +20,7 @@ class ELS_Indexer():
         # Index the data (which needs to be a dict/object) if it's not
         # we're going to toss an exception
         if not isinstance(data, dict):
-            raise Exception('Index failed, data needs to be a dict!')
+            raise RuntimeError('Index failed, data needs to be a dict!')
 
         try:
             self.es.index(index=index_name, doc_type=doc_type, body=data)
