@@ -1,9 +1,7 @@
 
 ''' Yara worker '''
-import os, glob
+import os
 import yara
-import datetime
-import inspect
 
 class YaraSigs():
     ''' This worker check for matches against yara sigs. 

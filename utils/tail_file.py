@@ -1,9 +1,9 @@
 
 import pygtail
-import StringIO
 import contextlib
-import time
+import os, time
 import tempfile
+import shutil
 
 @contextlib.contextmanager
 def make_temp_directory():
