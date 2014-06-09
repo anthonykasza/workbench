@@ -118,6 +118,28 @@ _zpc_more {'response_to': '67d7df3f-1f3e-45f4-b2e6-352260fa1507', 'zmqid':
 ### VirusTotal Error
 If you get an error on the vt_query.py test that is completely expected. You'll have to put your own VirusTotal API key in the workbench/server/config.ini file.
 <br>
+
+### Contributions/Support/Getting Involved
+Workbench is committed to providing open source security software. If you're a developer looking to chip-in or want to support the project please contact us at <support@supercowpowers.com> or visit one of the links below:
+
+- Users email list: [workbench-devs](https://groups.google.com/forum/#!forum/workbench-devs)
+- Developer email list: [workbench-devs](https://groups.google.com/forum/#!forum/workbench-devs)
+- Feature requests: [issue tracker](https://github.com/SuperCowPowers/workbench/issues)
+- **Buy a T-Shirt!**: [SuperCowPowers](http://www.supercowpowers.com/#about)
+- Donate: [SuperCowPowers](http://www.supercowpowers.com/#about)
+
+#### Pull Requests
+If you going to make a pull request on the workbench repository:
+
+- You're awesome
+- Use the 'develop' branch for small changes
+- Use the 'future' branch for big changes
+- Make sure all tests pass
+    - Workers: server/workers/runtests
+    - Clients: clients/runtests
+- New code must have a test and greater than 94% test coverage
+
+
 ### Additional Information
 For additional information on the following subjects:
  
