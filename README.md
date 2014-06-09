@@ -127,6 +127,7 @@ Workbench is committed to providing open source security software. If you're a d
 - Users email list: [workbench-users](https://groups.google.com/forum/#!forum/workbench-users)
 - Developer email list: [workbench-devs](https://groups.google.com/forum/#!forum/workbench-devs)
 - Feature requests: [issue tracker](https://github.com/SuperCowPowers/workbench/issues)
+- **Earn a T-Shirt!**: All issues have cow points, get 100+ for T
 - **Buy a T-Shirt!**: [SuperCowPowers](http://www.supercowpowers.com/#about)
 - Donate: [SuperCowPowers](http://www.supercowpowers.com/#about)
 
