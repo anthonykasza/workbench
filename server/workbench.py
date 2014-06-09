@@ -63,7 +63,9 @@ class WorkBench():
         self.plugin_meta = {}
         plugin_manager.PluginManager(self._new_plugin)
 
-    # Data storage methods
+    #
+    # Sample Methods
+    #
     def store_sample(self, filename, input_bytes, type_tag):
         ''' Store a sample into the DataStore.
             Args:
@@ -137,14 +139,16 @@ class WorkBench():
         else:
             raise Exception('Cannot stream file %s with type_tag:%s' % (md5, type_tag))
 
-    # Index methods
+    #
+    # Index Methods
+    #
     def index_sample(self, md5, index_name):
         ''' Index a stored sample with the Indexer '''
         generator = self.stream_sample(md5, None)
         for row in generator:
             self.indexer.index_data(row, index_name)
 
-    def index_worker_output(self, worker_class, md5, index_name):
+    def index_worker_output(self, worker_class, md5, index_name, subfield):
         ''' Index worker output with Indexer'''
 
         # Grab the data
@@ -157,7 +161,9 @@ class WorkBench():
         ''' Search an index'''
         return self.indexer.search(index_name, query)
 
-    # Graph methods
+    #
+    # Graph Methods
+    #
     def add_node(self, md5, name, labels):
         ''' Add the node with name and labels '''
         self.neo_db.add_node(md5, name, labels)
@@ -178,6 +184,10 @@ class WorkBench():
     def clear_db(self):
         ''' Clear the database of all samples and worker output '''
         self.data_store.clear_db()
+
+    #
+    # Work Request Methods
+    #
 
     # Make a work request for an existing stored sample
     def work_request(self, worker_class, md5, subkeys=None):
