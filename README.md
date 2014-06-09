@@ -129,7 +129,7 @@ Workbench is committed to providing open source security software. If you're a d
 - Donate: [SuperCowPowers](http://www.supercowpowers.com/#about)
 
 #### Pull Requests
-If you going to make a pull request on the workbench repository:
+If you're going to make a pull request on the workbench repository:
 
 - You're awesome
 - Use the 'develop' branch for small changes
