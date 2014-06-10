@@ -25,9 +25,9 @@ def main():
 
             # Index the strings and features output (notice we can ask for any worker output)
             # Also (super important) it all happens on the server side.
-            c.index_worker_output('strings', md5, 'strings')
+            c.index_worker_output('strings', md5, 'strings', None)
             print '\n<<< Strings for PE: %s Indexed>>>' % (filename)
-            c.index_worker_output('pe_features', md5, 'pe_features')
+            c.index_worker_output('pe_features', md5, 'pe_features', None)
             print '<<< Features for PE: %s Indexed>>>' % (filename)
 
     # Now actually do something interesing with our ELS index

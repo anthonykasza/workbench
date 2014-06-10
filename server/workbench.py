@@ -15,6 +15,7 @@ import StringIO
 import json
 import hashlib
 import inspect
+import funcsigs
 import urllib3
 
 ''' Add bro to path for bro_log_reader '''
@@ -152,7 +153,10 @@ class WorkBench():
         ''' Index worker output with Indexer'''
 
         # Grab the data
-        data = self.work_request(worker_class, md5)[worker_class]
+        if subfield:
+            data = self.work_request(worker_class, md5)[worker_class][subfield]
+        else:
+            data = self.work_request(worker_class, md5)[worker_class]
 
         # Okay now index the data
         self.indexer.index_data(data, index_name=index_name, doc_type='unknown')
@@ -344,12 +348,34 @@ class WorkBench():
         return help_str
 
     def help_commands(self):
-        ''' Returns Workbench commands and docstrings '''
-        return {name:meth.__doc__ for name, meth in inspect.getmembers(self, predicate=inspect.ismethod) if not name.startswith('_')}
+        ''' Returns a big string of Workbench commands and signatures '''
+        help_string = ''
+        for name, meth in inspect.getmembers(self, predicate=inspect.ismethod):
+            if not name.startswith('_'):
+                help_string += '\n%s%s' % (name,funcsigs.signature(meth))
+        return help_string
+
+    def help_command(self, command):
+        ''' Returns a specific Workbench command and docstring '''
+        for name, meth in inspect.getmembers(self, predicate=inspect.ismethod):
+            if name == command:
+                return '\n Command: %s%s \n%s' % (name, funcsigs.signature(meth), meth.__doc__)
+        return '%s command not found.. misspelled?' % command
 
     def help_workers(self):
-            ''' List the current worker plugins '''
-            return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
+        ''' Returns a big string of the loaded Workbench workers and their dependencies '''
+        help_string = ''
+        for name, plugin in sorted(self.plugin_meta.iteritems()):
+            help_string += '\n%s %s' % (name, str(plugin['class'].dependencies))
+        return help_string
+
+    def help_worker(self, worker):
+        ''' Returns a specific Workbench worker and docstring '''
+        for name, plugin in self.plugin_meta.iteritems():
+            if name == worker:
+                return '\n Worker: %s\n%s' % (name, plugin['class'].__doc__)
+        return '%s worker not found.. misspelled?' % worker
+        #return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
 
     def help_advanced(self):
         help_str =  '\nWoo! Advanced... <fixme: add documentation for advanced> :)'
