@@ -11,5 +11,6 @@ watchdog
 yara
 zerorpc
 nose
+funcsigs
 # pyswf
 # git+https://github.com/newbrough/coverage.git
