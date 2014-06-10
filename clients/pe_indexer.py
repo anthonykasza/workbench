@@ -33,7 +33,6 @@ def main():
     # Now actually do something interesing with our ELS index
     # Fixme: See https://github.com/SuperCowPowers/workbench/issues/38
     # ES Facets are kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-facets.html)
-    '''
     facet_query = '{"facets" : {"tag" : {"terms" : {"field" : "string_list","script": "term.length() > 3 ? true: false"}}}}'
     results = c.search('strings',facet_query)
     try:
@@ -44,8 +43,9 @@ def main():
     except TypeError:
         print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'
 
+
     # Fuzzy is kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html)
-    fuzzy_query = '{"fields":["md5","sparse_features.imported_symbols"],"query": {"fuzzy" : {"sparse_features.imported_symbols" : "loadlibrary"},"size":50}}'
+    fuzzy_query = '{"fields":["md5","sparse_features.imported_symbols"],"query": {"fuzzy" : {"sparse_features.imported_symbols" : "loadlibrary"}}}'
     results = c.search('pe_features',fuzzy_query)
     try:
         print '\nQuery: %s' % fuzzy_query
@@ -54,7 +54,6 @@ def main():
         pprint.pprint([ (hit['fields']['md5'], hit['fields']['sparse_features.imported_symbols']) for hit in results['hits']['hits'] ])
     except TypeError:
         print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'
-    '''
 
 
 def test():
