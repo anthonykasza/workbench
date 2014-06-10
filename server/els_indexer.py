@@ -26,10 +26,18 @@ class ELS_Indexer():
             self.es.index(index=index_name, doc_type=doc_type, body=data)
         except Exception, error:
             print 'Index failed: %s' % str(error)
-            # raise Exception('Index failed: %s' % str(error))
+            raise RuntimeError('Index failed: %s' % str(error))
 
     def search(self, index_name, query):
-        return self.es.search(index=index_name, body=query)
+        try:
+            results = self.es.search(index=index_name, body=query)
+            return results
+        except Exception, error:
+            error_str = 'Query failed: %s\n' % str(error)
+            error_str += '\nVersion 1.2+ has dynamic scripting disabled, see %s' % \
+                  ('http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting')
+            print error_str
+            raise RuntimeError(error_str)
 
 class ELS_StubIndexer():
 
