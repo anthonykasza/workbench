@@ -34,10 +34,9 @@ def main():
     # version 1.2+ the dynamic scripting disabled by default, see
     # 'http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting
 
-    '''
     # Now actually do something interesing with our ELS index
     # ES Facets are kewl (http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-facets.html)
-    facet_query = '{"facets" : {"tag" : {"terms" : {"field" : "string_list","script": "term.length() > 3 ? true: false"}}}}'
+    facet_query = '{"facets" : {"tag" : {"terms" : {"field" : "string_list"}}}}'
     results = c.search('strings',facet_query)
     try:
         print '\nQuery: %s' % facet_query
@@ -58,7 +57,6 @@ def main():
         pprint.pprint([ (hit['fields']['md5'], hit['fields']['sparse_features.imported_symbols']) for hit in results['hits']['hits'] ])
     except TypeError:
         print 'Probably using a Stub Indexer, if you want an ELS Indexer see the readme'
-    '''
 
 
 def test():
