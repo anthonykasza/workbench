@@ -79,36 +79,34 @@ class PluginManager(FileSystemEventHandler):
             return True
         except AttributeError:
             print 'Failure for plugin: %s' % (handler.__name__)
-            print 'Plugin file is required to have a test() method that runs'
+            print 'The file must have a top level test() method that runs'
             return False
         finally:
             os.chdir(previousDir)
 
     def validate(self, handler):
+        ''' Validate the plugin, each plugin must have the following:
+            1) The worker class must have an execute method: execute(self, input_data)
+            2) The worker class must have a dependencies list (even if it's empty)
+            3) The file must have a top level test() method
+        '''
 
-        # First does the handler have a class (worker)
-        if not inspect.getmembers(handler, inspect.isclass):
-            print 'Failure for plugin: %s' % (handler.__name__)
-            print 'Plugin is required to be a class'
-            return None
-
-        # Second each module is required to have a test method
+        # Check for the test method first
         methods = [name for name,value in inspect.getmembers(handler, callable)]
         if 'test' not in methods:
             print 'Failure for plugin: %s' % (handler.__name__)
-            print 'Plugin is required to be have a test named test()'
+            print 'Validation Error: The file must have a top level test() method'
             return None
 
-        # Fixme: This is a bit silly, here we iterate through the classes found
-        # in the module and pick the first one that satisfies the validation
+        # Here we iterate through the classes found in the module and pick
+        # the first one that satisfies the validation
         for name, plugin_class in inspect.getmembers(handler, inspect.isclass):
             if self.plugin_class_validation(plugin_class):
                 return plugin_class
 
-        # If we're here we didn't validate any class
+        # If we're here the plugin didn't pass validation
         print 'Failure for plugin: %s' % (handler.__name__)
-        print 'Plugin failed validation'
-        print 'Plugin is required to have a dependencies list and an execute method'
+        print 'Validation Error: Worker class is required to have a dependencies list and an execute method'
 
     def plugin_class_validation(self, plugin_class):
 
@@ -122,8 +120,9 @@ class PluginManager(FileSystemEventHandler):
 
         return True
 
+
 # Just create the class and run it for a test
-def _test():
+def test():
 
     # This test actually does more than it appears. The workers
     # directory will get scanned and stuff will get loaded, etc.
@@ -134,4 +133,4 @@ def _test():
     plugins = PluginManager(new_plugin)
 
 if __name__ == "__main__":
-    _test()
+    test()
