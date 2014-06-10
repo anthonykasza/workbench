@@ -1,7 +1,7 @@
 
 ''' view_pdffile worker '''
 
-class ViewPDFFile():
+class ViewPDFFile(object):
     ''' ViewPDFFile: Generates a view for PDF files '''
     dependencies = ['meta', 'strings']
 

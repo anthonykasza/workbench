@@ -4,7 +4,7 @@
 import sys
 import pefile
 
-class PEFileWorker():
+class PEFileWorker(object):
     ''' Create instance of PEFileWorker class. This class pulls static
         features out of a PE file using the python pefile module.
     '''

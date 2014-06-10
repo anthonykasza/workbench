@@ -8,8 +8,8 @@ import pkg_resources
 # Fixme: We want to load this once per module load
 g_peid_sigs = pkg_resources.resource_string(__name__, 'peid_userdb.txt')
 
-class PEIDWorker():
-    ''' Create instance of PEIDWorker class. This class looks up signature for a PE file. '''
+class PEIDWorker(object):
+    ''' This worker looks up pe_id signatures for a PE file. '''
     dependencies = ['sample']
 
     def __init__(self):

@@ -2,7 +2,7 @@
 ''' URLS worker: Tries to extract URL from strings output '''
 import re
 
-class URLS():
+class URLS(object):
     ''' This worker looks for url patterns in strings output '''
     dependencies = ['strings']
 

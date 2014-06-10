@@ -4,7 +4,7 @@ import hashlib
 import ssdeep as ssd
 import datetime
 
-class MetaDeepData():
+class MetaDeepData(object):
     ''' This worker computes deeper meta-data '''
     dependencies = ['sample', 'meta']
 

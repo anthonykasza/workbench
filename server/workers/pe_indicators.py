@@ -28,7 +28,7 @@ import re
 import inspect
 import pefile
 
-class PEIndicators():
+class PEIndicators(object):
     ''' Create instance of Indicators class. This class uses the
         static features from the pefile module to look for weird stuff.
         Note: All methods that start with 'check_' will be automatically

@@ -1,7 +1,7 @@
 
 ''' view_meta worker '''
 
-class ViewMetaData():
+class ViewMetaData(object):
     ''' ViewMetaData: Generates a view for meta data on the sample '''
     dependencies = ['meta']
 

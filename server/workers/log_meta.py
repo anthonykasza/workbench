@@ -3,7 +3,7 @@
 import hashlib
 import datetime
 
-class LogMetaData():
+class LogMetaData(object):
     ''' This worker computes a meta-data for log files. '''
     dependencies = ['sample', 'meta']
 

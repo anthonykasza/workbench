@@ -1,7 +1,7 @@
 
 ''' view_log_meta worker '''
 
-class ViewLogMeta():
+class ViewLogMeta(object):
     ''' ViewLogMeta: Generates a view for meta data on the sample '''
     dependencies = ['log_meta']
 

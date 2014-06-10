@@ -2,7 +2,7 @@
 ''' view_pe worker '''
 
 
-class ViewPEFile():
+class ViewPEFile(object):
     ''' Generates a high level summary view for PE files that incorporates a large set of workers '''
     dependencies = ['meta', 'strings', 'pe_peid', 'pe_indicators', 'pe_classifier', 'pe_disass']
 

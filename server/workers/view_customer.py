@@ -1,7 +1,7 @@
 ''' view_customer worker '''
 import zerorpc
 
-class ViewCustomer():
+class ViewCustomer(object):
     ''' ViewCustomer: Generates a customer usage view. '''
     dependencies = ['meta']
 

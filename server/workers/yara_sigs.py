@@ -3,7 +3,7 @@
 import os
 import yara
 
-class YaraSigs():
+class YaraSigs(object):
     ''' This worker check for matches against yara sigs. 
         Output keys: [matches:list of matches] '''
     dependencies = ['sample']
@@ -26,7 +26,6 @@ class YaraSigs():
 
     def execute(self, input_data):
         ''' yara worker execute method '''
-
         raw_bytes = input_data['sample']['raw_bytes']
         matches = self.rules.match_data(raw_bytes)
         return {'matches': matches}

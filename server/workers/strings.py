@@ -2,7 +2,7 @@
 ''' Strings worker '''
 import re
 
-class Strings():
+class Strings(object):
     ''' This worker extracts all the strings from any type of file '''
     dependencies = ['sample']
 

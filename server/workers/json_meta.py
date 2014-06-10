@@ -2,8 +2,8 @@
 ''' JSON Meta worker '''
 import json
 
-class JSONMetaData():
-    ''' This worker computes a meta-data for json files. '''
+class JSONMetaData(object):
+    ''' This worker computes meta-data for json files. '''
     dependencies = ['sample', 'meta']
 
     def __init__(self):
