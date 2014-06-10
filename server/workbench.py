@@ -110,7 +110,13 @@ class WorkBench():
 
     @zerorpc.stream
     def stream_sample(self, md5, max_rows):
-        ''' Stream the sample by giving back a generator '''
+        ''' Stream the sample by giving back a generator, typically used on 'logs'.
+            Args:
+                md5: the md5 of the sample
+                max_rows: the maximum number of rows to return (None for all)
+            Returns:
+                A generator that yields rows of the file/log
+        '''
 
         # Grab the sample and it's raw bytes
         sample = self.data_store.get_sample(md5)
@@ -144,13 +150,27 @@ class WorkBench():
     # Index Methods
     #
     def index_sample(self, md5, index_name):
-        ''' Index a stored sample with the Indexer '''
+        ''' Index a stored sample with the Indexer.
+            Args:
+                md5: the md5 of the sample
+                index_name: the name of the index
+            Returns:
+                Nothing
+        '''
         generator = self.stream_sample(md5, None)
         for row in generator:
             self.indexer.index_data(row, index_name)
 
     def index_worker_output(self, worker_class, md5, index_name, subfield):
-        ''' Index worker output with Indexer'''
+        ''' Index worker output with the Indexer.
+            Args:
+                worker_class: 'strings', 'pe_features', whatever
+                md5: the md5 of the sample
+                index_name: the name of the index
+                subfield: index just this subfield (None for all)
+            Returns:
+                Nothing
+        '''
 
         # Grab the data
         if subfield:
@@ -162,31 +182,66 @@ class WorkBench():
         self.indexer.index_data(data, index_name=index_name, doc_type='unknown')
 
     def search(self, index_name, query):
-        ''' Search an index'''
+        ''' Search a particular index in the Indexer
+            Args:
+                index_name: the name of the index
+                query: the query against the index
+            Returns:
+                All matches to the query
+        '''
         return self.indexer.search(index_name, query)
 
     #
     # Graph Methods
     #
-    def add_node(self, md5, name, labels):
-        ''' Add the node with name and labels '''
-        self.neo_db.add_node(md5, name, labels)
+    def add_node(self, node_id, name, labels):
+        ''' Add a node to the graph with name and labels.
+            Args:
+                node_id: the unique node_id e.g. 'www.evil4u.com'
+                name: the display name of the node e.g. 'evil4u'
+                labels: a list of labels e.g. ['domain','evil']
+            Returns:
+                Nothing
+        '''
+        self.neo_db.add_node(node_id, name, labels)
 
-    def has_node(self, md5):
-        ''' Does the DB have this node '''
-        return self.neo_db.has_node(md5)
+    def has_node(self, node_id):
+        ''' Does the Graph DB have this node
+            Args:
+                node_id: the unique node_id e.g. 'www.evil4u.com'
+            Returns:
+                True/False
+        '''
+        return self.neo_db.has_node(node_id)
 
-    def add_rel(self, source_md5, target_md5, rel):
+    def add_rel(self, source_id, target_id, rel):
         ''' Add a relationship: source, target must already exist (see add_node)
-            'rel' is the name of the relationship 'contains' or whatever. '''
-        self.neo_db.add_rel(source_md5, target_md5, rel)
+            'rel' is the name of the relationship 'contains' or whatever.
+            Args:
+                source_id: the unique node_id of the source
+                target_id: the unique node_id of the target
+                rel: name of the relationship
+            Returns:
+                Nothing
+        '''
+        self.neo_db.add_rel(source_id, target_id, rel)
 
     def clear_graph_db(self):
-        ''' Clear the Graph Database of all nodes and edges '''
+        ''' Clear the Graph Database of all nodes and edges.
+            Args:
+                None
+            Returns:
+                Nothing
+        '''
         self.neo_db.clear_db()
 
     def clear_db(self):
-        ''' Clear the database of all samples and worker output '''
+        ''' Clear the Main Database of all samples and worker output.
+            Args:
+                None
+            Returns:
+                Nothing
+        '''
         self.data_store.clear_db()
 
     #
@@ -195,7 +250,15 @@ class WorkBench():
 
     # Make a work request for an existing stored sample
     def work_request(self, worker_class, md5, subkeys=None):
-        ''' Make a work request for an existing stored sample '''
+        ''' Make a work request for an existing stored sample.
+            Args:
+                worker_class: 'strings', 'pe_features', whatever
+                md5: the md5 of the sample
+                index_name: the name of the index
+                subkeys: just return a subfield e.g. 'foo' or 'foo.bar' (None for all) 
+            Returns:
+                The output of the worker or just the subfield of the worker output
+        '''
 
         # Check valid
         if worker_class not in self.plugin_meta.keys():
@@ -226,10 +289,16 @@ class WorkBench():
     @zerorpc.stream
     def batch_work_request(self, worker_class, kwargs):
         ''' Make a batch work request for an existing set of stored samples.
-            A subset of sample can be specified either with type_tag (e.g. type_tag='pe')
-            or the md5_list arg can be set to a list of md5s if neither of these are
-            set then all of the samples will receive this work request. 
-            Note: This method returns a generator. '''
+            A subset of sample can be specified with kwargs.
+            Args:
+                worker_class: 'strings', 'pe_features', whatever
+                kwargs: a way of specifying subsets of samples ({} for all)
+                    type_tag: subset based on sample type (e.g. type_tag='pe')
+                    md5_list: subset just the samples in this list
+                    subkeys: return just this subkey (e.g. 'foo' or 'foo.bar')
+            Returns:
+                A generator that yields rows of worker output or subfields of the worker output
+        '''
         type_tag = kwargs.get('type_tag',None)
         md5_list = kwargs.get('md5_list',None)
         subkeys = kwargs.get('subkeys',None)
@@ -250,7 +319,12 @@ class WorkBench():
 
     def store_sample_set(self, md5_list):
         ''' Store a sample set (which is just a list of md5s).
-            Note: All md5s must already be in the data store. '''
+            Note: All md5s must already be in the data store.
+            Args:
+                md5_list: a list of the md5s in this set (all must exist in data store)
+            Returns:
+                The md5 of the set (the actual md5 of the set
+        '''
         for md5 in md5_list:
             if not self.have_sample(md5):
                 raise RuntimeError('Sample not found all items in sample_set must be in the datastore: %s (not found)' % (md5))
@@ -259,15 +333,32 @@ class WorkBench():
         return set_md5
 
     def get_sample_set(self, md5):
+        ''' Store a sample set (which is just a list of md5s).
+            Args:
+                md5_list: a list of the md5s in this set (all must exist in data store)
+            Returns:
+                The md5 of the set (the actual md5 of the set
+        '''
         return self._get_work_results('sample_set', md5)
 
     @zerorpc.stream
     def stream_sample_set(self, md5):
+        ''' Stream a sample set (which is just a list of md5s).
+            Args:
+                md5: the md5 of the sample_set
+            Returns:
+                A generator that yields the md5s in the sample set
+        '''
         for md5 in self._get_work_results('sample_set', md5)['md5_list']:
             yield md5
 
     def get_datastore_uri(self):
-        ''' Gives you the current datastore URL '''
+        ''' Gives you the current datastore URL.
+            Args:
+                None
+            Returns:
+                The URI of the data store currently being used by Workbench
+        '''
         return self.data_store.get_uri()
 
     def _new_plugin(self, plugin, mod_time):
@@ -339,20 +430,20 @@ class WorkBench():
     def help_basic(self):
         ''' Returns basic help commands '''
         help_str =  '\nWorkbench: Getting started...'
-        help_str += '\n\t - 1) $ c.help_commands() for a list of commands'
-        help_str += '\n\t - 2) $ print c.help_commands()[\'store_sample\']'
-        help_str += '\n\t - 3) $ c.help_workers() for a list a workers'
-        help_str += '\n\t - 4) $ print c.help_commands()[\'meta\']'
+        help_str += '\n\t - 1) $ print c.help_commands() for a list of commands'
+        help_str += '\n\t - 2) $ print c.help_command(\'store_sample\') for into on a specific command'
+        help_str += '\n\t - 3) $ print c.help_workers() for a list a workers'
+        help_str += '\n\t - 4) $ print c.help_worker(\'meta\') for info on a specific worker'
         help_str += '\n\t - 5) $ my_md5 = c.store_sample(...)'
         help_str += '\n\t - 6) $ output = c.work_request(\'meta\', my_md5)'
         return help_str
 
     def help_commands(self):
         ''' Returns a big string of Workbench commands and signatures '''
-        help_string = ''
+        help_string = 'Workbench Commands:'
         for name, meth in inspect.getmembers(self, predicate=inspect.ismethod):
             if not name.startswith('_'):
-                help_string += '\n%s%s' % (name,funcsigs.signature(meth))
+                help_string += '\n\t%s%s' % (name,funcsigs.signature(meth))
         return help_string
 
     def help_command(self, command):
@@ -364,20 +455,21 @@ class WorkBench():
 
     def help_workers(self):
         ''' Returns a big string of the loaded Workbench workers and their dependencies '''
-        help_string = ''
+        help_string = 'Workbench Workers:'
         for name, plugin in sorted(self.plugin_meta.iteritems()):
-            help_string += '\n%s %s' % (name, str(plugin['class'].dependencies))
+            help_string += '\n\t%s %s' % (name, str(plugin['class'].dependencies))
         return help_string
 
     def help_worker(self, worker):
         ''' Returns a specific Workbench worker and docstring '''
         for name, plugin in self.plugin_meta.iteritems():
             if name == worker:
-                return '\n Worker: %s\n%s' % (name, plugin['class'].__doc__)
+                return '\n Worker: %s %s\n\t%s' % (name, str(plugin['class'].dependencies), plugin['class'].__doc__)
         return '%s worker not found.. misspelled?' % worker
         #return {plugin['name']:plugin['class'].__doc__ for name, plugin in self.plugin_meta.iteritems()}
 
     def help_advanced(self):
+        ''' Returns advanced help commands '''
         help_str =  '\nWoo! Advanced... <fixme: add documentation for advanced> :)'
         help_str += '\n\nSee https://github.com/SuperCowPowers/workbench for more information'
         return help_str
@@ -398,7 +490,7 @@ def main():
     datastore_uri = workbench_conf.get('datastore_uri', 'localhost')
     database = workbench_conf.get('database', 'workbench')
     worker_cap = int(workbench_conf.get('worker_cap', 10))
-    samples_cap = int(workbench_conf.get('samples_cap', 100))
+    samples_cap = int(workbench_conf.get('samples_cap', 200))
 
     # API keys just get tossed into API_KEYS dict
     workbench_keys.API_KEYS['vt_apikey'] = workbench_conf.get('vt_apikey', '123')
