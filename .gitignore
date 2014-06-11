@@ -41,5 +41,8 @@ nosetests.xml
 # Mac DS files
 .DS_Store
 
+# ReadTheDocs build directory
+_build
+
 # Local Configuration file
 config.ini
