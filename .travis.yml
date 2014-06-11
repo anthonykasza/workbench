@@ -14,6 +14,7 @@ before_install:
     - wget https://github.com/SuperCowPowers/data/raw/master/packages/Bro-2.2-Linux-x86_64_flex.deb
     - sudo dpkg -i Bro-2.2-Linux-x86_64_flex.deb
     - export PATH=/opt/bro/bin:$PATH
+    - cp .noserc ~/.noserc
 install:
   - pip install -r requirements.txt
   - pip install coveralls
