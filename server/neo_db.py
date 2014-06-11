@@ -18,7 +18,10 @@ class NeoDB():
     def add_node(self, node_id, name, labels):
         ''' Add the node with name and labels '''
         node = self.graph_db.get_or_create_indexed_node('Node', 'node_id', node_id, {'node_id':node_id, 'name':name})
-        node.add_labels(*labels)
+        try:
+            node.add_labels(*labels)
+        except NotImplementedError:
+            print 'Got a NotImplementedError when adding labels. Upgrade your Neo4j DB!'
 
     def has_node(self, node_id):
         ''' Add the node with name and labels '''

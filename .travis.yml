@@ -1,14 +1,20 @@
 language: python
 python:
   - 2.7
+services:
+  - mongodb
+  - elasticsearch
+  - neo4j
 before_install:
-    - sudo apt-get install mongodb
     - sudo apt-get install python-dev
     - sudo apt-get install g++
     - sudo apt-get install libssl0.9.8
+    - sudo apt-get install libgeoip1
+    - sudo apt-get install libpcap0.8
     - wget https://github.com/SuperCowPowers/data/raw/master/packages/Bro-2.2-Linux-x86_64_flex.deb
     - sudo dpkg -i Bro-2.2-Linux-x86_64_flex.deb
     - export PATH=/opt/bro/bin:$PATH
+    - cp .noserc ~/.noserc
 install:
   - pip install -r requirements.txt
   - pip install coveralls

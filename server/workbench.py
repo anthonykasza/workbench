@@ -513,7 +513,7 @@ def main():
         s.run()
         print 'ZeroRPC %s' % ('tcp://0.0.0.0:4242')
     except zmq.error.ZMQError:
-        print '\nInfo: Could not start ZMQ server (no worries, probably already running...)\n'
+        print '\nInfo: Could not start Workbench server (no worries, probably already running...)\n'
     except KeyboardInterrupt:
         print '\nWorbench Server Exiting...'
         exit()
