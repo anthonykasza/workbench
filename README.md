@@ -50,7 +50,7 @@ Please note the indexers 'Neo4j' and 'ElasticSearch' are optional. We strongly s
 - Bro IDS: 
    - Put the bro executable in your PATH (/opt/bro/bin or wherever bro is)
 
-    In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. We have a more 'flexible' version [Bro-2.2-Linux-x86_64_flex.deb](https://drive.google.com/uc?export=download&id=0B1QHlgNhJmssNzZ4cDdTdktPNlU). 
+    In general the Bro debian package files are WAY too locked down with dependencies on exact versions of libc6 and python2.6. We have a more 'flexible' version [Bro-2.2-Linux-x86_64_flex.deb](https://github.com/SuperCowPowers/data/raw/master/packages/Bro-2.2-Linux-x86_64_flex.deb). 
     - sudo dpkg -i Bro-2.2-Linux-x86_64_flex.deb
  
    If using the Debian package above doesn't work out:
