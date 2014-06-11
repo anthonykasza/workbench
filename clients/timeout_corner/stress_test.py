@@ -53,10 +53,10 @@ def process_files(path):
     c.close()
 
 # Fixme: see https://github.com/SuperCowPowers/workbench/issues/40
-def disabled():
+def test():
     ''' stress_test test '''
     main()
 
 if __name__ == '__main__':
-    disabled()
+    test()
 
