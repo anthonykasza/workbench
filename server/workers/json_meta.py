@@ -38,13 +38,7 @@ def test():
     # Store the sample
     md5 = c.store_sample('unknown.json', open('../../data/json/generated.json', 'rb').read(), 'json')
 
-    # Execute the worker (server test)
-    output = c.work_request('json_meta', md5)
-    print '\n<<< Server Test >>>'
-    import pprint
-    pprint.pprint(output)
-
-    # Unit test stuff: Feel free to ignore
+    # Unit test stuff
     input_data = c.get_sample(md5)
     input_data.update(c.work_request('meta', md5))
 
@@ -54,6 +48,14 @@ def test():
     print '\n<<< Unit Test >>>'
     import pprint
     pprint.pprint(output)
+
+    # Execute the worker (server test)
+    output = c.work_request('json_meta', md5)
+    print '\n<<< Server Test >>>'
+    import pprint
+    pprint.pprint(output)
+
+
 
 if __name__ == "__main__":
     test()
