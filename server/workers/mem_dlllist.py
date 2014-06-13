@@ -6,7 +6,7 @@
 import mem_base
 
 class MemoryImageDllList(mem_base.MemoryImageBase):
-    ''' This worker computes dlllist-data for memory image files. '''
+    ''' This worker computes dlllist for memory image files. '''
     dependencies = ['sample']
 
     def __init__(self):

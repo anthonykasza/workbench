@@ -8,10 +8,14 @@ from rekall import plugins
 from rekall import session
 from rekall.plugins.addrspaces import standard
 from rekall.ui.renderer import BaseRenderer
+from rekall.ui.renderer import Formatter
 import StringIO
 import json
 import datetime
 import pprint
+import msgpack
+import pytz
+import collections
 
 class MemSession(object):
     ''' MemSession: Helps utilize the Rekall Memory Forensic Framework. '''
@@ -29,10 +33,16 @@ class MemSession(object):
         with s:
             mem_file = StringIO.StringIO(raw_bytes)
             s.physical_address_space = standard.FDAddressSpace(fhandle=mem_file, session=s)
-            s.GetParameter("profile")
+            profile = s.GetParameter("profile")
 
         # Store session handle
         self.session = s
+
+        # Pack the session (testing for now)
+        #packed = msgpack.packb(self.session, use_bin_type=True)
+        #print 'Size of packed session %d' % packed.sized
+        #self.session = msgpack.unpackb(packed, encoding='utf-8')
+        
 
     def get_session(self):
         ''' Get the current session handle '''
@@ -47,6 +57,9 @@ class WorkbenchRenderer(BaseRenderer):
         self.output_data = None
         self.active_section = None
         self.active_headers = None
+        self.header_types = None
+        self.incoming_section = False
+        self.formatter = Formatter()
 
     def start(self, plugin_name=None, kwargs=None):
         ''' Start method: initial data structures and store some meta data '''
@@ -60,10 +73,24 @@ class WorkbenchRenderer(BaseRenderer):
         print 'Calling end on WorkbenchRenderer does nothing'
 
     def format(self, formatstring, *args):
-        ''' Just a stub method '''
-        print 'Calling format on WorkbenchRenderer does nothing'
+
+        # Make a new section
+        if self.incoming_section:
+            section_name = self.formatter.format(formatstring, *args).strip()
+            self.section(section_name)
+            self.incoming_section = False
+        else:
+            print 'Format called with %s' % self.formatter.format(formatstring, *args)
 
     def section(self, name=None, **kwargs):
+
+        # Check for weird case where an section call is made wit
+        # no name and then a format call is made
+        if not name:
+            self.incoming_section = True
+            return
+
+        # Create a new section and make it the active one
         self.active_section = name
         self.output_data['sections'][self.active_section] = [] 
 
@@ -72,10 +99,11 @@ class WorkbenchRenderer(BaseRenderer):
 
     def table_header(self, columns=None, **kwargs):
         self.active_headers = [col[0] for col in columns]
+        self.header_types = [col[1] for col in columns]
 
     def table_row(self, *args, **kwargs):
         self.output_data['sections'][self.active_section]. \
-            append(self._cast_dict(dict(zip(self.active_headers, args))))
+            append(self._cast_row(self.active_headers, args, self.header_types))
 
     def write_data_stream(self):
         ''' Just a stub method '''
@@ -90,37 +118,32 @@ class WorkbenchRenderer(BaseRenderer):
         plugin.render(self)
         return self.output_data
 
-    def _cast_dict(self, data_dict):
+    def _cast_row(self, keys, values, data_types):
+        ''' Internal method that makes sure that the row elements
+            are properly cast into the correct types, instead of
+            just treating everything like a string from the csv file
+        '''
+        output_dict = collections.OrderedDict()
+        for key, value, dtype in zip(keys, values, data_types):
+            output_dict[key] = self._cast_value(value, dtype)
+
+        return output_dict
+
+    def _cast_value(self, value, dtype):
         ''' Internal method that makes sure any dictionary elements
             are properly cast into the correct types, instead of
             just treating everything like a string from the csv file
         '''
-        for key, value in data_dict.iteritems():
-            data_dict[key] = self._cast_value(value)
 
-        # Fixme: resp_body_data can be very large so removing it for now
-        if 'resp_body_data' in data_dict:
-            del data_dict['resp_body_data']
-
-        return data_dict
-
-    def _cast_value(self, value):
-        ''' Internal method that makes sure any dictionary elements
-            are properly cast into the correct types, instead of
-            just treating everything like a string from the csv file
-        '''
         # Try to convert to a datetime
-        try:
-            date_time = datetime.datetime.fromtimestamp(float(value))
-            if date_time > datetime.datetime(2000, 1, 1) and \
-               date_time < datetime.datetime(2020, 1, 1): # Fixme: Total Cheese Sauce
-                raise ValueError
-            else:
-                return date_time
+        if 'time' in dtype:
+            date_time = value.as_datetime()
+            if date_time == datetime.datetime(1970, 1, 1, 0, 0, tzinfo=pytz.utc): # Special case
+                return '-'
+            return date_time
 
-        # Next try a set of primitive types
-        except (AttributeError, TypeError, ValueError):
-            pass
+        # Rekall puts a bunch of data_modeling semantics that we're just ignoring for now :(
+        value = str(value)
 
         # Try conversion to basic types
         tests = (int, float, str)
