@@ -18,6 +18,9 @@ As an open source python framework it provides light-weight task management, exe
 * **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Generator_Pipelines.ipynb">Generator Pipelines Notebook</a>**
 * WIP Notebooks
 	* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Network_Stream.ipynb">Network Stream Analysis Notebook</a>**
+	* **<a href="http://nbviewer.ipython.org/url/raw.github.com/SuperCowPowers/workbench/master/notebooks/Rekall_to_Dataframe.ipynb">Rekall Integration Notebook</a>**
+
+	
 
 ### Email lists (anyone can join)
 - Users Email List: [workbench-users](https://groups.google.com/forum/#!forum/workbench-users)
