@@ -45,7 +45,7 @@ class MemoryImageBase(object):
 
 # Unit test: Create the class, the proper input and run the execute() method for a test
 def test():
-    ''' mem_meta.py: Test '''
+    ''' mem_base.py: Test '''
 
     # This worker test requires a local server running
     import zerorpc
